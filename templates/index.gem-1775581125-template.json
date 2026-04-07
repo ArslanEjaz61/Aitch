@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "homepage-premium",
+      "settings": {
+        "kicker": "Smart home solutions — delivered",
+        "heading": "Solve everyday home problems. Effortlessly.",
+        "subheading": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.",
+        "primary_label": "Shop Best Sellers",
+        "primary_link": "\/collections\/all",
+        "secondary_label": "Explore Collections",
+        "secondary_link": "\/collections\/all",
+        "stat_1_value": "20+",
+        "stat_1_label": "Curated Products",
+        "stat_2_value": "2-5 Day",
+        "stat_2_label": "Fast Shipping",
+        "stat_3_value": "30 Day",
+        "stat_3_label": "Easy Returns",
+        "trust_1_title": "Problem-Solving Tools",
+        "trust_1_text": "Every product solves a real home problem",
+        "trust_2_title": "Quality Guaranteed",
+        "trust_2_text": "Tested and trusted by thousands",
+        "trust_3_title": "Free Shipping $50+",
+        "trust_3_text": "Fast delivery across North America",
+        "trust_4_title": "30-Day Returns",
+        "trust_4_text": "Hassle-free money back guarantee",
+        "grid_eyebrow": "Featured",
+        "grid_heading": "Best-Selling Solutions",
+        "grid_subheading": "Our most popular products that solve everyday home problems.",
+        "collection": "best-sales",
+        "product_limit": 8,
+        "grid_cta_label": "View All Products",
+        "grid_cta_link": "\/collections\/all",
+        "banner_1_eyebrow": "Top Category",
+        "banner_1_heading": "Cleaning Tools",
+        "banner_1_text": "From electric spin brushes to steam cleaners — transform your cleaning routine with tools that actually work.",
+        "banner_1_label": "Shop Cleaning",
+        "banner_1_link": "",
+        "banner_2_eyebrow": "Kitchen Essentials",
+        "banner_2_heading": "Kitchen Problem Solvers",
+        "banner_2_text": "Smart tools that make cooking, organizing and cleaning up faster and easier — from oil sprayers to bag sealers.",
+        "banner_2_label": "Shop Kitchen",
+        "banner_2_link": "",
+        "cats_eyebrow": "Browse",
+        "cats_heading": "Shop by Category",
+        "cats_subtitle": "Find the right solution for every room in your home.",
+        "reviews_eyebrow": "Reviews",
+        "reviews_heading": "What Our Customers Say",
+        "reviews_subtitle": "Real feedback from real home problem-solvers.",
+        "review_1_text": "The Electric Spin Brush is a game changer! My bathroom has never been this clean. Saves so much time and effort.",
+        "review_1_name": "Sarah M.",
+        "review_1_initial": "S",
+        "review_1_meta": "Verified Buyer • Texas",
+        "review_2_text": "The steam cleaner works amazingly on kitchen grease. I use it on everything — countertops, stovetop, even the oven.",
+        "review_2_name": "James R.",
+        "review_2_initial": "J",
+        "review_2_meta": "Verified Buyer • Ontario",
+        "review_3_text": "Love the under-sink organizer and foldable storage boxes. My kitchen is finally organized. Will buy more!",
+        "review_3_name": "Maria L.",
+        "review_3_initial": "M",
+        "review_3_meta": "Verified Buyer • California",
+        "newsletter_heading": "Join the Aitch Home Care family",
+        "newsletter_text": "Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox.",
+        "newsletter_placeholder": "Enter your email address",
+        "newsletter_btn": "Subscribe"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
