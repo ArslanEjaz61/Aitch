@@ -1,12 +1,23 @@
 <header class="hp-header" style="--hp-brand: {{ section.settings.accent_1 }}; --hp-brand-2: {{ section.settings.accent_2 }};">
   <div class="hp-header__inner">
     <a class="hp-brandmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-      <span class="hp-logo" aria-hidden="true"></span>
-      <span>{{ section.settings.brand_text | default: shop.name | escape }}</span>
+      {% if settings.logo != blank %}
+        <img
+          class="hp-brandmark__logo"
+          src="{{ settings.logo | image_url: width: settings.logo_width | default: 140 }}"
+          alt="{{ shop.name | escape }}"
+          loading="eager"
+          width="{{ settings.logo_width | default: 140 }}"
+          height="auto"
+        >
+      {% else %}
+        <span class="hp-logo" aria-hidden="true"></span>
+      {% endif %}
+      <span class="hp-brandmark__text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
 
     <nav class="hp-nav" aria-label="Main navigation">
-      <a href="{{ section.settings.shop_link | default: '/pages/shop' }}">Shop</a>
+      <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop all</a>
       <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best sellers</a>
       <a href="{{ section.settings.categories_link | default: '/pages/categories' }}">Categories</a>
       <a class="hp-nav__cta" href="{{ section.settings.cta_link | default: routes.cart_url }}">{{ section.settings.cta_label | escape }}</a>

@@ -2,8 +2,19 @@
   <div class="hp-footer__inner">
     <div>
       <div class="hp-brandmark">
-        <span class="hp-logo" aria-hidden="true"></span>
-        <span>{{ section.settings.brand_text | default: shop.name | escape }}</span>
+        {% if settings.logo != blank %}
+          <img
+            class="hp-brandmark__logo"
+            src="{{ settings.logo | image_url: width: settings.logo_width | default: 140 }}"
+            alt="{{ shop.name | escape }}"
+            loading="lazy"
+            width="{{ settings.logo_width | default: 140 }}"
+            height="auto"
+          >
+        {% else %}
+          <span class="hp-logo" aria-hidden="true"></span>
+        {% endif %}
+        <span class="hp-brandmark__text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
       </div>
       {% if section.settings.tagline != blank %}
         <p>{{ section.settings.tagline | escape }}</p>

@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
+    {% if settings.favicon != blank %}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {% endif %}
+
     <title>
       {{ page_title }}
       {% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}
@@ -17,6 +21,14 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    <style>
+      :root{
+        --hp-bg: {{ settings.bg_color | default: '#ffffff' }};
+        --hp-text: {{ settings.text_color | default: '#0f172a' }};
+        --hp-brand: {{ settings.brand_color | default: '#0ea5e9' }};
+      }
+    </style>
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
   </head>
