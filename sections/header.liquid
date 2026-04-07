@@ -43,13 +43,26 @@
         <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
       </a>
 
-      <!-- Desktop Navigation -->
+      <!-- Desktop Navigation — uses Shopify Menu (linklist) -->
       <nav class="header__nav" aria-label="Main navigation">
-        <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop</a>
-        <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
-        <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen</a>
-        <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home</a>
-        <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+        {% assign main_menu = linklists[section.settings.menu] %}
+        {% for link in main_menu.links %}
+          {% if link.links.size > 0 %}
+            <div class="header__dropdown">
+              <a href="{{ link.url }}" class="header__dropdown-trigger">
+                {{ link.title | escape }}
+                <svg class="header__dropdown-arrow" viewBox="0 0 24 24" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+              </a>
+              <div class="header__dropdown-menu">
+                {% for child_link in link.links %}
+                  <a href="{{ child_link.url }}">{{ child_link.title | escape }}</a>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {% endif %}
+        {% endfor %}
       </nav>
     </div>
 
@@ -76,7 +89,7 @@
   </div>
 </header>
 
-<!-- Mobile Menu -->
+<!-- Mobile Menu — also uses Shopify Menu -->
 <div class="mobile-menu">
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
@@ -92,11 +105,14 @@
     </button>
   </div>
   <nav class="mobile-menu__nav">
-    <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop All</a>
-    <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
-    <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen Tools</a>
-    <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home Convenience</a>
-    <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+    {% for link in main_menu.links %}
+      <a href="{{ link.url }}">{{ link.title | escape }}</a>
+      {% if link.links.size > 0 %}
+        {% for child_link in link.links %}
+          <a href="{{ child_link.url }}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
     <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
     <a href="{{ routes.account_url }}">Account</a>
   </nav>
@@ -111,6 +127,12 @@
       "id": "brand_text",
       "label": "Brand text",
       "default": "Aitch Home Care"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
     },
     {
       "type": "header",
@@ -133,35 +155,6 @@
       "id": "announcement_3",
       "label": "Announcement 3",
       "default": "Ships to USA & Canada"
-    },
-    {
-      "type": "header",
-      "content": "Navigation links"
-    },
-    {
-      "type": "url",
-      "id": "shop_link",
-      "label": "Shop all link"
-    },
-    {
-      "type": "url",
-      "id": "cleaning_link",
-      "label": "Cleaning link"
-    },
-    {
-      "type": "url",
-      "id": "kitchen_link",
-      "label": "Kitchen link"
-    },
-    {
-      "type": "url",
-      "id": "home_link",
-      "label": "Home link"
-    },
-    {
-      "type": "url",
-      "id": "best_sellers_link",
-      "label": "Best sellers link"
     }
   ]
 }

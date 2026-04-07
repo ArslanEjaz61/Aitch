@@ -327,8 +327,86 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--transition-base);
 }
 
-.header__nav a:hover::after {
+.header__nav a:hover::after,
+.header__nav > a.active::after {
   transform: scaleX(1);
+}
+
+/* Dropdown Menu */
+.header__dropdown {
+  position: relative;
+}
+
+.header__dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.header__dropdown-trigger:hover {
+  color: var(--color-text);
+}
+
+.header__dropdown-arrow {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  transition: transform var(--transition-fast);
+}
+
+.header__dropdown:hover .header__dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.header__dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  padding: var(--space-sm) 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all var(--transition-base);
+  z-index: 50;
+}
+
+.header__dropdown:hover .header__dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.header__dropdown-menu a {
+  display: block;
+  padding: 10px 18px;
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.header__dropdown-menu a::after {
+  display: none;
+}
+
+.header__dropdown-menu a:hover {
+  color: var(--color-text);
+  background: var(--color-bg-alt);
 }
 
 /* Header Right (Icons) */
@@ -465,6 +543,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-menu__nav a:hover {
+  color: var(--color-text-secondary);
+}
+
+.mobile-menu__sublink {
+  padding-left: var(--space-xl) !important;
+  font-size: var(--font-size-lg) !important;
   color: var(--color-text-secondary);
 }
 
