@@ -6,15 +6,23 @@
         {% if settings.logo != blank %}
           <img
             class="header__logo-img"
-            src="{{ settings.logo | image_url: width: 180 }}"
+            src="{{ settings.logo | image_url: width: 140 }}"
             alt="{{ shop.name | escape }}"
             loading="lazy"
-            width="180"
+            width="140"
             height="auto"
             style="max-height:32px;width:auto;"
           >
-        {% else %}
-          <span class="footer__logo-icon" aria-hidden="true">A</span>
+{% else %}
+          <img
+            class="header__logo-img"
+            src="{{ 'logo.png' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            loading="lazy"
+            width="140"
+            height="auto"
+            style="max-height:32px;width:auto;"
+          >
         {% endif %}
         <span class="footer__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
       </div>

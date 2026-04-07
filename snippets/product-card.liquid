@@ -29,6 +29,8 @@
         width="{{ product.featured_image.width }}"
         height="{{ product.featured_image.height }}"
       >
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
     {% endif %}
 
     {% if product.images.size > 1 %}

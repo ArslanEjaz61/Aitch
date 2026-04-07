@@ -24,14 +24,21 @@
         {% if settings.logo != blank %}
           <img
             class="header__logo-img"
-            src="{{ settings.logo | image_url: width: settings.logo_width | default: 180 }}"
+            src="{{ settings.logo | image_url: width: settings.logo_width | default: 140 }}"
             alt="{{ shop.name | escape }}"
             loading="eager"
-            width="{{ settings.logo_width | default: 180 }}"
+            width="{{ settings.logo_width | default: 140 }}"
             height="auto"
           >
         {% else %}
-          <span class="header__logo-icon" aria-hidden="true">A</span>
+          <img
+            class="header__logo-img"
+            src="{{ 'logo.png' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            loading="eager"
+            width="140"
+            height="auto"
+          >
         {% endif %}
         <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
       </a>
@@ -74,9 +81,9 @@
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 180 }}" alt="{{ shop.name | escape }}" loading="lazy" width="180" height="auto">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 140 }}" alt="{{ shop.name | escape }}" loading="lazy" width="140" height="auto">
       {% else %}
-        <span class="header__logo-icon" aria-hidden="true">A</span>
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="140" height="auto">
       {% endif %}
       <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
