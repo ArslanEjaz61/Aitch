@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
@@ -5,12 +14,11 @@
     "header": {
       "type": "header",
       "settings": {
-        "brand_text": "Aitch Home Care",
-        "announcement_1": "Free shipping on orders over $50",
-        "announcement_2": "30-day hassle-free returns",
-        "announcement_3": "Ships to USA & Canada"
+        "brand_text": "Aitch Home Care"
       }
     }
   },
-  "order": ["header"]
+  "order": [
+    "header"
+  ]
 }
