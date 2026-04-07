@@ -145,64 +145,7 @@
     {% if collection != blank and collection.products_count > 0 %}
       <div class="product-grid product-grid--4">
         {% for product in collection.products limit: product_limit %}
-          <article class="product-card">
-            {% if product.compare_at_price_max > product.price %}
-              <span class="product-card__badge product-card__badge--sale">Sale</span>
-            {% endif %}
-
-            <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-              {% if product.featured_image %}
-                <img
-                  srcset="
-                    {{ product.featured_image | image_url: width: 400 }} 400w,
-                    {{ product.featured_image | image_url: width: 600 }} 600w,
-                    {{ product.featured_image | image_url: width: 800 }} 800w
-                  "
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  src="{{ product.featured_image | image_url: width: 600 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  loading="lazy"
-                  width="{{ product.featured_image.width }}"
-                  height="{{ product.featured_image.height }}"
-                >
-              {% endif %}
-
-              {% if product.images.size > 1 %}
-                <div class="product-card__media-hover">
-                  <img
-                    src="{{ product.images[1] | image_url: width: 600 }}"
-                    alt="{{ product.images[1].alt | escape }}"
-                    loading="lazy"
-                    width="{{ product.images[1].width }}"
-                    height="{{ product.images[1].height }}"
-                  >
-                </div>
-              {% endif %}
-
-              <div class="product-card__quick-add">
-                <span class="btn btn--primary btn--full">Quick View</span>
-              </div>
-            </a>
-
-            <div class="product-card__info">
-              {% if product.vendor != blank %}
-                <div class="product-card__vendor">{{ product.vendor | escape }}</div>
-              {% endif %}
-
-              <h3 class="product-card__title">
-                <a href="{{ product.url }}">{{ product.title | escape }}</a>
-              </h3>
-
-              <div class="product-card__price">
-                {% if product.compare_at_price_max > product.price %}
-                  <span class="product-card__price-sale">{{ product.price | money }}</span>
-                  <span class="product-card__price-compare">{{ product.compare_at_price_max | money }}</span>
-                {% else %}
-                  <span class="product-card__price-current">{{ product.price | money }}</span>
-                {% endif %}
-              </div>
-            </div>
-          </article>
+          {% render 'product-card', product: product %}
         {% endfor %}
       </div>
     {% else %}

@@ -10,9 +10,14 @@
 {% endcomment %}
 
 <article class="product-card">
-  {% if product.compare_at_price_max > product.price %}
-    <span class="product-card__badge product-card__badge--sale">Sale</span>
-  {% endif %}
+  <div class="product-card__badges">
+    {% if product.compare_at_price_max > product.price %}
+      <span class="product-card__badge product-card__badge--sale">Sale</span>
+    {% endif %}
+    {% if product.tags contains 'new' or product.tags contains 'New' %}
+      <span class="product-card__badge product-card__badge--new">New</span>
+    {% endif %}
+  </div>
 
   <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
     {% if product.featured_image %}
@@ -45,8 +50,11 @@
       </div>
     {% endif %}
 
-    <div class="product-card__quick-add">
-      <span class="btn btn--primary btn--full">Quick View</span>
+    <div class="product-card__overlay-btn">
+      <span>
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Quick View
+      </span>
     </div>
   </a>
 
@@ -59,6 +67,11 @@
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
 
+    <div class="product-card__rating">
+      <span class="star-rating__stars" aria-hidden="true">★★★★★</span>
+      <span class="star-rating__count">4.8 (120)</span>
+    </div>
+
     <div class="product-card__price">
       {% if product.compare_at_price_max > product.price %}
         <span class="product-card__price-sale">{{ product.price | money }}</span>
@@ -66,6 +79,19 @@
       {% else %}
         <span class="product-card__price-current">{{ product.price | money }}</span>
       {% endif %}
+    </div>
+
+    <div class="product-card__actions">
+      <a href="{{ product.url }}" class="btn btn--secondary product-card__shop-btn">Shop Now</a>
+      <form action="/cart/add" method="post" class="product-card__atc-form">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="return_to" value="/cart">
+        <button type="submit" class="btn btn--primary btn--full">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+      </form>
     </div>
   </div>
 </article>
