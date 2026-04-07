@@ -24,10 +24,10 @@
         {% if settings.logo != blank %}
           <img
             class="header__logo-img"
-            src="{{ settings.logo | image_url: width: 320 }}"
+            src="{{ settings.logo | image_url: width: 400 }}"
             alt="{{ shop.name | escape }}"
             loading="eager"
-            width="{{ settings.logo_width | default: 160 }}"
+            width="{{ settings.logo_width | default: 200 }}"
             height="auto"
           >
         {% else %}
@@ -36,7 +36,7 @@
             src="{{ 'logo.png' | asset_url }}"
             alt="{{ shop.name | escape }}"
             loading="eager"
-            width="160"
+            width="200"
             height="auto"
           >
         {% endif %}
@@ -81,9 +81,9 @@
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name | escape }}" loading="lazy" width="160" height="auto">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="200" height="auto">
       {% else %}
-        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="160" height="auto">
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="200" height="auto">
       {% endif %}
       <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
