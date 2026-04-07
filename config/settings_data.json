@@ -9,17 +9,17 @@
  */
 {
   "current": {
-    "logo_width": 140,
-    "brand_color": "#1a1a1a",
     "bg_color": "#ffffff",
-    "text_color": "#1a1a1a",
     "blocks": {
       "614082290850464558": {
-        "type": "shopify://apps//blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3",
         "disabled": false,
-        "settings": {}
+        "settings": {},
+        "type": "shopify://apps//blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3"
       }
-    }
+    },
+    "brand_color": "#1a1a1a",
+    "logo_width": 140,
+    "text_color": "#1a1a1a"
   },
   "presets": null
 }
