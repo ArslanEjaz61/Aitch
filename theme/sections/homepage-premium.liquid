@@ -1,0 +1,400 @@
+{% liquid
+  assign hero_image = section.settings.hero_image
+  assign collection = section.settings.collection
+  assign product_limit = section.settings.product_limit | default: 8
+%}
+
+<section class="hp-hero" style="--hp-brand: {{ section.settings.accent_1 }}; --hp-brand-2: {{ section.settings.accent_2 }};">
+  <div class="hp-wrap hp-grid hp-hero__grid">
+    <div>
+      {% if section.settings.kicker != blank %}
+        <div class="hp-kicker">
+          <span class="hp-dot" aria-hidden="true"></span>
+          <span>{{ section.settings.kicker | escape }}</span>
+        </div>
+      {% endif %}
+
+      <h1 class="hp-h1">{{ section.settings.heading | escape }}</h1>
+
+      {% if section.settings.subheading != blank %}
+        <p class="hp-lede">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+
+      <div class="hp-actions">
+        {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
+          <a class="hp-btn hp-btn--primary" href="{{ section.settings.primary_link }}">
+            <span>{{ section.settings.primary_label | escape }}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        {% endif %}
+
+        {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
+          <a class="hp-btn" href="{{ section.settings.secondary_link }}">
+            <span>{{ section.settings.secondary_label | escape }}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hp-hero__media">
+      {% if hero_image != blank %}
+        <img
+          srcset="
+            {{ hero_image | image_url: width: 600 }} 600w,
+            {{ hero_image | image_url: width: 900 }} 900w,
+            {{ hero_image | image_url: width: 1200 }} 1200w
+          "
+          sizes="(max-width: 900px) 100vw, 42vw"
+          src="{{ hero_image | image_url: width: 1200 }}"
+          alt="{{ hero_image.alt | escape }}"
+          loading="lazy"
+          width="{{ hero_image.width }}"
+          height="{{ hero_image.height }}"
+        >
+      {% endif %}
+
+      <div class="hp-hero__stats" aria-label="Store highlights">
+        <div class="hp-stat">
+          <b>{{ section.settings.stat_1_title | escape }}</b>
+          <span>{{ section.settings.stat_1_body | escape }}</span>
+        </div>
+        <div class="hp-stat">
+          <b>{{ section.settings.stat_2_title | escape }}</b>
+          <span>{{ section.settings.stat_2_body | escape }}</span>
+        </div>
+        <div class="hp-stat">
+          <b>{{ section.settings.stat_3_title | escape }}</b>
+          <span>{{ section.settings.stat_3_body | escape }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hp-wrap">
+  <section class="hp-section">
+    <header class="hp-section__head">
+      <div>
+        <h2 class="hp-h2">{{ section.settings.benefits_heading | escape }}</h2>
+        {% if section.settings.benefits_subheading != blank %}
+          <p class="hp-subhead">{{ section.settings.benefits_subheading | escape }}</p>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="hp-grid hp-benefits">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'benefit' %}
+            <article class="hp-card hp-benefit" {{ block.shopify_attributes }}>
+              <div class="hp-benefit__icon" aria-hidden="true">
+                {% if block.settings.icon == 'shield' %}
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M9.5 12.2l1.6 1.6 3.6-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                {% elsif block.settings.icon == 'bolt' %}
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  </svg>
+                {% elsif block.settings.icon == 'sparkles' %}
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2l1.2 4.4L18 8l-4.8 1.6L12 14l-1.2-4.4L6 8l4.8-1.6L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    <path d="M4 14l.8 2.8L8 18l-3.2 1.2L4 22l-.8-2.8L0 18l3.2-1.2L4 14z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  </svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M8 12h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M12 8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                {% endif %}
+              </div>
+
+              <h3>{{ block.settings.title | escape }}</h3>
+              <p>{{ block.settings.body | escape }}</p>
+            </article>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="hp-section">
+    <header class="hp-section__head">
+      <div>
+        <h2 class="hp-h2">{{ section.settings.grid_heading | escape }}</h2>
+        {% if section.settings.grid_subheading != blank %}
+          <p class="hp-subhead">{{ section.settings.grid_subheading | escape }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
+        <a class="hp-btn" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
+      {% endif %}
+    </header>
+
+    {% if collection != blank and collection.products_count > 0 %}
+      <div class="hp-grid hp-products">
+        {% for product in collection.products limit: product_limit %}
+          <article class="hp-card hp-product">
+            <a class="hp-product__img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {% if product.featured_image %}
+                <img
+                  srcset="
+                    {{ product.featured_image | image_url: width: 320 }} 320w,
+                    {{ product.featured_image | image_url: width: 480 }} 480w,
+                    {{ product.featured_image | image_url: width: 640 }} 640w
+                  "
+                  sizes="(max-width: 520px) 92vw, (max-width: 1020px) 44vw, 22vw"
+                  src="{{ product.featured_image | image_url: width: 640 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ product.featured_image.width }}"
+                  height="{{ product.featured_image.height }}"
+                >
+              {% endif %}
+            </a>
+
+            {% if product.vendor != blank %}
+              <div class="hp-pill">{{ product.vendor | escape }}</div>
+            {% endif %}
+
+            <h3 class="hp-product__title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h3>
+
+            <div class="hp-price">
+              <b>{{ product.price | money }}</b>
+              {% if product.compare_at_price_max > product.price %}
+                <span><s>{{ product.compare_at_price_max | money }}</s></span>
+              {% endif %}
+            </div>
+
+            {% if section.settings.card_cta_label != blank %}
+              <a class="hp-btn" href="{{ product.url }}">{{ section.settings.card_cta_label | escape }}</a>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="hp-card" style="padding:18px;">
+        <p class="hp-subhead" style="margin:0;">
+          Select a collection in this section's settings to show featured products.
+        </p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Premium homepage",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "accent_1",
+      "label": "Accent color 1",
+      "default": "#8B5CF6"
+    },
+    {
+      "type": "color",
+      "id": "accent_2",
+      "label": "Accent color 2",
+      "default": "#22D3EE"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Solve it faster — premium tools & fixes"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Hero heading",
+      "default": "Home problem-solving, elevated."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Hero subheading",
+      "default": "Premium, thoughtfully curated gear to tackle the everyday problems: repairs, organization, upgrades, and quick wins — without the guesswork."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Shop best-sellers"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Explore solutions"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Hero stats"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_title",
+      "label": "Stat 1 title",
+      "default": "Curated picks"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_body",
+      "label": "Stat 1 description",
+      "default": "Tools that earn a permanent place in your kit."
+    },
+    {
+      "type": "text",
+      "id": "stat_2_title",
+      "label": "Stat 2 title",
+      "default": "Fast shipping"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_body",
+      "label": "Stat 2 description",
+      "default": "Get it this week — start fixing sooner."
+    },
+    {
+      "type": "text",
+      "id": "stat_3_title",
+      "label": "Stat 3 title",
+      "default": "Premium support"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_body",
+      "label": "Stat 3 description",
+      "default": "Real answers for real home problems."
+    },
+    {
+      "type": "header",
+      "content": "Benefits"
+    },
+    {
+      "type": "text",
+      "id": "benefits_heading",
+      "label": "Benefits heading",
+      "default": "Why this store feels different"
+    },
+    {
+      "type": "textarea",
+      "id": "benefits_subheading",
+      "label": "Benefits subheading",
+      "default": "Premium UI, premium goods — built around speed, confidence, and clarity."
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "text",
+      "id": "grid_heading",
+      "label": "Grid heading",
+      "default": "Featured solutions"
+    },
+    {
+      "type": "textarea",
+      "id": "grid_subheading",
+      "label": "Grid subheading",
+      "default": "Start with the favorites: high-signal, high-impact products that solve common home problems."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "card_cta_label",
+      "label": "Card button label",
+      "default": "View"
+    },
+    {
+      "type": "text",
+      "id": "grid_cta_label",
+      "label": "Grid link label",
+      "default": "Shop all"
+    },
+    {
+      "type": "url",
+      "id": "grid_cta_link",
+      "label": "Grid link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "sparkles",
+          "options": [
+            { "value": "sparkles", "label": "Sparkles" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "bolt", "label": "Bolt" },
+            { "value": "plus", "label": "Plus" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Designed for quick wins"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Description",
+          "default": "Every item is selected for high impact: fewer tools, better results."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Premium homepage",
+      "blocks": [
+        { "type": "benefit" },
+        { "type": "benefit", "settings": { "icon": "shield", "title": "Premium quality", "body": "Materials and finishes that feel as good as they perform." } },
+        { "type": "benefit", "settings": { "icon": "bolt", "title": "Fast, confident decisions", "body": "Clear product choices so you spend less time comparing and more time solving." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "categories-grid",
+      "settings": {
+        "heading": "Categories",
+        "subheading": "Pick the problem you’re solving — then we’ll show the cleanest fix."
+      }
+    }
+  },
+  "order": ["main"]
+}
+

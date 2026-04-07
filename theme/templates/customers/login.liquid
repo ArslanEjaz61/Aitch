@@ -1,0 +1,21 @@
+<div class="hp-page">
+  <div class="hp-card hp-page__card">
+    <h1 class="hp-h2" style="margin:0 0 10px;">Sign in</h1>
+
+    {% form 'customer_login' %}
+      {{ form.errors | default_errors }}
+
+      <div class="hp-grid" style="gap: 12px; max-width: 520px;">
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="email" name="customer[email]" autocomplete="email" placeholder="Email" required>
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="password" name="customer[password]" autocomplete="current-password" placeholder="Password" required>
+        <button class="hp-btn hp-btn--primary" type="submit">Sign in</button>
+      </div>
+    {% endform %}
+
+    <div class="hp-actions" style="margin-top: 14px;">
+      <a class="hp-btn" href="{{ routes.account_register_url }}">Create account</a>
+      <a class="hp-btn" href="{{ routes.account_url }}">Account</a>
+    </div>
+  </div>
+</div>
+

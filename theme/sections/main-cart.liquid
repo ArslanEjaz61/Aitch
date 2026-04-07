@@ -1,0 +1,107 @@
+<div class="hp-page">
+  <header class="hp-section__head" style="margin-bottom: 16px;">
+    <div>
+      <h1 class="hp-h2">Cart</h1>
+      <p class="hp-subhead">Review your items, then checkout.</p>
+    </div>
+  </header>
+
+  {% if cart.item_count == 0 %}
+    <div class="hp-card hp-page__card">
+      <p class="hp-subhead" style="margin:0;">Your cart is empty.</p>
+      <div class="hp-actions">
+        <a class="hp-btn hp-btn--primary" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="hp-grid" style="grid-template-columns: 1.3fr .7fr; gap: var(--hp-gap); align-items:start;">
+      <div class="hp-card" style="padding: 14px;">
+        <form action="{{ routes.cart_url }}" method="post" novalidate>
+          <div class="hp-grid" style="gap: 12px;">
+            {% for item in cart.items %}
+              <div class="hp-card" style="padding: 12px; background: rgba(255,255,255,.04); box-shadow: none;">
+                <div class="hp-grid" style="grid-template-columns: 84px 1fr auto; gap: 12px; align-items:center;">
+                  <a class="hp-product__img" style="aspect-ratio: 1/1; border-radius: 14px;" href="{{ item.url }}">
+                    {% if item.image %}
+                      <img
+                        src="{{ item.image | image_url: width: 240 }}"
+                        alt="{{ item.image.alt | escape }}"
+                        loading="lazy"
+                        width="{{ item.image.width }}"
+                        height="{{ item.image.height }}"
+                      >
+                    {% endif %}
+                  </a>
+
+                  <div>
+                    <div class="hp-pill">{{ item.vendor | escape }}</div>
+                    <h2 class="hp-product__title" style="margin:8px 0 6px;">
+                      <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                    </h2>
+                    {% if item.variant.title != 'Default Title' %}
+                      <div class="hp-subhead" style="margin:0 0 8px;">{{ item.variant.title | escape }}</div>
+                    {% endif %}
+                    <div class="hp-price" style="margin:0;">
+                      <b>{{ item.final_line_price | money }}</b>
+                      {% if item.original_line_price > item.final_line_price %}
+                        <span><s>{{ item.original_line_price | money }}</s></span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div style="display:flex; flex-direction:column; gap: 10px; align-items:flex-end;">
+                    <label class="hp-subhead" style="margin:0;">
+                      Qty
+                      <input
+                        class="hp-btn"
+                        style="width:72px; justify-content:flex-start; padding:10px 12px;"
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                      >
+                    </label>
+
+                    <a class="hp-btn" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="hp-actions" style="margin-top: 14px;">
+            <button class="hp-btn" type="submit" name="update">Update cart</button>
+            <a class="hp-btn" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+          </div>
+        </form>
+      </div>
+
+      <aside class="hp-card" style="padding: 16px;">
+        <h2 class="hp-h2" style="margin:0 0 8px; font-size: 20px;">Order summary</h2>
+        <div class="hp-price" style="margin: 0 0 10px;">
+          <span style="color:var(--hp-muted);">Subtotal</span>
+          <b style="margin-left:auto;">{{ cart.total_price | money }}</b>
+        </div>
+        <p class="hp-subhead" style="margin:0 0 14px;">Shipping and taxes calculated at checkout.</p>
+
+        <form action="{{ routes.cart_url }}" method="post">
+          <button class="hp-btn hp-btn--primary" type="submit" name="checkout" style="width:100%;">
+            Checkout
+          </button>
+        </form>
+
+        <div class="hp-actions" style="margin-top: 12px;">
+          <a class="hp-btn" href="{{ routes.root_url }}" style="width:100%;">Back to home</a>
+        </div>
+      </aside>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": []
+}
+{% endschema %}
+

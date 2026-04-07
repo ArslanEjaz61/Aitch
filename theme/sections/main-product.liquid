@@ -1,0 +1,63 @@
+{% liquid
+  assign featured = product.featured_image
+%}
+
+<div class="hp-page">
+  <div class="hp-grid" style="grid-template-columns: 1fr 1fr; gap: var(--hp-gap); align-items:start;">
+    <div class="hp-card" style="padding:12px;">
+      <div class="hp-product__img" style="aspect-ratio: 1 / 1;">
+        {% if featured %}
+          <img
+            srcset="
+              {{ featured | image_url: width: 520 }} 520w,
+              {{ featured | image_url: width: 780 }} 780w,
+              {{ featured | image_url: width: 1040 }} 1040w
+            "
+            sizes="(max-width: 900px) 92vw, 46vw"
+            src="{{ featured | image_url: width: 1040 }}"
+            alt="{{ featured.alt | escape }}"
+            loading="lazy"
+            width="{{ featured.width }}"
+            height="{{ featured.height }}"
+          >
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hp-card" style="padding: clamp(16px, 3vw, 22px);">
+      <div class="hp-kicker">
+        <span class="hp-dot" aria-hidden="true"></span>
+        <span>{{ product.vendor | default: 'Premium pick' | escape }}</span>
+      </div>
+
+      <h1 class="hp-h2" style="margin:12px 0 10px;">{{ product.title | escape }}</h1>
+      <div class="hp-price" style="margin-bottom: 12px;">
+        <b>{{ product.price | money }}</b>
+        {% if product.compare_at_price_max > product.price %}
+          <span><s>{{ product.compare_at_price_max | money }}</s></span>
+        {% endif %}
+      </div>
+
+      {% form 'product', product %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button class="hp-btn hp-btn--primary" type="submit">
+          Add to cart
+        </button>
+      {% endform %}
+
+      {% if product.description != blank %}
+        <div class="hp-prose" style="margin-top: 14px;">
+          {{ product.description }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": []
+}
+{% endschema %}
+

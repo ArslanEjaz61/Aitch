@@ -1,0 +1,16 @@
+<div class="hp-page">
+  <div class="hp-card hp-page__card">
+    <h1 class="hp-h2" style="margin:0 0 10px;">{{ page.title | escape }}</h1>
+    <div class="hp-prose">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Main page",
+  "settings": []
+}
+{% endschema %}
+

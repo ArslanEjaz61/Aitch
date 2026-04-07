@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "homepage-premium",
+      "settings": {
+        "primary_link": "/collections/all",
+        "secondary_link": "/collections/all",
+        "grid_cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["main"]
+}
+

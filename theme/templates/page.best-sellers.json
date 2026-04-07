@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "featured-collection-grid",
+      "settings": {
+        "heading": "Best sellers",
+        "subheading": "Fastest wins — the products customers come back for.",
+        "product_limit": 12,
+        "card_cta_label": "View",
+        "cta_label": "Shop all",
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["main"]
+}
+

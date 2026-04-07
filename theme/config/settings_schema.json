@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Theme settings",
+    "settings": [
+      {
+        "type": "color",
+        "id": "brand_color",
+        "label": "Brand color",
+        "default": "#8B5CF6"
+      }
+    ]
+  }
+]
+

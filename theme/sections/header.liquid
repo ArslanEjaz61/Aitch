@@ -1,0 +1,68 @@
+<header class="hp-header" style="--hp-brand: {{ section.settings.accent_1 }}; --hp-brand-2: {{ section.settings.accent_2 }};">
+  <div class="hp-header__inner">
+    <a class="hp-brandmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      <span class="hp-logo" aria-hidden="true"></span>
+      <span>{{ section.settings.brand_text | default: shop.name | escape }}</span>
+    </a>
+
+    <nav class="hp-nav" aria-label="Main navigation">
+      <a href="{{ section.settings.shop_link | default: '/pages/shop' }}">Shop</a>
+      <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best sellers</a>
+      <a href="{{ section.settings.categories_link | default: '/pages/categories' }}">Categories</a>
+      <a class="hp-nav__cta" href="{{ section.settings.cta_link | default: routes.cart_url }}">{{ section.settings.cta_label | escape }}</a>
+    </nav>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "color",
+      "id": "accent_1",
+      "label": "Accent color 1",
+      "default": "#8B5CF6"
+    },
+    {
+      "type": "color",
+      "id": "accent_2",
+      "label": "Accent color 2",
+      "default": "#22D3EE"
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand text",
+      "default": "Aitch Home Solutions"
+    },
+    {
+      "type": "url",
+      "id": "shop_link",
+      "label": "Shop link"
+    },
+    {
+      "type": "url",
+      "id": "best_sellers_link",
+      "label": "Best sellers page link"
+    },
+    {
+      "type": "url",
+      "id": "categories_link",
+      "label": "Categories page link"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Cart"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    }
+  ]
+}
+{% endschema %}
+

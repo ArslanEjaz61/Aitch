@@ -1,0 +1,22 @@
+<div class="hp-page">
+  <div class="hp-card hp-page__card">
+    <h1 class="hp-h2" style="margin:0 0 10px;">Create account</h1>
+
+    {% form 'create_customer' %}
+      {{ form.errors | default_errors }}
+
+      <div class="hp-grid" style="gap: 12px; max-width: 520px;">
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="text" name="customer[first_name]" autocomplete="given-name" placeholder="First name">
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="text" name="customer[last_name]" autocomplete="family-name" placeholder="Last name">
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="email" name="customer[email]" autocomplete="email" placeholder="Email" required>
+        <input class="hp-btn" style="justify-content:flex-start; padding:12px 14px;" type="password" name="customer[password]" autocomplete="new-password" placeholder="Password" required>
+        <button class="hp-btn hp-btn--primary" type="submit">Create</button>
+      </div>
+    {% endform %}
+
+    <div class="hp-actions" style="margin-top: 14px;">
+      <a class="hp-btn" href="{{ routes.account_login_url }}">Sign in</a>
+    </div>
+  </div>
+</div>
+

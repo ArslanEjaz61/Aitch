@@ -1,0 +1,24 @@
+<div class="hp-page">
+  <div class="hp-card hp-page__card">
+    <h1 class="hp-h2" style="margin:0 0 10px;">Addresses</h1>
+
+    {% if customer %}
+      <div class="hp-actions" style="margin-top: 0;">
+        <a class="hp-btn" href="{{ routes.account_url }}">Back to account</a>
+        <a class="hp-btn" href="{{ routes.account_logout_url }}">Sign out</a>
+      </div>
+
+      <div class="hp-card" style="margin-top: 16px; padding: 14px; background: rgba(255,255,255,.04); box-shadow:none;">
+        {{ customer.default_address | format_address }}
+      </div>
+
+      <p class="hp-subhead" style="margin: 14px 0 0;">
+        Manage addresses in Shopify’s standard customer address flow.
+      </p>
+    {% else %}
+      <p class="hp-subhead" style="margin:0 0 14px;">Please sign in.</p>
+      <a class="hp-btn hp-btn--primary" href="{{ routes.account_login_url }}">Sign in</a>
+    {% endif %}
+  </div>
+</div>
+

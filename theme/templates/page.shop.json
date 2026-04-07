@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "featured-collection-grid",
+      "settings": {
+        "heading": "Shop",
+        "subheading": "Everything you need to solve home problems — premium picks only.",
+        "product_limit": 12,
+        "card_cta_label": "View",
+        "cta_label": "All products",
+        "cta_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["main"]
+}
+

@@ -1,0 +1,42 @@
+<div class="hp-page">
+  <div class="hp-card hp-page__card">
+    <h1 class="hp-h2" style="margin:0 0 10px;">Account</h1>
+
+    {% if customer %}
+      <p class="hp-subhead" style="margin:0 0 14px;">
+        Signed in as <b style="color:var(--hp-text);">{{ customer.email | escape }}</b>
+      </p>
+
+      <div class="hp-actions">
+        <a class="hp-btn" href="{{ routes.account_addresses_url }}">Addresses</a>
+        <a class="hp-btn" href="{{ routes.account_logout_url }}">Sign out</a>
+      </div>
+
+      {% if customer.orders_count > 0 %}
+        <div class="hp-card" style="margin-top: 16px; padding: 14px; background: rgba(255,255,255,.04); box-shadow:none;">
+          <h2 class="hp-h2" style="margin:0 0 8px; font-size: 18px;">Orders</h2>
+          <div class="hp-grid" style="gap: 10px;">
+            {% for order in customer.orders %}
+              <div class="hp-card" style="padding: 12px; background: rgba(255,255,255,.04); box-shadow:none;">
+                <div class="hp-price" style="margin:0;">
+                  <b><a href="{{ order.customer_url }}">#{{ order.name | escape }}</a></b>
+                  <span style="margin-left:auto;">{{ order.created_at | date: '%b %d, %Y' }}</span>
+                </div>
+                <div class="hp-subhead" style="margin:6px 0 0;">
+                  Total: {{ order.total_price | money }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% else %}
+      <p class="hp-subhead" style="margin:0 0 14px;">Please sign in to view your account.</p>
+      <div class="hp-actions">
+        <a class="hp-btn hp-btn--primary" href="{{ routes.account_login_url }}">Sign in</a>
+        <a class="hp-btn" href="{{ routes.account_register_url }}">Create account</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+

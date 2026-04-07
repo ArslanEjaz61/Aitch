@@ -1,0 +1,94 @@
+<footer class="hp-footer">
+  <div class="hp-footer__inner">
+    <div>
+      <div class="hp-brandmark">
+        <span class="hp-logo" aria-hidden="true"></span>
+        <span>{{ section.settings.brand_text | default: shop.name | escape }}</span>
+      </div>
+      {% if section.settings.tagline != blank %}
+        <p>{{ section.settings.tagline | escape }}</p>
+      {% endif %}
+      <p style="margin-top:12px;">
+        <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. {{ section.settings.legal | escape }}</small>
+      </p>
+    </div>
+
+    <div class="hp-card" style="padding:16px;">
+      <p class="hp-subhead" style="margin:0 0 8px;">
+        {{ section.settings.help_heading | escape }}
+      </p>
+      <p class="hp-prose" style="margin:0;">
+        {{ section.settings.help_body | escape }}
+      </p>
+      <div class="hp-actions" style="margin-top:12px;">
+        <a class="hp-btn" href="{{ section.settings.help_link_1_url }}">{{ section.settings.help_link_1_label | escape }}</a>
+        <a class="hp-btn" href="{{ section.settings.help_link_2_url }}">{{ section.settings.help_link_2_label | escape }}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand text",
+      "default": "Aitch Home Solutions"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Premium problem-solving for your home — clarity-first, quality-first."
+    },
+    {
+      "type": "text",
+      "id": "legal",
+      "label": "Legal line",
+      "default": "All rights reserved."
+    },
+    {
+      "type": "header",
+      "content": "Help box"
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Help heading",
+      "default": "Need help choosing?"
+    },
+    {
+      "type": "textarea",
+      "id": "help_body",
+      "label": "Help body",
+      "default": "Tell us the problem — we’ll recommend the cleanest fix and the right tools."
+    },
+    {
+      "type": "text",
+      "id": "help_link_1_label",
+      "label": "Link 1 label",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "help_link_1_url",
+      "label": "Link 1 url"
+    },
+    {
+      "type": "text",
+      "id": "help_link_2_label",
+      "label": "Link 2 label",
+      "default": "Shipping & returns"
+    },
+    {
+      "type": "url",
+      "id": "help_link_2_url",
+      "label": "Link 2 url"
+    }
+  ]
+}
+{% endschema %}
+
