@@ -75,39 +75,60 @@
     </div>
 
     <div class="product-page__add-to-cart">
-      {% form 'product', product %}
-        {% if product.variants.size > 1 %}
-          <div class="product-page__variant-wrap">
-            <label for="variant-select" class="product-page__field-label">Option</label>
-            <select id="variant-select" name="id" class="product-page__select">
-              {% for variant in product.variants %}
-                <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
-                  {{ variant.title | escape }} — {{ variant.price | money }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-        {% else %}
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        {% endif %}
+      {% liquid
+        assign current_variant = product.selected_or_first_available_variant
+      %}
 
-        <div class="product-page__qty-row">
-          <div class="product-page__qty-control">
-            <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('qty');q.value=Math.max(1,parseInt(q.value)-1);" aria-label="Decrease quantity">−</button>
-            <input type="number" id="qty" name="quantity" value="1" min="1" class="product-page__qty-input" aria-label="Quantity">
-            <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('qty');q.value=parseInt(q.value)+1;" aria-label="Increase quantity">+</button>
-          </div>
-          <button class="btn btn--primary btn--full product-page__atc-btn" type="submit">
+      {% if product.variants.size > 1 %}
+        <div class="product-page__variant-wrap">
+          <label for="variant-select" class="product-page__field-label">Option</label>
+          <select id="variant-select" class="product-page__select" onchange="syncVariant(this.value)">
+            {% for variant in product.variants %}
+              <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %}>
+                {{ variant.title | escape }} — {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+
+      <div class="product-page__qty-row">
+        <div class="product-page__qty-control">
+          <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('pdp-qty');q.value=Math.max(1,parseInt(q.value)-1);" aria-label="Decrease quantity">−</button>
+          <input type="number" id="pdp-qty" value="1" min="1" class="product-page__qty-input" aria-label="Quantity">
+          <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('pdp-qty');q.value=parseInt(q.value)+1;" aria-label="Increase quantity">+</button>
+        </div>
+        <form action="/cart/add" method="post" style="flex:1;">
+          <input type="hidden" name="id" id="atc-variant-id" value="{{ current_variant.id }}">
+          <input type="hidden" name="return_to" value="/cart">
+          <input type="hidden" name="quantity" id="atc-qty" value="1">
+          <button class="btn btn--primary btn--full product-page__atc-btn" type="submit"
+                  onclick="document.getElementById('atc-qty').value=document.getElementById('pdp-qty').value;">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6"/></svg>
             Add to Cart
           </button>
-        </div>
+        </form>
+      </div>
 
-        <a href="/checkout?id={{ product.selected_or_first_available_variant.id }}" class="btn btn--secondary btn--full product-page__buy-now-btn">
+      <form action="/cart/add" method="post" class="product-page__buy-now-form">
+        <input type="hidden" name="id" id="buy-now-variant-id" value="{{ current_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="return_to" value="/checkout">
+        <button type="submit" class="btn btn--secondary btn--full product-page__buy-now-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
           Buy Now
-        </a>
-      {% endform %}
+        </button>
+      </form>
     </div>
+
+    <script>
+      function syncVariant(variantId) {
+        var atcId = document.getElementById('atc-variant-id');
+        var buyId = document.getElementById('buy-now-variant-id');
+        if (atcId) atcId.value = variantId;
+        if (buyId) buyId.value = variantId;
+      }
+    </script>
 
     <!-- Trust Badges -->
     <div class="product-page__trust">
