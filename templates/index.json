@@ -36,7 +36,7 @@
         "grid_eyebrow": "Featured",
         "grid_heading": "Best-Selling Solutions",
         "grid_subheading": "Our most popular products that solve everyday home problems.",
-        "collection": "",
+        "collection": "best-sales",
         "product_limit": 8,
         "grid_cta_label": "View All Products",
         "grid_cta_link": "/collections/all",
