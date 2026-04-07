@@ -3,29 +3,41 @@
     "name": "Theme settings",
     "settings": [
       {
+        "type": "header",
+        "content": "Logo & branding"
+      },
+      {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo"
+        "label": "Logo",
+        "info": "Upload the Aitch Home Care logo. Recommended: SVG or PNG with transparent background."
       },
       {
         "type": "range",
         "id": "logo_width",
-        "label": "Logo width",
-        "min": 80,
-        "max": 220,
+        "label": "Logo width (px)",
+        "min": 60,
+        "max": 250,
         "step": 10,
-        "default": 140
+        "default": 140,
+        "unit": "px"
       },
       {
         "type": "image_picker",
         "id": "favicon",
-        "label": "Favicon"
+        "label": "Favicon",
+        "info": "Upload a 64x64 PNG or SVG favicon."
+      },
+      {
+        "type": "header",
+        "content": "Colors"
       },
       {
         "type": "color",
         "id": "brand_color",
-        "label": "Brand color",
-        "default": "#8B5CF6"
+        "label": "Brand accent color",
+        "default": "#1a1a1a",
+        "info": "Used for buttons, links, and accent elements."
       },
       {
         "type": "color",
@@ -37,9 +49,32 @@
         "type": "color",
         "id": "text_color",
         "label": "Text color",
-        "default": "#0f172a"
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "header",
+        "content": "Social media"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X (Twitter) URL"
       }
     ]
   }
 ]
-

@@ -3,9 +3,12 @@
   "name": "Footer group",
   "sections": {
     "footer": {
-      "type": "footer"
+      "type": "footer",
+      "settings": {
+        "brand_text": "Aitch Home Care",
+        "tagline": "Simple solutions for everyday home problems. Curated cleaning tools, kitchen essentials, and home convenience products — shipped fast across North America."
+      }
     }
   },
   "order": ["footer"]
 }
-

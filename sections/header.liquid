@@ -1,79 +1,161 @@
-<header class="hp-header" style="--hp-brand: {{ section.settings.accent_1 }}; --hp-brand-2: {{ section.settings.accent_2 }};">
-  <div class="hp-header__inner">
-    <a class="hp-brandmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-      {% if settings.logo != blank %}
-        <img
-          class="hp-brandmark__logo"
-          src="{{ settings.logo | image_url: width: settings.logo_width | default: 140 }}"
-          alt="{{ shop.name | escape }}"
-          loading="eager"
-          width="{{ settings.logo_width | default: 140 }}"
-          height="auto"
-        >
-      {% else %}
-        <span class="hp-logo" aria-hidden="true"></span>
-      {% endif %}
-      <span class="hp-brandmark__text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
-    </a>
+<!-- Announcement Bar -->
+<div class="announcement-bar">
+  <div class="announcement-bar__inner">
+    <div class="announcement-bar__item">
+      <span>{{ section.settings.announcement_1 | default: 'Free shipping on orders over $50' | escape }}</span>
+    </div>
+    <div class="announcement-bar__divider"></div>
+    <div class="announcement-bar__item">
+      <span>{{ section.settings.announcement_2 | default: '30-day hassle-free returns' | escape }}</span>
+    </div>
+    <div class="announcement-bar__divider"></div>
+    <div class="announcement-bar__item">
+      <span>{{ section.settings.announcement_3 | default: 'Ships to USA & Canada' | escape }}</span>
+    </div>
+  </div>
+</div>
 
-    <nav class="hp-nav" aria-label="Main navigation">
-      <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop all</a>
-      <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best sellers</a>
-      <a href="{{ section.settings.categories_link | default: '/pages/categories' }}">Categories</a>
-      <a class="hp-nav__cta" href="{{ section.settings.cta_link | default: routes.cart_url }}">{{ section.settings.cta_label | escape }}</a>
-    </nav>
+<!-- Header -->
+<header class="header" role="banner">
+  <div class="header__inner">
+    <div class="header__left">
+      <!-- Logo -->
+      <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {% if settings.logo != blank %}
+          <img
+            class="header__logo-img"
+            src="{{ settings.logo | image_url: width: settings.logo_width | default: 180 }}"
+            alt="{{ shop.name | escape }}"
+            loading="eager"
+            width="{{ settings.logo_width | default: 180 }}"
+            height="auto"
+          >
+        {% else %}
+          <span class="header__logo-icon" aria-hidden="true">A</span>
+        {% endif %}
+        <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="header__nav" aria-label="Main navigation">
+        <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop</a>
+        <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
+        <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen</a>
+        <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home</a>
+        <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+      </nav>
+    </div>
+
+    <!-- Header Right -->
+    <div class="header__actions">
+      <a class="header__action-btn" href="{{ routes.search_url }}" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </a>
+      <a class="header__action-btn" href="{{ routes.account_url }}" aria-label="Account">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a class="header__action-btn" href="{{ routes.cart_url }}" aria-label="Cart">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        {% if cart.item_count > 0 %}
+          <span class="header__cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button class="header__menu-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <div class="mobile-menu__header">
+    <a class="header__logo" href="{{ routes.root_url }}">
+      {% if settings.logo != blank %}
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 180 }}" alt="{{ shop.name | escape }}" loading="lazy" width="180" height="auto">
+      {% else %}
+        <span class="header__logo-icon" aria-hidden="true">A</span>
+      {% endif %}
+      <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
+    </a>
+    <button class="mobile-menu__close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-menu__nav">
+    <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop All</a>
+    <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
+    <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen Tools</a>
+    <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home Convenience</a>
+    <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+    <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+    <a href="{{ routes.account_url }}">Account</a>
+  </nav>
+</div>
 
 {% schema %}
 {
   "name": "Header",
   "settings": [
     {
-      "type": "color",
-      "id": "accent_1",
-      "label": "Accent color 1",
-      "default": "#8B5CF6"
-    },
-    {
-      "type": "color",
-      "id": "accent_2",
-      "label": "Accent color 2",
-      "default": "#22D3EE"
-    },
-    {
       "type": "text",
       "id": "brand_text",
       "label": "Brand text",
-      "default": "Aitch Home Solutions"
+      "default": "Aitch Home Care"
+    },
+    {
+      "type": "header",
+      "content": "Announcement bar"
+    },
+    {
+      "type": "text",
+      "id": "announcement_1",
+      "label": "Announcement 1",
+      "default": "Free shipping on orders over $50"
+    },
+    {
+      "type": "text",
+      "id": "announcement_2",
+      "label": "Announcement 2",
+      "default": "30-day hassle-free returns"
+    },
+    {
+      "type": "text",
+      "id": "announcement_3",
+      "label": "Announcement 3",
+      "default": "Ships to USA & Canada"
+    },
+    {
+      "type": "header",
+      "content": "Navigation links"
     },
     {
       "type": "url",
       "id": "shop_link",
-      "label": "Shop link"
+      "label": "Shop all link"
+    },
+    {
+      "type": "url",
+      "id": "cleaning_link",
+      "label": "Cleaning link"
+    },
+    {
+      "type": "url",
+      "id": "kitchen_link",
+      "label": "Kitchen link"
+    },
+    {
+      "type": "url",
+      "id": "home_link",
+      "label": "Home link"
     },
     {
       "type": "url",
       "id": "best_sellers_link",
-      "label": "Best sellers page link"
-    },
-    {
-      "type": "url",
-      "id": "categories_link",
-      "label": "Categories page link"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "CTA label",
-      "default": "Cart"
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "CTA link"
+      "label": "Best sellers link"
     }
   ]
 }
 {% endschema %}
-

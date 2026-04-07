@@ -4,186 +4,419 @@
   assign product_limit = section.settings.product_limit | default: 8
 %}
 
-<section class="hp-hero" style="--hp-brand: {{ section.settings.accent_1 }}; --hp-brand-2: {{ section.settings.accent_2 }};">
-  <div class="hp-wrap hp-grid hp-hero__grid">
-    <div>
-      {% if section.settings.kicker != blank %}
-        <div class="hp-kicker">
-          <span class="hp-dot" aria-hidden="true"></span>
-          <span>{{ section.settings.kicker | escape }}</span>
-        </div>
-      {% endif %}
+<!-- ============================
+     HERO SECTION — Atlas Split
+     ============================ -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__content">
+      <div class="hero__eyebrow fade-in">
+        <span class="hero__eyebrow-dot"></span>
+        <span>{{ section.settings.kicker | default: 'Smart home solutions — delivered' | escape }}</span>
+      </div>
 
-      <h1 class="hp-h1">{{ section.settings.heading | escape }}</h1>
+      <h1 class="hero__heading fade-in fade-in-delay-1">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
 
-      {% if section.settings.subheading != blank %}
-        <p class="hp-lede">{{ section.settings.subheading | escape }}</p>
-      {% endif %}
+      <p class="hero__description fade-in fade-in-delay-2">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
 
-      <div class="hp-actions">
+      <div class="hero__actions fade-in fade-in-delay-3">
         {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
-          <a class="hp-btn hp-btn--primary" href="{{ section.settings.primary_link }}">
+          <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
             <span>{{ section.settings.primary_label | escape }}</span>
-            <span aria-hidden="true">→</span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
           </a>
         {% endif %}
 
         {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
-          <a class="hp-btn" href="{{ section.settings.secondary_link }}">
+          <a class="btn btn--secondary" href="{{ section.settings.secondary_link }}">
             <span>{{ section.settings.secondary_label | escape }}</span>
           </a>
         {% endif %}
       </div>
     </div>
 
-    <div class="hp-hero__media">
+    <div class="hero__media">
       {% if hero_image != blank %}
         <img
           srcset="
-            {{ hero_image | image_url: width: 600 }} 600w,
-            {{ hero_image | image_url: width: 900 }} 900w,
-            {{ hero_image | image_url: width: 1200 }} 1200w
+            {{ hero_image | image_url: width: 800 }} 800w,
+            {{ hero_image | image_url: width: 1200 }} 1200w,
+            {{ hero_image | image_url: width: 1600 }} 1600w
           "
-          sizes="(max-width: 900px) 100vw, 42vw"
+          sizes="(max-width: 900px) 100vw, 50vw"
           src="{{ hero_image | image_url: width: 1200 }}"
-          alt="{{ hero_image.alt | escape }}"
-          loading="lazy"
+          alt="{{ hero_image.alt | default: 'Aitch Home Care — Home Solutions' | escape }}"
+          loading="eager"
           width="{{ hero_image.width }}"
           height="{{ hero_image.height }}"
+          fetchpriority="high"
         >
+      {% else %}
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#f5f5f0 0%,#e8e8e0 100%);display:flex;align-items:center;justify-content:center;position:absolute;inset:0;">
+          <div style="text-align:center;color:#999;font-size:14px;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <p style="margin-top:8px;">Add hero image</p>
+          </div>
+        </div>
       {% endif %}
+    </div>
+  </div>
 
-      <div class="hp-hero__stats" aria-label="Store highlights">
-        <div class="hp-stat">
-          <b>{{ section.settings.stat_1_title | escape }}</b>
-          <span>{{ section.settings.stat_1_body | escape }}</span>
-        </div>
-        <div class="hp-stat">
-          <b>{{ section.settings.stat_2_title | escape }}</b>
-          <span>{{ section.settings.stat_2_body | escape }}</span>
-        </div>
-        <div class="hp-stat">
-          <b>{{ section.settings.stat_3_title | escape }}</b>
-          <span>{{ section.settings.stat_3_body | escape }}</span>
-        </div>
+  <!-- Stats Bar -->
+  <div class="hero__stats">
+    <div class="hero__stat">
+      <div class="hero__stat-value">{{ section.settings.stat_1_value | default: '20+' | escape }}</div>
+      <div class="hero__stat-label">{{ section.settings.stat_1_label | default: 'Curated Products' | escape }}</div>
+    </div>
+    <div class="hero__stat">
+      <div class="hero__stat-value">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
+      <div class="hero__stat-label">{{ section.settings.stat_2_label | default: 'Fast Shipping' | escape }}</div>
+    </div>
+    <div class="hero__stat">
+      <div class="hero__stat-value">{{ section.settings.stat_3_value | default: '30 Day' | escape }}</div>
+      <div class="hero__stat-label">{{ section.settings.stat_3_label | default: 'Easy Returns' | escape }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     TRUST BAR
+     ============================ -->
+<section class="trust-bar reveal">
+  <div class="trust-bar__inner">
+    <div class="trust-bar__item">
+      <div class="trust-bar__icon">
+        <svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>
+      </div>
+      <div class="trust-bar__text">
+        <strong>{{ section.settings.trust_1_title | default: 'Problem-Solving Tools' | escape }}</strong>
+        <span>{{ section.settings.trust_1_text | default: 'Every product solves a real home problem' | escape }}</span>
+      </div>
+    </div>
+    <div class="trust-bar__item">
+      <div class="trust-bar__icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="trust-bar__text">
+        <strong>{{ section.settings.trust_2_title | default: 'Quality Guaranteed' | escape }}</strong>
+        <span>{{ section.settings.trust_2_text | default: 'Tested and trusted by thousands' | escape }}</span>
+      </div>
+    </div>
+    <div class="trust-bar__item">
+      <div class="trust-bar__icon">
+        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div class="trust-bar__text">
+        <strong>{{ section.settings.trust_3_title | default: 'Free Shipping $50+' | escape }}</strong>
+        <span>{{ section.settings.trust_3_text | default: 'Fast delivery across North America' | escape }}</span>
+      </div>
+    </div>
+    <div class="trust-bar__item">
+      <div class="trust-bar__icon">
+        <svg viewBox="0 0 24 24"><path d="M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="trust-bar__text">
+        <strong>{{ section.settings.trust_4_title | default: '30-Day Returns' | escape }}</strong>
+        <span>{{ section.settings.trust_4_text | default: 'Hassle-free money back guarantee' | escape }}</span>
       </div>
     </div>
   </div>
 </section>
 
-<div class="hp-wrap">
-  <section class="hp-section">
-    <header class="hp-section__head">
-      <div>
-        <h2 class="hp-h2">{{ section.settings.benefits_heading | escape }}</h2>
-        {% if section.settings.benefits_subheading != blank %}
-          <p class="hp-subhead">{{ section.settings.benefits_subheading | escape }}</p>
-        {% endif %}
-      </div>
-    </header>
-
-    <div class="hp-grid hp-benefits">
-      {% for block in section.blocks %}
-        {% case block.type %}
-          {% when 'benefit' %}
-            <article class="hp-card hp-benefit" {{ block.shopify_attributes }}>
-              <div class="hp-benefit__icon" aria-hidden="true">
-                {% if block.settings.icon == 'shield' %}
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M9.5 12.2l1.6 1.6 3.6-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                {% elsif block.settings.icon == 'bolt' %}
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                  </svg>
-                {% elsif block.settings.icon == 'sparkles' %}
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2l1.2 4.4L18 8l-4.8 1.6L12 14l-1.2-4.4L6 8l4.8-1.6L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                    <path d="M4 14l.8 2.8L8 18l-3.2 1.2L4 22l-.8-2.8L0 18l3.2-1.2L4 14z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                  </svg>
-                {% else %}
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M8 12h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <path d="M12 8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
-                {% endif %}
-              </div>
-
-              <h3>{{ block.settings.title | escape }}</h3>
-              <p>{{ block.settings.body | escape }}</p>
-            </article>
-        {% endcase %}
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="hp-section">
-    <header class="hp-section__head">
-      <div>
-        <h2 class="hp-h2">{{ section.settings.grid_heading | escape }}</h2>
-        {% if section.settings.grid_subheading != blank %}
-          <p class="hp-subhead">{{ section.settings.grid_subheading | escape }}</p>
-        {% endif %}
+<!-- ============================
+     FEATURED PRODUCTS GRID
+     ============================ -->
+<section class="section-spacing reveal">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__text">
+        <div class="section-header__eyebrow">{{ section.settings.grid_eyebrow | default: 'Featured' | escape }}</div>
+        <h2 class="section-header__title">{{ section.settings.grid_heading | default: 'Best-Selling Solutions' | escape }}</h2>
+        <p class="section-header__subtitle">{{ section.settings.grid_subheading | default: 'Our most popular products that solve everyday home problems.' | escape }}</p>
       </div>
       {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
-        <a class="hp-btn" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
+        <a class="btn btn--secondary" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
       {% endif %}
-    </header>
+    </div>
 
     {% if collection != blank and collection.products_count > 0 %}
-      <div class="hp-grid hp-products">
+      <div class="product-grid product-grid--4">
         {% for product in collection.products limit: product_limit %}
-          <article class="hp-card hp-product">
-            <a class="hp-product__img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+          <article class="product-card">
+            {% if product.compare_at_price_max > product.price %}
+              <span class="product-card__badge product-card__badge--sale">Sale</span>
+            {% endif %}
+
+            <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
               {% if product.featured_image %}
                 <img
                   srcset="
-                    {{ product.featured_image | image_url: width: 320 }} 320w,
-                    {{ product.featured_image | image_url: width: 480 }} 480w,
-                    {{ product.featured_image | image_url: width: 640 }} 640w
+                    {{ product.featured_image | image_url: width: 400 }} 400w,
+                    {{ product.featured_image | image_url: width: 600 }} 600w,
+                    {{ product.featured_image | image_url: width: 800 }} 800w
                   "
-                  sizes="(max-width: 520px) 92vw, (max-width: 1020px) 44vw, 22vw"
-                  src="{{ product.featured_image | image_url: width: 640 }}"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  src="{{ product.featured_image | image_url: width: 600 }}"
                   alt="{{ product.featured_image.alt | escape }}"
                   loading="lazy"
                   width="{{ product.featured_image.width }}"
                   height="{{ product.featured_image.height }}"
                 >
               {% endif %}
+
+              {% if product.images.size > 1 %}
+                <div class="product-card__media-hover">
+                  <img
+                    src="{{ product.images[1] | image_url: width: 600 }}"
+                    alt="{{ product.images[1].alt | escape }}"
+                    loading="lazy"
+                    width="{{ product.images[1].width }}"
+                    height="{{ product.images[1].height }}"
+                  >
+                </div>
+              {% endif %}
+
+              <div class="product-card__quick-add">
+                <span class="btn btn--primary btn--full">Quick View</span>
+              </div>
             </a>
 
-            {% if product.vendor != blank %}
-              <div class="hp-pill">{{ product.vendor | escape }}</div>
-            {% endif %}
-
-            <h3 class="hp-product__title">
-              <a href="{{ product.url }}">{{ product.title | escape }}</a>
-            </h3>
-
-            <div class="hp-price">
-              <b>{{ product.price | money }}</b>
-              {% if product.compare_at_price_max > product.price %}
-                <span><s>{{ product.compare_at_price_max | money }}</s></span>
+            <div class="product-card__info">
+              {% if product.vendor != blank %}
+                <div class="product-card__vendor">{{ product.vendor | escape }}</div>
               {% endif %}
-            </div>
 
-            {% if section.settings.card_cta_label != blank %}
-              <a class="hp-btn" href="{{ product.url }}">{{ section.settings.card_cta_label | escape }}</a>
-            {% endif %}
+              <h3 class="product-card__title">
+                <a href="{{ product.url }}">{{ product.title | escape }}</a>
+              </h3>
+
+              <div class="product-card__price">
+                {% if product.compare_at_price_max > product.price %}
+                  <span class="product-card__price-sale">{{ product.price | money }}</span>
+                  <span class="product-card__price-compare">{{ product.compare_at_price_max | money }}</span>
+                {% else %}
+                  <span class="product-card__price-current">{{ product.price | money }}</span>
+                {% endif %}
+              </div>
+            </div>
           </article>
         {% endfor %}
       </div>
     {% else %}
-      <div class="hp-card" style="padding:18px;">
-        <p class="hp-subhead" style="margin:0;">
-          Select a collection in this section's settings to show featured products.
-        </p>
+      <div class="empty-state">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 class="empty-state__title">No products yet</h3>
+        <p class="empty-state__text">Select a collection in this section's settings to show featured products.</p>
       </div>
     {% endif %}
-  </section>
-</div>
+  </div>
+</section>
+
+<!-- ============================
+     COLLECTION BANNER — Cleaning
+     ============================ -->
+<section class="collection-banner reveal">
+  <div class="collection-banner__content">
+    <div class="collection-banner__eyebrow">{{ section.settings.banner_1_eyebrow | default: 'Top Category' | escape }}</div>
+    <h2 class="collection-banner__heading">{{ section.settings.banner_1_heading | default: 'Cleaning Tools' | escape }}</h2>
+    <p class="collection-banner__text">{{ section.settings.banner_1_text | default: 'From electric spin brushes to steam cleaners — transform your cleaning routine with tools that actually work.' | escape }}</p>
+    {% if section.settings.banner_1_link != blank %}
+      <div>
+        <a class="btn btn--primary" href="{{ section.settings.banner_1_link }}">{{ section.settings.banner_1_label | default: 'Shop Cleaning' | escape }}</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="collection-banner__media">
+    {% if section.settings.banner_1_image != blank %}
+      <img
+        src="{{ section.settings.banner_1_image | image_url: width: 1200 }}"
+        alt="{{ section.settings.banner_1_image.alt | default: 'Cleaning tools collection' | escape }}"
+        loading="lazy"
+        width="{{ section.settings.banner_1_image.width }}"
+        height="{{ section.settings.banner_1_image.height }}"
+      >
+    {% else %}
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#e0f2f1 0%,#b2dfdb 100%);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#80cbc4;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ============================
+     COLLECTION BANNER — Kitchen (Reversed)
+     ============================ -->
+<section class="collection-banner collection-banner--reverse reveal">
+  <div class="collection-banner__content">
+    <div class="collection-banner__eyebrow">{{ section.settings.banner_2_eyebrow | default: 'Kitchen Essentials' | escape }}</div>
+    <h2 class="collection-banner__heading">{{ section.settings.banner_2_heading | default: 'Kitchen Problem Solvers' | escape }}</h2>
+    <p class="collection-banner__text">{{ section.settings.banner_2_text | default: 'Smart tools that make cooking, organizing and cleaning up faster and easier — from oil sprayers to bag sealers.' | escape }}</p>
+    {% if section.settings.banner_2_link != blank %}
+      <div>
+        <a class="btn btn--primary" href="{{ section.settings.banner_2_link }}">{{ section.settings.banner_2_label | default: 'Shop Kitchen' | escape }}</a>
+      </div>
+    {% endif %}
+  </div>
+  <div class="collection-banner__media">
+    {% if section.settings.banner_2_image != blank %}
+      <img
+        src="{{ section.settings.banner_2_image | image_url: width: 1200 }}"
+        alt="{{ section.settings.banner_2_image.alt | default: 'Kitchen tools collection' | escape }}"
+        loading="lazy"
+        width="{{ section.settings.banner_2_image.width }}"
+        height="{{ section.settings.banner_2_image.height }}"
+      >
+    {% else %}
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ffcc80;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ============================
+     CATEGORIES GRID
+     ============================ -->
+<section class="section-spacing reveal">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__text">
+        <div class="section-header__eyebrow">{{ section.settings.cats_eyebrow | default: 'Browse' | escape }}</div>
+        <h2 class="section-header__title">{{ section.settings.cats_heading | default: 'Shop by Category' | escape }}</h2>
+        <p class="section-header__subtitle">{{ section.settings.cats_subtitle | default: 'Find the right solution for every room in your home.' | escape }}</p>
+      </div>
+    </div>
+
+    <div class="categories-grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'category' %}
+            <a class="category-card" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {% else %}
+                <div style="width:100%;height:100%;background:linear-gradient(135deg,#f0f0f0 0%,#d0d0d0 100%);position:absolute;inset:0;"></div>
+              {% endif %}
+              <div class="category-card__overlay"></div>
+              <div class="category-card__content">
+                <h3 class="category-card__title">{{ block.settings.title | escape }}</h3>
+                <div class="category-card__count">{{ block.settings.subtitle | default: 'Shop now →' | escape }}</div>
+              </div>
+            </a>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     TESTIMONIALS
+     ============================ -->
+<section class="testimonials section-spacing reveal">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__text">
+        <div class="section-header__eyebrow">{{ section.settings.reviews_eyebrow | default: 'Reviews' | escape }}</div>
+        <h2 class="section-header__title">{{ section.settings.reviews_heading | default: 'What Our Customers Say' | escape }}</h2>
+        <p class="section-header__subtitle">{{ section.settings.reviews_subtitle | default: 'Real feedback from real home problem-solvers.' | escape }}</p>
+      </div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-card__stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-card__text">"{{ section.settings.review_1_text | default: 'The Electric Spin Brush is a game changer! My bathroom has never been this clean. Saves so much time and effort.' | escape }}"</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">{{ section.settings.review_1_initial | default: 'S' | escape }}</div>
+          <div>
+            <div class="testimonial-card__name">{{ section.settings.review_1_name | default: 'Sarah M.' | escape }}</div>
+            <div class="testimonial-card__meta">{{ section.settings.review_1_meta | default: 'Verified Buyer • Texas' | escape }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-card__stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-card__text">"{{ section.settings.review_2_text | default: 'The steam cleaner works amazingly on kitchen grease. I use it on everything — countertops, stovetop, even the oven.' | escape }}"</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">{{ section.settings.review_2_initial | default: 'J' | escape }}</div>
+          <div>
+            <div class="testimonial-card__name">{{ section.settings.review_2_name | default: 'James R.' | escape }}</div>
+            <div class="testimonial-card__meta">{{ section.settings.review_2_meta | default: 'Verified Buyer • Ontario' | escape }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-card__stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testimonial-card__text">"{{ section.settings.review_3_text | default: 'Love the under-sink organizer and foldable storage boxes. My kitchen is finally organized. Will buy more!' | escape }}"</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">{{ section.settings.review_3_initial | default: 'M' | escape }}</div>
+          <div>
+            <div class="testimonial-card__name">{{ section.settings.review_3_name | default: 'Maria L.' | escape }}</div>
+            <div class="testimonial-card__meta">{{ section.settings.review_3_meta | default: 'Verified Buyer • California' | escape }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================
+     NEWSLETTER
+     ============================ -->
+<section class="newsletter reveal">
+  <div class="newsletter__inner">
+    <div>
+      <h2 class="newsletter__heading">{{ section.settings.newsletter_heading | default: 'Join the Aitch Home Care family' | escape }}</h2>
+      <p class="newsletter__text">{{ section.settings.newsletter_text | default: 'Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox.' | escape }}</p>
+    </div>
+    <div>
+      {% form 'customer' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter__form">
+          <input
+            class="newsletter__input"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address' | escape }}"
+            autocomplete="email"
+            required
+          >
+          <button class="btn btn--primary" type="submit">
+            {{ section.settings.newsletter_btn | default: 'Subscribe' | escape }}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
 
 {% schema %}
 {
@@ -192,34 +425,26 @@
   "class": "section",
   "settings": [
     {
-      "type": "color",
-      "id": "accent_1",
-      "label": "Accent color 1",
-      "default": "#8B5CF6"
-    },
-    {
-      "type": "color",
-      "id": "accent_2",
-      "label": "Accent color 2",
-      "default": "#22D3EE"
+      "type": "header",
+      "content": "Hero section"
     },
     {
       "type": "text",
       "id": "kicker",
-      "label": "Kicker",
-      "default": "Solve it faster — premium tools & fixes"
+      "label": "Kicker / Eyebrow",
+      "default": "Smart home solutions — delivered"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Hero heading",
-      "default": "Home problem-solving, elevated."
+      "default": "Solve everyday home problems. Effortlessly."
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Hero subheading",
-      "default": "Premium, thoughtfully curated gear to tackle the everyday problems: repairs, organization, upgrades, and quick wins — without the guesswork."
+      "default": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins."
     },
     {
       "type": "image_picker",
@@ -230,7 +455,7 @@
       "type": "text",
       "id": "primary_label",
       "label": "Primary button label",
-      "default": "Shop best-sellers"
+      "default": "Shop Best Sellers"
     },
     {
       "type": "url",
@@ -241,7 +466,7 @@
       "type": "text",
       "id": "secondary_label",
       "label": "Secondary button label",
-      "default": "Explore solutions"
+      "default": "Explore Collections"
     },
     {
       "type": "url",
@@ -254,55 +479,91 @@
     },
     {
       "type": "text",
-      "id": "stat_1_title",
-      "label": "Stat 1 title",
-      "default": "Curated picks"
+      "id": "stat_1_value",
+      "label": "Stat 1 value",
+      "default": "20+"
     },
     {
       "type": "text",
-      "id": "stat_1_body",
-      "label": "Stat 1 description",
-      "default": "Tools that earn a permanent place in your kit."
+      "id": "stat_1_label",
+      "label": "Stat 1 label",
+      "default": "Curated Products"
     },
     {
       "type": "text",
-      "id": "stat_2_title",
-      "label": "Stat 2 title",
-      "default": "Fast shipping"
+      "id": "stat_2_value",
+      "label": "Stat 2 value",
+      "default": "2-5 Day"
     },
     {
       "type": "text",
-      "id": "stat_2_body",
-      "label": "Stat 2 description",
-      "default": "Get it this week — start fixing sooner."
+      "id": "stat_2_label",
+      "label": "Stat 2 label",
+      "default": "Fast Shipping"
     },
     {
       "type": "text",
-      "id": "stat_3_title",
-      "label": "Stat 3 title",
-      "default": "Premium support"
+      "id": "stat_3_value",
+      "label": "Stat 3 value",
+      "default": "30 Day"
     },
     {
       "type": "text",
-      "id": "stat_3_body",
-      "label": "Stat 3 description",
-      "default": "Real answers for real home problems."
+      "id": "stat_3_label",
+      "label": "Stat 3 label",
+      "default": "Easy Returns"
     },
     {
       "type": "header",
-      "content": "Benefits"
+      "content": "Trust bar"
     },
     {
       "type": "text",
-      "id": "benefits_heading",
-      "label": "Benefits heading",
-      "default": "Why this store feels different"
+      "id": "trust_1_title",
+      "label": "Trust 1 title",
+      "default": "Problem-Solving Tools"
     },
     {
-      "type": "textarea",
-      "id": "benefits_subheading",
-      "label": "Benefits subheading",
-      "default": "Premium UI, premium goods — built around speed, confidence, and clarity."
+      "type": "text",
+      "id": "trust_1_text",
+      "label": "Trust 1 text",
+      "default": "Every product solves a real home problem"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_title",
+      "label": "Trust 2 title",
+      "default": "Quality Guaranteed"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_text",
+      "label": "Trust 2 text",
+      "default": "Tested and trusted by thousands"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_title",
+      "label": "Trust 3 title",
+      "default": "Free Shipping $50+"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_text",
+      "label": "Trust 3 text",
+      "default": "Fast delivery across North America"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_title",
+      "label": "Trust 4 title",
+      "default": "30-Day Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_text",
+      "label": "Trust 4 text",
+      "default": "Hassle-free money back guarantee"
     },
     {
       "type": "header",
@@ -310,15 +571,21 @@
     },
     {
       "type": "text",
+      "id": "grid_eyebrow",
+      "label": "Grid eyebrow",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
       "id": "grid_heading",
       "label": "Grid heading",
-      "default": "Featured solutions"
+      "default": "Best-Selling Solutions"
     },
     {
       "type": "textarea",
       "id": "grid_subheading",
       "label": "Grid subheading",
-      "default": "Start with the favorites: high-signal, high-impact products that solve common home problems."
+      "default": "Our most popular products that solve everyday home problems."
     },
     {
       "type": "collection",
@@ -336,65 +603,258 @@
     },
     {
       "type": "text",
-      "id": "card_cta_label",
-      "label": "Card button label",
-      "default": "View"
-    },
-    {
-      "type": "text",
       "id": "grid_cta_label",
-      "label": "Grid link label",
-      "default": "Shop all"
+      "label": "Grid button label",
+      "default": "View All Products"
     },
     {
       "type": "url",
       "id": "grid_cta_link",
-      "label": "Grid link"
+      "label": "Grid button link"
+    },
+    {
+      "type": "header",
+      "content": "Collection banner 1"
+    },
+    {
+      "type": "text",
+      "id": "banner_1_eyebrow",
+      "label": "Banner 1 eyebrow",
+      "default": "Top Category"
+    },
+    {
+      "type": "text",
+      "id": "banner_1_heading",
+      "label": "Banner 1 heading",
+      "default": "Cleaning Tools"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_1_text",
+      "label": "Banner 1 text",
+      "default": "From electric spin brushes to steam cleaners — transform your cleaning routine with tools that actually work."
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_1_image",
+      "label": "Banner 1 image"
+    },
+    {
+      "type": "text",
+      "id": "banner_1_label",
+      "label": "Banner 1 button label",
+      "default": "Shop Cleaning"
+    },
+    {
+      "type": "url",
+      "id": "banner_1_link",
+      "label": "Banner 1 button link"
+    },
+    {
+      "type": "header",
+      "content": "Collection banner 2"
+    },
+    {
+      "type": "text",
+      "id": "banner_2_eyebrow",
+      "label": "Banner 2 eyebrow",
+      "default": "Kitchen Essentials"
+    },
+    {
+      "type": "text",
+      "id": "banner_2_heading",
+      "label": "Banner 2 heading",
+      "default": "Kitchen Problem Solvers"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_2_text",
+      "label": "Banner 2 text",
+      "default": "Smart tools that make cooking, organizing and cleaning up faster and easier — from oil sprayers to bag sealers."
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_2_image",
+      "label": "Banner 2 image"
+    },
+    {
+      "type": "text",
+      "id": "banner_2_label",
+      "label": "Banner 2 button label",
+      "default": "Shop Kitchen"
+    },
+    {
+      "type": "url",
+      "id": "banner_2_link",
+      "label": "Banner 2 button link"
+    },
+    {
+      "type": "header",
+      "content": "Categories"
+    },
+    {
+      "type": "text",
+      "id": "cats_eyebrow",
+      "label": "Categories eyebrow",
+      "default": "Browse"
+    },
+    {
+      "type": "text",
+      "id": "cats_heading",
+      "label": "Categories heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "cats_subtitle",
+      "label": "Categories subtitle",
+      "default": "Find the right solution for every room in your home."
+    },
+    {
+      "type": "header",
+      "content": "Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "reviews_eyebrow",
+      "label": "Reviews eyebrow",
+      "default": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_heading",
+      "label": "Reviews heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "reviews_subtitle",
+      "label": "Reviews subtitle",
+      "default": "Real feedback from real home problem-solvers."
+    },
+    {
+      "type": "textarea",
+      "id": "review_1_text",
+      "label": "Review 1 text",
+      "default": "The Electric Spin Brush is a game changer! My bathroom has never been this clean. Saves so much time and effort."
+    },
+    {
+      "type": "text",
+      "id": "review_1_name",
+      "label": "Review 1 name",
+      "default": "Sarah M."
+    },
+    {
+      "type": "text",
+      "id": "review_1_initial",
+      "label": "Review 1 initial",
+      "default": "S"
+    },
+    {
+      "type": "text",
+      "id": "review_1_meta",
+      "label": "Review 1 meta",
+      "default": "Verified Buyer • Texas"
+    },
+    {
+      "type": "textarea",
+      "id": "review_2_text",
+      "label": "Review 2 text",
+      "default": "The steam cleaner works amazingly on kitchen grease. I use it on everything — countertops, stovetop, even the oven."
+    },
+    {
+      "type": "text",
+      "id": "review_2_name",
+      "label": "Review 2 name",
+      "default": "James R."
+    },
+    {
+      "type": "text",
+      "id": "review_2_initial",
+      "label": "Review 2 initial",
+      "default": "J"
+    },
+    {
+      "type": "text",
+      "id": "review_2_meta",
+      "label": "Review 2 meta",
+      "default": "Verified Buyer • Ontario"
+    },
+    {
+      "type": "textarea",
+      "id": "review_3_text",
+      "label": "Review 3 text",
+      "default": "Love the under-sink organizer and foldable storage boxes. My kitchen is finally organized. Will buy more!"
+    },
+    {
+      "type": "text",
+      "id": "review_3_name",
+      "label": "Review 3 name",
+      "default": "Maria L."
+    },
+    {
+      "type": "text",
+      "id": "review_3_initial",
+      "label": "Review 3 initial",
+      "default": "M"
+    },
+    {
+      "type": "text",
+      "id": "review_3_meta",
+      "label": "Review 3 meta",
+      "default": "Verified Buyer • California"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Join the Aitch Home Care family"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_btn",
+      "label": "Submit button text",
+      "default": "Subscribe"
     }
   ],
   "blocks": [
     {
-      "type": "benefit",
-      "name": "Benefit",
+      "type": "category",
+      "name": "Category",
       "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icon",
-          "default": "sparkles",
-          "options": [
-            { "value": "sparkles", "label": "Sparkles" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "bolt", "label": "Bolt" },
-            { "value": "plus", "label": "Plus" }
-          ]
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Designed for quick wins"
-        },
-        {
-          "type": "textarea",
-          "id": "body",
-          "label": "Description",
-          "default": "Every item is selected for high impact: fewer tools, better results."
-        }
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Cleaning" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "8 products" },
+        { "type": "url", "id": "link", "label": "Link" }
       ]
     }
   ],
-  "max_blocks": 3,
+  "max_blocks": 6,
   "presets": [
     {
       "name": "Premium homepage",
       "blocks": [
-        { "type": "benefit" },
-        { "type": "benefit", "settings": { "icon": "shield", "title": "Premium quality", "body": "Materials and finishes that feel as good as they perform." } },
-        { "type": "benefit", "settings": { "icon": "bolt", "title": "Fast, confident decisions", "body": "Clear product choices so you spend less time comparing and more time solving." } }
+        { "type": "category", "settings": { "title": "Cleaning Tools", "subtitle": "8 products" } },
+        { "type": "category", "settings": { "title": "Kitchen Essentials", "subtitle": "6 products" } },
+        { "type": "category", "settings": { "title": "Home Convenience", "subtitle": "6 products" } }
       ]
     }
   ]
 }
 {% endschema %}
-

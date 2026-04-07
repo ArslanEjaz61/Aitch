@@ -3,57 +3,101 @@
   assign product_limit = section.settings.products_per_page | default: 16
 %}
 
-<div class="hp-page">
-  <header class="hp-section__head" style="margin-bottom: 16px;">
-    <div>
-      <h1 class="hp-h2">{{ collection.title | escape }}</h1>
+<div class="container section-spacing">
+  <!-- Collection Header -->
+  <div class="section-header">
+    <div class="section-header__text">
+      <div class="section-header__eyebrow">Collection</div>
+      <h1 class="section-header__title">{{ collection.title | escape }}</h1>
       {% if collection.description != blank %}
-        <p class="hp-subhead">{{ collection.description | strip_html | escape }}</p>
+        <p class="section-header__subtitle">{{ collection.description | strip_html | escape }}</p>
       {% endif %}
     </div>
-  </header>
+    <div style="font-size:var(--font-size-sm);color:var(--color-text-secondary);">
+      {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+    </div>
+  </div>
 
   {% if collection.products_count == 0 %}
-    <div class="hp-card hp-page__card">
-      <p class="hp-subhead" style="margin:0;">No products found in this collection yet.</p>
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <h3 class="empty-state__title">No products yet</h3>
+      <p class="empty-state__text">This collection doesn't have any products yet. Check back soon!</p>
+      <a class="btn btn--primary" href="{{ routes.root_url }}">Back to Home</a>
     </div>
   {% else %}
-    <div class="hp-grid hp-products">
+    <div class="product-grid product-grid--4">
       {% for product in products limit: product_limit %}
-        <article class="hp-card hp-product">
-          <a class="hp-product__img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+        <article class="product-card">
+          {% if product.compare_at_price_max > product.price %}
+            <span class="product-card__badge product-card__badge--sale">Sale</span>
+          {% endif %}
+
+          <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
             {% if product.featured_image %}
               <img
                 srcset="
-                  {{ product.featured_image | image_url: width: 320 }} 320w,
-                  {{ product.featured_image | image_url: width: 480 }} 480w,
-                  {{ product.featured_image | image_url: width: 640 }} 640w
+                  {{ product.featured_image | image_url: width: 400 }} 400w,
+                  {{ product.featured_image | image_url: width: 600 }} 600w,
+                  {{ product.featured_image | image_url: width: 800 }} 800w
                 "
-                sizes="(max-width: 520px) 92vw, (max-width: 1020px) 44vw, 22vw"
-                src="{{ product.featured_image | image_url: width: 640 }}"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                src="{{ product.featured_image | image_url: width: 600 }}"
                 alt="{{ product.featured_image.alt | escape }}"
                 loading="lazy"
                 width="{{ product.featured_image.width }}"
                 height="{{ product.featured_image.height }}"
               >
             {% endif %}
+
+            {% if product.images.size > 1 %}
+              <div class="product-card__media-hover">
+                <img
+                  src="{{ product.images[1] | image_url: width: 600 }}"
+                  alt="{{ product.images[1].alt | escape }}"
+                  loading="lazy"
+                  width="{{ product.images[1].width }}"
+                  height="{{ product.images[1].height }}"
+                >
+              </div>
+            {% endif %}
+
+            <div class="product-card__quick-add">
+              <span class="btn btn--primary btn--full">Quick View</span>
+            </div>
           </a>
 
-          <h2 class="hp-product__title" style="margin-top:2px;">
-            <a href="{{ product.url }}">{{ product.title | escape }}</a>
-          </h2>
-
-          <div class="hp-price">
-            <b>{{ product.price | money }}</b>
-            {% if product.compare_at_price_max > product.price %}
-              <span><s>{{ product.compare_at_price_max | money }}</s></span>
+          <div class="product-card__info">
+            {% if product.vendor != blank %}
+              <div class="product-card__vendor">{{ product.vendor | escape }}</div>
             {% endif %}
-          </div>
 
-          <a class="hp-btn" href="{{ product.url }}">View</a>
+            <h2 class="product-card__title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h2>
+
+            <div class="product-card__price">
+              {% if product.compare_at_price_max > product.price %}
+                <span class="product-card__price-sale">{{ product.price | money }}</span>
+                <span class="product-card__price-compare">{{ product.compare_at_price_max | money }}</span>
+              {% else %}
+                <span class="product-card__price-current">{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+          </div>
         </article>
       {% endfor %}
     </div>
+
+    {% if collection.products_count > product_limit %}
+      <div style="text-align:center;margin-top:var(--space-2xl);">
+        {% paginate collection.products by product_limit %}
+          {{ paginate | default_pagination }}
+        {% endpaginate %}
+      </div>
+    {% endif %}
   {% endif %}
 </div>
 
@@ -73,4 +117,3 @@
   ]
 }
 {% endschema %}
-

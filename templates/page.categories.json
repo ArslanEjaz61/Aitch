@@ -3,11 +3,41 @@
     "main": {
       "type": "categories-grid",
       "settings": {
-        "heading": "Categories",
-        "subheading": "Pick the problem you’re solving — then we’ll show the cleanest fix."
-      }
+        "heading": "Shop by Category",
+        "subheading": "Find the right solution for every area in your home."
+      },
+      "blocks": {
+        "cat_1": {
+          "type": "category",
+          "settings": {
+            "title": "Cleaning Tools",
+            "body": "8 products — Brushes, steamers, sponges & more"
+          }
+        },
+        "cat_2": {
+          "type": "category",
+          "settings": {
+            "title": "Kitchen Essentials",
+            "body": "6 products — Oil sprays, sealers, openers & more"
+          }
+        },
+        "cat_3": {
+          "type": "category",
+          "settings": {
+            "title": "Home Convenience",
+            "body": "4 products — Lights, organizers, storage"
+          }
+        },
+        "cat_4": {
+          "type": "category",
+          "settings": {
+            "title": "Utility Products",
+            "body": "2 products — Phone stands, mini vacuums"
+          }
+        }
+      },
+      "block_order": ["cat_1", "cat_2", "cat_3", "cat_4"]
     }
   },
   "order": ["main"]
 }
-

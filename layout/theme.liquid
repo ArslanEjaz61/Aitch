@@ -20,16 +20,13 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
+    <meta name="theme-color" content="#1a1a1a">
+
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     {{ content_for_header }}
-
-    <style>
-      :root{
-        --hp-bg: {{ settings.bg_color | default: '#ffffff' }};
-        --hp-text: {{ settings.text_color | default: '#0f172a' }};
-        --hp-brand: {{ settings.brand_color | default: '#0ea5e9' }};
-      }
-    </style>
-
     {{ 'base.css' | asset_url | stylesheet_tag }}
   </head>
 
@@ -43,6 +40,49 @@
     </main>
 
     {% sections 'footer-group' %}
+
+    <!-- Scroll Animations -->
+    <script>
+      // Header scroll effect
+      (function() {
+        var header = document.querySelector('.header');
+        if (!header) return;
+        var lastScroll = 0;
+        window.addEventListener('scroll', function() {
+          var scrollY = window.pageYOffset;
+          if (scrollY > 50) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+          lastScroll = scrollY;
+        }, { passive: true });
+      })();
+
+      // Reveal on scroll
+      (function() {
+        var reveals = document.querySelectorAll('.reveal');
+        if (!reveals.length) return;
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function(el) { observer.observe(el); });
+      })();
+
+      // Mobile menu
+      (function() {
+        var toggle = document.querySelector('.header__menu-toggle');
+        var menu = document.querySelector('.mobile-menu');
+        var close = document.querySelector('.mobile-menu__close');
+        if (!toggle || !menu) return;
+        toggle.addEventListener('click', function() { menu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        if (close) close.addEventListener('click', function() { menu.classList.remove('active'); document.body.style.overflow = ''; });
+      })();
+    </script>
   </body>
 </html>
-

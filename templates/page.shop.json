@@ -3,15 +3,14 @@
     "main": {
       "type": "featured-collection-grid",
       "settings": {
+        "eyebrow": "All Products",
         "heading": "Shop",
-        "subheading": "Everything you need to solve home problems — premium picks only.",
-        "product_limit": 12,
-        "card_cta_label": "View",
-        "cta_label": "All products",
+        "subheading": "Premium problem-solving products for every home — curated for quick results.",
+        "product_limit": 20,
+        "cta_label": "View All",
         "cta_link": "/collections/all"
       }
     }
   },
   "order": ["main"]
 }
-

@@ -1,24 +1,56 @@
-<div class="hp-page">
-  <div class="hp-card hp-page__card">
-    <h1 class="hp-h2" style="margin:0 0 10px;">Addresses</h1>
+<div class="page-content" style="max-width:600px;">
+  <h1>Addresses</h1>
 
-    {% if customer %}
-      <div class="hp-actions" style="margin-top: 0;">
-        <a class="hp-btn" href="{{ routes.account_url }}">Back to account</a>
-        <a class="hp-btn" href="{{ routes.account_logout_url }}">Sign out</a>
+  {% if customer %}
+    {% form 'customer_address', customer.new_address %}
+      <h2 style="font-size:var(--font-size-lg);font-weight:600;margin-bottom:var(--space-md);">Add a New Address</h2>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-md);margin-bottom:var(--space-xl);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
+          <div>
+            <label style="display:block;font-size:var(--font-size-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:var(--space-xs);">First name</label>
+            <input class="newsletter__input" style="width:100%;" type="text" name="address[first_name]" placeholder="First name">
+          </div>
+          <div>
+            <label style="display:block;font-size:var(--font-size-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:var(--space-xs);">Last name</label>
+            <input class="newsletter__input" style="width:100%;" type="text" name="address[last_name]" placeholder="Last name">
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:var(--font-size-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:var(--space-xs);">Address</label>
+          <input class="newsletter__input" style="width:100%;" type="text" name="address[address1]" placeholder="Street address">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
+          <div>
+            <label style="display:block;font-size:var(--font-size-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:var(--space-xs);">City</label>
+            <input class="newsletter__input" style="width:100%;" type="text" name="address[city]" placeholder="City">
+          </div>
+          <div>
+            <label style="display:block;font-size:var(--font-size-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-secondary);margin-bottom:var(--space-xs);">Zip code</label>
+            <input class="newsletter__input" style="width:100%;" type="text" name="address[zip]" placeholder="Zip / Postal code">
+          </div>
+        </div>
+        <button class="btn btn--primary" type="submit">Add Address</button>
       </div>
+    {% endform %}
 
-      <div class="hp-card" style="margin-top: 16px; padding: 14px; background: rgba(255,255,255,.04); box-shadow:none;">
-        {{ customer.default_address | format_address }}
+    {% if customer.addresses.size > 0 %}
+      <h2 style="font-size:var(--font-size-lg);font-weight:600;margin-bottom:var(--space-md);padding-top:var(--space-lg);border-top:1px solid var(--color-border);">Saved Addresses</h2>
+      <div style="display:flex;flex-direction:column;gap:var(--space-md);">
+        {% for address in customer.addresses %}
+          <div style="padding:var(--space-lg);border:1px solid var(--color-border);">
+            <div style="font-weight:600;margin-bottom:var(--space-xs);">{{ address.first_name }} {{ address.last_name }}</div>
+            <div style="color:var(--color-text-secondary);font-size:var(--font-size-sm);line-height:1.6;">
+              {{ address.address1 }}<br>
+              {{ address.city }}, {{ address.province_code }} {{ address.zip }}<br>
+              {{ address.country }}
+            </div>
+            {% if address == customer.default_address %}
+              <span style="display:inline-block;margin-top:var(--space-sm);padding:3px 8px;background:var(--color-bg-alt);border:1px solid var(--color-border);font-size:var(--font-size-xs);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Default</span>
+            {% endif %}
+          </div>
+        {% endfor %}
       </div>
-
-      <p class="hp-subhead" style="margin: 14px 0 0;">
-        Manage addresses in Shopify’s standard customer address flow.
-      </p>
-    {% else %}
-      <p class="hp-subhead" style="margin:0 0 14px;">Please sign in.</p>
-      <a class="hp-btn hp-btn--primary" href="{{ routes.account_login_url }}">Sign in</a>
     {% endif %}
-  </div>
+  {% endif %}
 </div>
-

@@ -1,71 +1,104 @@
 {% liquid
   assign collection = section.settings.collection
-  assign product_limit = section.settings.product_limit | default: 8
+  assign product_limit = section.settings.product_limit | default: 12
 %}
 
-<div class="hp-wrap">
-  <section class="hp-section">
-    <header class="hp-section__head">
-      <div>
-        <h1 class="hp-h2">{{ section.settings.heading | escape }}</h1>
-        {% if section.settings.subheading != blank %}
-          <p class="hp-subhead">{{ section.settings.subheading | escape }}</p>
-        {% endif %}
-      </div>
-      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
-        <a class="hp-btn" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label | escape }}</a>
+<div class="container section-spacing">
+  <div class="section-header">
+    <div class="section-header__text">
+      <div class="section-header__eyebrow">{{ section.settings.eyebrow | default: 'Collection' | escape }}</div>
+      <h1 class="section-header__title">{{ section.settings.heading | default: 'Shop' | escape }}</h1>
+      {% if section.settings.subheading != blank %}
+        <p class="section-header__subtitle">{{ section.settings.subheading | escape }}</p>
       {% endif %}
-    </header>
+    </div>
+    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+      <a class="btn btn--secondary" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label | escape }}</a>
+    {% endif %}
+  </div>
 
-    {% if collection != blank and collection.products_count > 0 %}
-      <div class="hp-grid hp-products">
-        {% for product in collection.products limit: product_limit %}
-          <article class="hp-card hp-product">
-            <a class="hp-product__img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-              {% if product.featured_image %}
-                <img
-                  src="{{ product.featured_image | image_url: width: 640 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  loading="lazy"
-                  width="{{ product.featured_image.width }}"
-                  height="{{ product.featured_image.height }}"
-                >
-              {% endif %}
-            </a>
+  {% if collection != blank and collection.products_count > 0 %}
+    <div class="product-grid product-grid--4">
+      {% for product in collection.products limit: product_limit %}
+        <article class="product-card">
+          {% if product.compare_at_price_max > product.price %}
+            <span class="product-card__badge product-card__badge--sale">Sale</span>
+          {% endif %}
 
-            {% if product.vendor != blank %}
-              <div class="hp-pill">{{ product.vendor | escape }}</div>
+          <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+            {% if product.featured_image %}
+              <img
+                srcset="
+                  {{ product.featured_image | image_url: width: 400 }} 400w,
+                  {{ product.featured_image | image_url: width: 600 }} 600w,
+                  {{ product.featured_image | image_url: width: 800 }} 800w
+                "
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+                width="{{ product.featured_image.width }}"
+                height="{{ product.featured_image.height }}"
+              >
             {% endif %}
 
-            <h2 class="hp-product__title">
+            {% if product.images.size > 1 %}
+              <div class="product-card__media-hover">
+                <img
+                  src="{{ product.images[1] | image_url: width: 600 }}"
+                  alt="{{ product.images[1].alt | escape }}"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+
+            <div class="product-card__quick-add">
+              <span class="btn btn--primary btn--full">Quick View</span>
+            </div>
+          </a>
+
+          <div class="product-card__info">
+            {% if product.vendor != blank %}
+              <div class="product-card__vendor">{{ product.vendor | escape }}</div>
+            {% endif %}
+
+            <h2 class="product-card__title">
               <a href="{{ product.url }}">{{ product.title | escape }}</a>
             </h2>
 
-            <div class="hp-price">
-              <b>{{ product.price | money }}</b>
+            <div class="product-card__price">
               {% if product.compare_at_price_max > product.price %}
-                <span><s>{{ product.compare_at_price_max | money }}</s></span>
+                <span class="product-card__price-sale">{{ product.price | money }}</span>
+                <span class="product-card__price-compare">{{ product.compare_at_price_max | money }}</span>
+              {% else %}
+                <span class="product-card__price-current">{{ product.price | money }}</span>
               {% endif %}
             </div>
-
-            <a class="hp-btn" href="{{ product.url }}">{{ section.settings.card_cta_label | escape }}</a>
-          </article>
-        {% endfor %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       </div>
-    {% else %}
-      <div class="hp-card hp-page__card">
-        <p class="hp-subhead" style="margin:0;">
-          Pick a collection in this section's settings (or add products to that collection in Shopify Admin).
-        </p>
-      </div>
-    {% endif %}
-  </section>
+      <h3 class="empty-state__title">No products yet</h3>
+      <p class="empty-state__text">Pick a collection in this section's settings to display products.</p>
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
 {
   "name": "Featured collection grid",
   "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Collection"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -94,15 +127,9 @@
     },
     {
       "type": "text",
-      "id": "card_cta_label",
-      "label": "Card button label",
-      "default": "View"
-    },
-    {
-      "type": "text",
       "id": "cta_label",
       "label": "Top-right link label",
-      "default": "View all"
+      "default": "View All"
     },
     {
       "type": "url",
@@ -117,4 +144,3 @@
   ]
 }
 {% endschema %}
-

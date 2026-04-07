@@ -1,47 +1,45 @@
-<div class="hp-wrap">
-  <section class="hp-section">
-    <header class="hp-section__head">
-      <div>
-        <h1 class="hp-h2">{{ section.settings.heading | escape }}</h1>
-        {% if section.settings.subheading != blank %}
-          <p class="hp-subhead">{{ section.settings.subheading | escape }}</p>
-        {% endif %}
-      </div>
-    </header>
-
-    <div class="hp-grid hp-cats">
-      {% for block in section.blocks %}
-        {% case block.type %}
-          {% when 'category' %}
-            <article class="hp-card hp-cat" {{ block.shopify_attributes }}>
-              <a class="hp-cat__img" href="{{ block.settings.link }}">
-                {% if block.settings.image != blank %}
-                  <img
-                    srcset="
-                      {{ block.settings.image | image_url: width: 640 }} 640w,
-                      {{ block.settings.image | image_url: width: 960 }} 960w,
-                      {{ block.settings.image | image_url: width: 1280 }} 1280w
-                    "
-                    sizes="(max-width: 900px) 92vw, 30vw"
-                    src="{{ block.settings.image | image_url: width: 960 }}"
-                    alt="{{ block.settings.image.alt | escape }}"
-                    loading="lazy"
-                    width="{{ block.settings.image.width }}"
-                    height="{{ block.settings.image.height }}"
-                  >
-                {% endif %}
-              </a>
-
-              <h2 class="hp-cat__title">
-                <a href="{{ block.settings.link }}">{{ block.settings.title | escape }}</a>
-              </h2>
-              <p class="hp-cat__body">{{ block.settings.body | escape }}</p>
-              <a class="hp-btn" href="{{ block.settings.link }}">{{ section.settings.card_cta_label | escape }}</a>
-            </article>
-        {% endcase %}
-      {% endfor %}
+<div class="container section-spacing">
+  <div class="section-header">
+    <div class="section-header__text">
+      <div class="section-header__eyebrow">Browse</div>
+      <h1 class="section-header__title">{{ section.settings.heading | default: 'Shop by Category' | escape }}</h1>
+      {% if section.settings.subheading != blank %}
+        <p class="section-header__subtitle">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
     </div>
-  </section>
+  </div>
+
+  <div class="categories-grid">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'category' %}
+          <a class="category-card" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <img
+                srcset="
+                  {{ block.settings.image | image_url: width: 640 }} 640w,
+                  {{ block.settings.image | image_url: width: 960 }} 960w,
+                  {{ block.settings.image | image_url: width: 1280 }} 1280w
+                "
+                sizes="(max-width: 900px) 100vw, 33vw"
+                src="{{ block.settings.image | image_url: width: 960 }}"
+                alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                loading="lazy"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+            {% else %}
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#f0f0f0 0%,#d0d0d0 100%);position:absolute;inset:0;"></div>
+            {% endif %}
+            <div class="category-card__overlay"></div>
+            <div class="category-card__content">
+              <h2 class="category-card__title">{{ block.settings.title | escape }}</h2>
+              <div class="category-card__count">{{ block.settings.body | default: 'Shop now →' | escape }}</div>
+            </div>
+          </a>
+      {% endcase %}
+    {% endfor %}
+  </div>
 </div>
 
 {% schema %}
@@ -52,19 +50,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Categories"
+      "default": "Shop by Category"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Pick a problem area — we’ll show the cleanest solutions."
-    },
-    {
-      "type": "text",
-      "id": "card_cta_label",
-      "label": "Card button label",
-      "default": "Explore"
+      "default": "Find the right solution for every area in your home."
     }
   ],
   "blocks": [
@@ -73,8 +65,8 @@
       "name": "Category",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Leak fixes" },
-        { "type": "textarea", "id": "body", "label": "Description", "default": "Seal, tighten, repair — fast." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Cleaning Tools" },
+        { "type": "textarea", "id": "body", "label": "Subtitle / Count", "default": "8 products" },
         { "type": "url", "id": "link", "label": "Link" }
       ]
     }
@@ -84,12 +76,11 @@
     {
       "name": "Categories grid",
       "blocks": [
-        { "type": "category", "settings": { "title": "Leak fixes", "body": "Seal, tighten, repair — fast." } },
-        { "type": "category", "settings": { "title": "Organization", "body": "Clean storage for high-traffic spaces." } },
-        { "type": "category", "settings": { "title": "Upgrades", "body": "Small changes, big feel." } }
+        { "type": "category", "settings": { "title": "Cleaning Tools", "body": "8 products" } },
+        { "type": "category", "settings": { "title": "Kitchen Essentials", "body": "6 products" } },
+        { "type": "category", "settings": { "title": "Home Convenience", "body": "6 products" } }
       ]
     }
   ]
 }
 {% endschema %}
-

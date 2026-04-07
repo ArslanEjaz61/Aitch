@@ -1,42 +1,55 @@
-<div class="hp-page">
-  <div class="hp-card hp-page__card">
-    <h1 class="hp-h2" style="margin:0 0 10px;">Account</h1>
-
-    {% if customer %}
-      <p class="hp-subhead" style="margin:0 0 14px;">
-        Signed in as <b style="color:var(--hp-text);">{{ customer.email | escape }}</b>
-      </p>
-
-      <div class="hp-actions">
-        <a class="hp-btn" href="{{ routes.account_addresses_url }}">Addresses</a>
-        <a class="hp-btn" href="{{ routes.account_logout_url }}">Sign out</a>
+<div class="container section-spacing">
+  {% if customer %}
+    <div class="section-header">
+      <div class="section-header__text">
+        <div class="section-header__eyebrow">Account</div>
+        <h1 class="section-header__title">Welcome back</h1>
+        <p class="section-header__subtitle">Signed in as <strong>{{ customer.email | escape }}</strong></p>
       </div>
+      <div style="display:flex;gap:var(--space-sm);">
+        <a class="btn btn--secondary" href="{{ routes.account_addresses_url }}">Addresses</a>
+        <a class="btn btn--secondary" href="{{ routes.account_logout_url }}">Sign Out</a>
+      </div>
+    </div>
 
-      {% if customer.orders_count > 0 %}
-        <div class="hp-card" style="margin-top: 16px; padding: 14px; background: rgba(255,255,255,.04); box-shadow:none;">
-          <h2 class="hp-h2" style="margin:0 0 8px; font-size: 18px;">Orders</h2>
-          <div class="hp-grid" style="gap: 10px;">
-            {% for order in customer.orders %}
-              <div class="hp-card" style="padding: 12px; background: rgba(255,255,255,.04); box-shadow:none;">
-                <div class="hp-price" style="margin:0;">
-                  <b><a href="{{ order.customer_url }}">#{{ order.name | escape }}</a></b>
-                  <span style="margin-left:auto;">{{ order.created_at | date: '%b %d, %Y' }}</span>
-                </div>
-                <div class="hp-subhead" style="margin:6px 0 0;">
-                  Total: {{ order.total_price | money }}
-                </div>
-              </div>
-            {% endfor %}
+    {% if customer.orders_count > 0 %}
+      <h2 style="font-size:var(--font-size-lg);font-weight:600;margin-bottom:var(--space-md);">Order History</h2>
+      <div style="border:1px solid var(--color-border);">
+        {% for order in customer.orders %}
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:var(--space-md);padding:var(--space-md) var(--space-lg);border-bottom:1px solid var(--color-border);align-items:center;{% if forloop.last %}border-bottom:none;{% endif %}">
+            <div>
+              <a href="{{ order.customer_url }}" style="font-weight:600;text-decoration:underline;text-underline-offset:3px;">#{{ order.name | escape }}</a>
+            </div>
+            <div style="color:var(--color-text-secondary);font-size:var(--font-size-sm);">
+              {{ order.created_at | date: '%B %d, %Y' }}
+            </div>
+            <div style="font-size:var(--font-size-sm);">
+              <span style="padding:4px 10px;background:var(--color-bg-alt);border:1px solid var(--color-border);font-size:var(--font-size-xs);text-transform:uppercase;letter-spacing:0.04em;font-weight:600;">{{ order.financial_status }}</span>
+            </div>
+            <div style="font-weight:600;text-align:right;">
+              {{ order.total_price | money }}
+            </div>
           </div>
-        </div>
-      {% endif %}
+        {% endfor %}
+      </div>
     {% else %}
-      <p class="hp-subhead" style="margin:0 0 14px;">Please sign in to view your account.</p>
-      <div class="hp-actions">
-        <a class="hp-btn hp-btn--primary" href="{{ routes.account_login_url }}">Sign in</a>
-        <a class="hp-btn" href="{{ routes.account_register_url }}">Create account</a>
+      <div class="empty-state" style="padding:var(--space-3xl) var(--space-xl);">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 class="empty-state__title">No orders yet</h3>
+        <p class="empty-state__text">When you place an order, it'll show up here.</p>
+        <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Start Shopping</a>
       </div>
     {% endif %}
-  </div>
+  {% else %}
+    <div class="empty-state" style="min-height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <h1 class="empty-state__title">Sign In Required</h1>
+      <p class="empty-state__text">Please sign in to view your account.</p>
+      <div style="display:flex;gap:var(--space-sm);">
+        <a class="btn btn--primary" href="{{ routes.account_login_url }}">Sign In</a>
+        <a class="btn btn--secondary" href="{{ routes.account_register_url }}">Create Account</a>
+      </div>
+    </div>
+  {% endif %}
 </div>
-

@@ -3,9 +3,14 @@
   "name": "Header group",
   "sections": {
     "header": {
-      "type": "header"
+      "type": "header",
+      "settings": {
+        "brand_text": "Aitch Home Care",
+        "announcement_1": "Free shipping on orders over $50",
+        "announcement_2": "30-day hassle-free returns",
+        "announcement_3": "Ships to USA & Canada"
+      }
     }
   },
   "order": ["header"]
 }
-

@@ -1,59 +1,73 @@
-{% liquid
-  assign q = search.terms | default: ''
-%}
-
-<div class="hp-page">
-  <header class="hp-section__head" style="margin-bottom: 16px;">
-    <div>
-      <h1 class="hp-h2">Search</h1>
-      <p class="hp-subhead">Find products, pages, and more.</p>
+<div class="search-page">
+  <div class="section-header" style="border-bottom:none;margin-bottom:0;">
+    <div class="section-header__text">
+      <div class="section-header__eyebrow">Search</div>
+      <h1 class="section-header__title">
+        {% if search.performed %}
+          Results for "{{ search.terms | escape }}"
+        {% else %}
+          Search
+        {% endif %}
+      </h1>
     </div>
-  </header>
-
-  <div class="hp-card hp-page__card" style="margin-bottom: 16px;">
-    <form action="{{ routes.search_url }}" method="get" role="search">
-      <div class="hp-actions" style="margin:0;">
-        <input
-          class="hp-btn"
-          style="flex:1; justify-content:flex-start; padding: 12px 14px;"
-          type="search"
-          name="q"
-          value="{{ q | escape }}"
-          placeholder="Search…"
-          aria-label="Search"
-        >
-        <button class="hp-btn hp-btn--primary" type="submit">Search</button>
-      </div>
-    </form>
   </div>
+
+  <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
+    <input type="text" name="q" value="{{ search.terms | escape }}" placeholder="Search for products..." autocomplete="off">
+    <button class="btn btn--primary" type="submit">Search</button>
+  </form>
 
   {% if search.performed %}
     {% if search.results_count == 0 %}
-      <div class="hp-card hp-page__card">
-        <p class="hp-subhead" style="margin:0;">No results for “{{ q | escape }}”.</p>
+      <div class="empty-state">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <h3 class="empty-state__title">No results found</h3>
+        <p class="empty-state__text">Try a different search term or browse our collections.</p>
+        <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Browse All Products</a>
       </div>
     {% else %}
-      <div class="hp-grid hp-products">
+      <div class="product-grid product-grid--4">
         {% for item in search.results %}
           {% if item.object_type == 'product' %}
-            {% assign product = item %}
-            <article class="hp-card hp-product">
-              <a class="hp-product__img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-                {% if product.featured_image %}
+            <article class="product-card">
+              {% if item.compare_at_price_max > item.price %}
+                <span class="product-card__badge product-card__badge--sale">Sale</span>
+              {% endif %}
+
+              <a class="product-card__media" href="{{ item.url }}">
+                {% if item.featured_image %}
                   <img
-                    src="{{ product.featured_image | image_url: width: 640 }}"
-                    alt="{{ product.featured_image.alt | escape }}"
+                    src="{{ item.featured_image | image_url: width: 600 }}"
+                    alt="{{ item.featured_image.alt | escape }}"
                     loading="lazy"
-                    width="{{ product.featured_image.width }}"
-                    height="{{ product.featured_image.height }}"
+                    width="{{ item.featured_image.width }}"
+                    height="{{ item.featured_image.height }}"
                   >
                 {% endif %}
               </a>
-              <h2 class="hp-product__title">
-                <a href="{{ product.url }}">{{ product.title | escape }}</a>
+
+              <div class="product-card__info">
+                <h2 class="product-card__title">
+                  <a href="{{ item.url }}">{{ item.title | escape }}</a>
+                </h2>
+                <div class="product-card__price">
+                  {% if item.compare_at_price_max > item.price %}
+                    <span class="product-card__price-sale">{{ item.price | money }}</span>
+                    <span class="product-card__price-compare">{{ item.compare_at_price_max | money }}</span>
+                  {% else %}
+                    <span class="product-card__price-current">{{ item.price | money }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% else %}
+            <article class="product-card" style="padding:var(--space-lg);">
+              <h2 class="product-card__title">
+                <a href="{{ item.url }}">{{ item.title | escape }}</a>
               </h2>
-              <div class="hp-price"><b>{{ product.price | money }}</b></div>
-              <a class="hp-btn" href="{{ product.url }}">View</a>
+              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-top:var(--space-xs);">{{ item.content | strip_html | truncate: 120 }}</p>
             </article>
           {% endif %}
         {% endfor %}
@@ -64,8 +78,7 @@
 
 {% schema %}
 {
-  "name": "Main search",
+  "name": "Search results",
   "settings": []
 }
 {% endschema %}
-

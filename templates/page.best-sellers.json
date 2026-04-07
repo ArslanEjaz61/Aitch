@@ -3,15 +3,14 @@
     "main": {
       "type": "featured-collection-grid",
       "settings": {
-        "heading": "Best sellers",
-        "subheading": "Fastest wins — the products customers come back for.",
+        "eyebrow": "Best Sellers",
+        "heading": "Most Popular",
+        "subheading": "Our top-rated products that customers come back for again and again.",
         "product_limit": 12,
-        "card_cta_label": "View",
-        "cta_label": "Shop all",
+        "cta_label": "Shop All",
         "cta_link": "/collections/all"
       }
     }
   },
   "order": ["main"]
 }
-
