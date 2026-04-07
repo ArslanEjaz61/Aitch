@@ -73,23 +73,9 @@
         "newsletter_placeholder": "Enter your email address",
         "newsletter_btn": "Subscribe"
       }
-    },
-    "featured_collection_grid_z3JQir": {
-      "type": "featured-collection-grid",
-      "name": "Featured collection grid",
-      "settings": {
-        "eyebrow": "Collection",
-        "heading": "Shop",
-        "subheading": "Browse premium problem-solving essentials — curated for quick wins.",
-        "collection": "",
-        "product_limit": 12,
-        "cta_label": "View All",
-        "cta_link": "shopify://collections/all"
-      }
     }
   },
   "order": [
-    "main",
-    "featured_collection_grid_z3JQir"
+    "main"
   ]
 }
