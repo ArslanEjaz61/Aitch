@@ -17,8 +17,10 @@
   assign btn_r = settings.buttons_radius | default: 4
   assign base_px = settings.type_body_size | default: 14
 %}
-{{ settings.type_header_font | font_face: font_display: 'swap' }}
-{{ settings.type_body_font | font_face: font_display: 'swap' }}
+<style id="theme-font-faces">
+  {{ settings.type_header_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+</style>
 <style id="theme-css-variables">
   :root {
     --color-bg: {{ bg }};
