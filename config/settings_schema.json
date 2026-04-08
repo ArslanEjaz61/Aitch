@@ -1,21 +1,21 @@
 [
   {
-    "name": "Theme settings",
+    "name": "Logo & branding",
     "settings": [
       {
         "type": "header",
-        "content": "Logo & branding"
+        "content": "Identity"
       },
       {
         "type": "image_picker",
         "id": "logo",
-        "label": "Logo",
-        "info": "Upload the Aitch Home Care logo. Recommended: SVG or PNG with transparent background."
+        "label": "Logo image",
+        "info": "PNG or SVG with transparent background works best."
       },
       {
         "type": "range",
         "id": "logo_width",
-        "label": "Logo width (px)",
+        "label": "Logo width",
         "min": 60,
         "max": 250,
         "step": 10,
@@ -26,54 +26,241 @@
         "type": "image_picker",
         "id": "favicon",
         "label": "Favicon",
-        "info": "Upload a 64x64 PNG or SVG favicon."
-      },
+        "info": "Square PNG or ICO, at least 32×32px."
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
       {
         "type": "header",
-        "content": "Colors"
+        "content": "General"
       },
       {
         "type": "color",
-        "id": "brand_color",
-        "label": "Brand accent color",
-        "default": "#1a1a1a",
-        "info": "Used for buttons, links, and accent elements."
-      },
-      {
-        "type": "color",
-        "id": "bg_color",
-        "label": "Background color",
+        "id": "colors_background",
+        "label": "Background",
         "default": "#ffffff"
       },
       {
         "type": "color",
-        "id": "text_color",
-        "label": "Text color",
+        "id": "colors_background_alt",
+        "label": "Background (alternate sections)",
+        "default": "#f8f8f6",
+        "info": "Used for alternating bands (e.g. hero, newsletter)."
+      },
+      {
+        "type": "color",
+        "id": "colors_text",
+        "label": "Text",
         "default": "#1a1a1a"
       },
       {
+        "type": "color",
+        "id": "colors_text_secondary",
+        "label": "Text (secondary)",
+        "default": "#6b6b6b"
+      },
+      {
+        "type": "color",
+        "id": "colors_text_tertiary",
+        "label": "Text (muted)",
+        "default": "#999999"
+      },
+      {
+        "type": "color",
+        "id": "colors_border",
+        "label": "Borders & dividers",
+        "default": "#e5e5e5"
+      },
+      {
         "type": "header",
-        "content": "Social media"
+        "content": "Buttons & accents"
       },
       {
-        "type": "text",
+        "type": "color",
+        "id": "colors_accent",
+        "label": "Accent (buttons, links, focus)",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "color",
+        "id": "colors_accent_hover",
+        "label": "Accent hover",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "colors_sale",
+        "label": "Sale price & sale badges",
+        "default": "#c1272d"
+      },
+      {
+        "type": "color",
+        "id": "colors_success",
+        "label": "Success / “New” badges",
+        "default": "#2d8a4e"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "colors_footer_background",
+        "label": "Footer background",
+        "default": "#1a1a1a",
+        "info": "Dark footer strip; text stays light for contrast."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "Heading font",
+        "default": "assistant_n6"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "type_body_size",
+        "label": "Base font size",
+        "min": 13,
+        "max": 18,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Maximum page width",
+        "min": 1100,
+        "max": 1600,
+        "step": 10,
+        "default": 1400,
+        "unit": "px",
+        "info": "Content width on large screens (same idea as Dawn “Page width”)."
+      }
+    ]
+  },
+  {
+    "name": "Buttons & cards",
+    "settings": [
+      {
+        "type": "range",
+        "id": "buttons_radius",
+        "label": "Button & card corner radius",
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "default": 4,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_product_vendor",
+        "label": "Show vendor on product cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_rating",
+        "label": "Show star rating on product cards",
+        "default": true,
+        "info": "Display-only styling; connect a reviews app for real ratings later."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quick_view",
+        "label": "Show “Quick view” on product image (desktop hover)",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_card_ratio",
+        "label": "Product image ratio",
+        "options": [
+          { "value": "square", "label": "Square (1:1)" },
+          { "value": "portrait", "label": "Portrait (4:5)" },
+          { "value": "landscape", "label": "Landscape (4:3)" }
+        ],
+        "default": "square"
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "animations_reveal",
+        "label": "Animate sections on scroll (fade in)",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social & trust",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Used across the theme (e.g. footer). Leave blank to hide an icon."
+      },
+      {
+        "type": "url",
         "id": "social_facebook",
-        "label": "Facebook URL"
+        "label": "Facebook"
       },
       {
-        "type": "text",
+        "type": "url",
         "id": "social_instagram",
-        "label": "Instagram URL"
+        "label": "Instagram"
       },
       {
-        "type": "text",
+        "type": "url",
         "id": "social_tiktok",
-        "label": "TikTok URL"
+        "label": "TikTok"
       },
       {
-        "type": "text",
+        "type": "url",
         "id": "social_twitter",
-        "label": "X (Twitter) URL"
+        "label": "X (Twitter)"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons in footer",
+        "default": true
       }
     ]
   }

@@ -1,0 +1,76 @@
+{% comment %}
+  Theme settings → CSS variables (Shopify OS 2.0 / Dawn-style).
+{% endcomment %}
+{% liquid
+  assign bg = settings.colors_background | default: '#ffffff'
+  assign bg_alt = settings.colors_background_alt | default: '#f8f8f6'
+  assign text = settings.colors_text | default: '#1a1a1a'
+  assign text_sec = settings.colors_text_secondary | default: '#6b6b6b'
+  assign text_tert = settings.colors_text_tertiary | default: '#999999'
+  assign border = settings.colors_border | default: '#e5e5e5'
+  assign accent = settings.colors_accent | default: '#1a1a1a'
+  assign accent_h = settings.colors_accent_hover | default: '#333333'
+  assign sale = settings.colors_sale | default: '#c1272d'
+  assign success = settings.colors_success | default: '#2d8a4e'
+  assign footer_bg = settings.colors_footer_background | default: '#1a1a1a'
+  assign page_w = settings.page_width | default: 1400
+  assign btn_r = settings.buttons_radius | default: 4
+  assign base_px = settings.type_body_size | default: 14
+%}
+{{ settings.type_header_font | font_face: font_display: 'swap' }}
+{{ settings.type_body_font | font_face: font_display: 'swap' }}
+<style id="theme-css-variables">
+  :root {
+    --color-bg: {{ bg }};
+    --color-bg-alt: {{ bg_alt }};
+    --color-bg-dark: {{ footer_bg }};
+    --color-bg-dark-alt: #111111;
+    --color-surface: {{ bg }};
+    --color-surface-raised: {{ bg }};
+    --color-border: {{ border }};
+    --color-border-dark: #2a2a2a;
+    --color-text: {{ text }};
+    --color-text-secondary: {{ text_sec }};
+    --color-text-tertiary: {{ text_tert }};
+    --color-text-inverse: #ffffff;
+    --color-accent: {{ accent }};
+    --color-accent-hover: {{ accent_h }};
+    --color-sale: {{ sale }};
+    --color-success: {{ success }};
+    --color-overlay: rgba(0, 0, 0, 0.5);
+
+    --font-heading: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+    --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-size-base: {{ base_px | times: 0.0625 }}rem;
+
+    --max-width: {{ page_w }}px;
+    --container-padding: clamp(1rem, 3vw, 2rem);
+    --space-section: clamp(3rem, 6vw, 5rem);
+
+    --radius-sm: {{ btn_r }}px;
+    --radius-md: {{ btn_r | plus: 4 }}px;
+    --radius-lg: {{ btn_r | plus: 8 }}px;
+    --radius-pill: 999px;
+  }
+
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    font-size: var(--font-size-base);
+  }
+
+  {% if settings.animations_reveal == false %}
+    .reveal,
+    .reveal.visible {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  {% endif %}
+
+  {% if settings.show_quick_view == false %}
+    .product-card__overlay-btn { display: none !important; }
+  {% endif %}
+</style>

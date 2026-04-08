@@ -9,7 +9,7 @@
     show_vendor - Boolean to show/hide vendor name (default: true)
 {% endcomment %}
 
-<article class="product-card">
+<article class="product-card product-card--ratio-{{ settings.product_card_ratio | default: 'square' }}">
   <div class="product-card__badges">
     {% if product.compare_at_price_max > product.price %}
       <span class="product-card__badge product-card__badge--sale">Sale</span>
@@ -50,27 +50,33 @@
       </div>
     {% endif %}
 
-    <div class="product-card__overlay-btn">
-      <span>
-        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        Quick View
-      </span>
-    </div>
+    {% if settings.show_quick_view != false %}
+      <div class="product-card__overlay-btn">
+        <span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Quick View
+        </span>
+      </div>
+    {% endif %}
   </a>
 
   <div class="product-card__info">
-    {% if show_vendor != false and product.vendor != blank %}
-      <div class="product-card__vendor">{{ product.vendor | escape }}</div>
-    {% endif %}
+    {% unless show_vendor == false or settings.show_product_vendor == false %}
+      {% if product.vendor != blank %}
+        <div class="product-card__vendor">{{ product.vendor | escape }}</div>
+      {% endif %}
+    {% endunless %}
 
     <h3 class="product-card__title">
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
 
-    <div class="product-card__rating">
-      <span class="star-rating__stars" aria-hidden="true">★★★★★</span>
-      <span class="star-rating__count">4.8 (120)</span>
-    </div>
+    {% if settings.show_product_rating != false %}
+      <div class="product-card__rating">
+        <span class="star-rating__stars" aria-hidden="true">★★★★★</span>
+        <span class="star-rating__count">4.8 (120)</span>
+      </div>
+    {% endif %}
 
     <div class="product-card__price">
       {% if product.compare_at_price_max > product.price %}
@@ -83,7 +89,7 @@
 
     <div class="product-card__actions">
       <a href="{{ product.url }}" class="btn btn--secondary product-card__shop-btn">Shop Now</a>
-      <form action="/cart/add" method="post" class="product-card__atc-form">
+      <form action="{{ routes.cart_add_url }}" method="post" class="product-card__atc-form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/cart">

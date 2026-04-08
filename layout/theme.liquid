@@ -22,14 +22,11 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
-    <meta name="theme-color" content="#1a1a1a">
-
-    <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="theme-color" content="{{ settings.colors_accent | default: settings.brand_color | default: '#1a1a1a' }}">
 
     {{ content_for_header }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {% render 'theme-css-variables' %}
   </head>
 
   <body class="template-{{ template.name | handle }}">

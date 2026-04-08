@@ -2,8 +2,7 @@
    AITCH HOME CARE — Atlas-Inspired Professional Theme
    ========================================================= */
 
-/* — Google Fonts — */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Fonts: Theme settings → Typography (theme-css-variables.liquid loads font_face). */
 
 /* — CSS Reset & Custom Properties — */
 :root {
@@ -1064,6 +1063,14 @@ h1, h2, h3, h4, h5, h6 {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--color-bg-alt);
+}
+
+.product-card--ratio-portrait .product-card__media {
+  aspect-ratio: 4 / 5;
+}
+
+.product-card--ratio-landscape .product-card__media {
+  aspect-ratio: 4 / 3;
 }
 
 .product-card__media img {
