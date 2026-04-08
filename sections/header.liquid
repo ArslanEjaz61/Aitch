@@ -18,55 +18,53 @@
 <!-- Header -->
 <header class="header" role="banner">
   <div class="header__inner">
-    <div class="header__left">
-      <!-- Logo -->
-      <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        {% if settings.logo != blank %}
-          <img
-            class="header__logo-img"
-            src="{{ settings.logo | image_url: width: 400 }}"
-            alt="{{ shop.name | escape }}"
-            loading="eager"
-            width="{{ settings.logo_width | default: 200 }}"
-            height="auto"
-          >
-        {% else %}
-          <img
-            class="header__logo-img"
-            src="{{ 'logo.png' | asset_url }}"
-            alt="{{ shop.name | escape }}"
-            loading="eager"
-            width="200"
-            height="auto"
-          >
-        {% endif %}
-        <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
-      </a>
+    <!-- Logo (column 1) -->
+    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if settings.logo != blank %}
+        <img
+          class="header__logo-img"
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          loading="eager"
+          width="{{ settings.logo_width | default: 200 }}"
+          height="auto"
+        >
+      {% else %}
+        <img
+          class="header__logo-img"
+          src="{{ 'logo.png' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          loading="eager"
+          width="200"
+          height="auto"
+        >
+      {% endif %}
+      <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
+    </a>
 
-      <!-- Desktop Navigation — uses Shopify Menu (linklist) -->
-      <nav class="header__nav" aria-label="Main navigation">
-        {% assign main_menu = linklists[section.settings.menu] %}
-        {% for link in main_menu.links %}
-          {% if link.links.size > 0 %}
-            <div class="header__dropdown">
-              <a href="{{ link.url }}" class="header__dropdown-trigger">
-                {{ link.title | escape }}
-                <svg class="header__dropdown-arrow" viewBox="0 0 24 24" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
-              </a>
-              <div class="header__dropdown-menu">
-                {% for child_link in link.links %}
-                  <a href="{{ child_link.url }}">{{ child_link.title | escape }}</a>
-                {% endfor %}
-              </div>
+    <!-- Desktop nav — centered (column 2) -->
+    <nav class="header__nav" aria-label="Main navigation">
+      {% assign main_menu = linklists[section.settings.menu] %}
+      {% for link in main_menu.links %}
+        {% if link.links.size > 0 %}
+          <div class="header__dropdown">
+            <a href="{{ link.url }}" class="header__dropdown-trigger">
+              {{ link.title | escape }}
+              <svg class="header__dropdown-arrow" viewBox="0 0 24 24" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="header__dropdown-menu">
+              {% for child_link in link.links %}
+                <a href="{{ child_link.url }}">{{ child_link.title | escape }}</a>
+              {% endfor %}
             </div>
-          {% else %}
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-          {% endif %}
-        {% endfor %}
-      </nav>
-    </div>
+          </div>
+        {% else %}
+          <a href="{{ link.url }}">{{ link.title | escape }}</a>
+        {% endif %}
+      {% endfor %}
+    </nav>
 
-    <!-- Header Right -->
+    <!-- Utilities (column 3) -->
     <div class="header__actions">
       <a class="header__action-btn" href="{{ routes.search_url }}" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
