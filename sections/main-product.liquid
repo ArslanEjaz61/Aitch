@@ -80,13 +80,17 @@
 
     <h1 class="product-page__title">{{ product.title | escape }}</h1>
 
-    <!-- Star Rating -->
-    <div class="product-page__rating">
-      <div class="product-page__stars" aria-hidden="true">★★★★★</div>
-      <span class="product-page__rating-score">4.8</span>
-      <span class="product-page__rating-divider">·</span>
-      <a href="#product-reviews" class="product-page__rating-count">120 reviews</a>
-    </div>
+    <p class="product-page__promise-row">
+      {% if current_variant.available %}
+        <span id="pdp-stock-promise" class="product-page__promise product-page__promise--ok">In stock</span>
+      {% else %}
+        <span id="pdp-stock-promise" class="product-page__promise product-page__promise--muted">Currently unavailable</span>
+      {% endif %}
+      <span class="product-page__promise-sep" aria-hidden="true">·</span>
+      <span>Ships USA &amp; Canada</span>
+      <span class="product-page__promise-sep" aria-hidden="true">·</span>
+      <span>30-day returns</span>
+    </p>
 
     <!-- Price -->
     <div class="product-page__price">
@@ -114,9 +118,14 @@
       {% if product.variants.size > 1 %}
         <div class="product-page__variant-wrap">
           <label for="variant-select" class="product-page__field-label">Option</label>
-          <select id="variant-select" class="product-page__select" onchange="syncVariant(this.value)">
+          <select id="variant-select" class="product-page__select" onchange="syncVariantSelect(this)">
             {% for variant in product.variants %}
-              <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %}>
+              <option
+                value="{{ variant.id }}"
+                data-available="{{ variant.available }}"
+                data-price="{{ variant.price | money }}"
+                {% if variant == current_variant %}selected{% endif %}
+              >
                 {{ variant.title | escape }} — {{ variant.price | money }}
               </option>
             {% endfor %}
@@ -131,7 +140,7 @@
           <input type="number" id="pdp-qty" value="1" min="1" class="product-page__qty-input" aria-label="Quantity">
           <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('pdp-qty');q.value=parseInt(q.value)+1;" aria-label="Increase quantity">+</button>
         </div>
-        <form action="/cart/add" method="post" style="flex:1;">
+        <form action="{{ routes.cart_add_url }}" method="post" style="flex:1;">
           <input type="hidden" name="id" id="atc-variant-id" value="{{ current_variant.id }}">
           <input type="hidden" name="return_to" value="/cart">
           <input type="hidden" name="quantity" id="atc-qty" value="1">
@@ -144,22 +153,34 @@
       </div>
 
       <!-- Buy Now -->
-      <form action="/cart/add" method="post" class="product-page__buy-now-form">
+      <form action="{{ routes.cart_add_url }}" method="post" class="product-page__buy-now-form">
         <input type="hidden" name="id" id="buy-now-variant-id" value="{{ current_variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/checkout">
-        <button type="submit" class="btn btn--secondary btn--full product-page__buy-now-btn">
+        <button type="submit" id="pdp-buy-now-btn" class="btn btn--secondary btn--full product-page__buy-now-btn">
           Buy Now — {{ current_variant.price | money }}
         </button>
       </form>
     </div>
 
     <script>
-      function syncVariant(variantId) {
+      function syncVariantSelect(sel) {
+        var opt = sel.options[sel.selectedIndex];
+        var variantId = sel.value;
         var atcId = document.getElementById('atc-variant-id');
         var buyId = document.getElementById('buy-now-variant-id');
         if (atcId) atcId.value = variantId;
         if (buyId) buyId.value = variantId;
+        var stock = document.getElementById('pdp-stock-promise');
+        if (stock && opt) {
+          var ok = opt.getAttribute('data-available') === 'true';
+          stock.textContent = ok ? 'In stock' : 'Currently unavailable';
+          stock.className = 'product-page__promise ' + (ok ? 'product-page__promise--ok' : 'product-page__promise--muted');
+        }
+        var buyBtn = document.getElementById('pdp-buy-now-btn');
+        if (buyBtn && opt && opt.getAttribute('data-price')) {
+          buyBtn.textContent = 'Buy Now — ' + opt.getAttribute('data-price');
+        }
       }
     </script>
 
@@ -222,12 +243,12 @@
               <span class="product-tabs__detail-value">{{ product.type | escape }}</span>
             </div>
           {% endif %}
-          {% for tag in product.tags %}
-            <div class="product-tabs__detail-row">
-              <span class="product-tabs__detail-label">Tag</span>
-              <span class="product-tabs__detail-value">{{ tag | escape }}</span>
+          {% if product.tags.size > 0 %}
+            <div class="product-tabs__detail-row product-tabs__detail-row--tags">
+              <span class="product-tabs__detail-label">Highlights</span>
+              <span class="product-tabs__detail-value">{{ product.tags | join: ', ' | escape }}</span>
             </div>
-          {% endfor %}
+          {% endif %}
         </div>
       </div>
 

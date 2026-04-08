@@ -184,13 +184,6 @@
       },
       {
         "type": "checkbox",
-        "id": "show_product_rating",
-        "label": "Show star rating on product cards",
-        "default": true,
-        "info": "Display-only styling; connect a reviews app for real ratings later."
-      },
-      {
-        "type": "checkbox",
         "id": "show_quick_view",
         "label": "Show “Quick view” on product image (desktop hover)",
         "default": true

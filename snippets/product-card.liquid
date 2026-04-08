@@ -71,13 +71,6 @@
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
 
-    {% if settings.show_product_rating != false %}
-      <div class="product-card__rating">
-        <span class="star-rating__stars" aria-hidden="true">★★★★★</span>
-        <span class="star-rating__count">4.8 (120)</span>
-      </div>
-    {% endif %}
-
     <div class="product-card__price">
       {% if product.compare_at_price_max > product.price %}
         <span class="product-card__price-sale">{{ product.price | money }}</span>

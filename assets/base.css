@@ -1182,24 +1182,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-accent);
 }
 
-/* Star rating on card */
-.product-card__rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.star-rating__stars {
-  color: #f5a623;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-
-.star-rating__count {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-}
-
 .product-card__price {
   display: flex;
   align-items: baseline;
@@ -2036,38 +2018,35 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-md);
 }
 
-/* Star Rating on Product Page */
-.product-page__rating {
+/* PDP promise row (shipping / returns — replaces placeholder ratings) */
+.product-page__promise-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
-}
-
-.product-page__stars {
-  color: #f5a623;
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-
-.product-page__rating-score {
-  font-weight: 700;
-  font-size: var(--font-size-base);
-}
-
-.product-page__rating-divider {
-  color: var(--color-text-tertiary);
-}
-
-.product-page__rating-count {
+  gap: var(--space-xs) var(--space-sm);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  margin: calc(-1 * var(--space-sm)) 0 var(--space-lg);
+  line-height: 1.5;
 }
 
-.product-page__rating-count:hover {
+.product-page__promise {
+  font-weight: 600;
   color: var(--color-text);
+}
+
+.product-page__promise--ok {
+  color: var(--color-success);
+}
+
+.product-page__promise--muted {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.product-page__promise-sep {
+  color: var(--color-text-tertiary);
+  user-select: none;
 }
 
 /* Price */
@@ -2398,6 +2377,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .product-tabs__detail-row:last-child {
   border-bottom: none;
+}
+
+.product-tabs__detail-row--tags {
+  align-items: flex-start;
+}
+
+.product-tabs__detail-row--tags .product-tabs__detail-value {
+  line-height: 1.55;
 }
 
 .product-tabs__detail-label {
