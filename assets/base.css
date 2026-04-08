@@ -660,35 +660,6 @@ h1, h2, h3, h4, h5, h6 {
   padding-right: var(--space-3xl);
 }
 
-.hero__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 6px 14px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-lg);
-}
-
-.hero__eyebrow-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--color-success);
-  border-radius: 50%;
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.4); }
-}
-
 .hero__heading {
   font-size: var(--font-size-hero);
   margin-top: 0;
@@ -698,7 +669,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
 }
 
-/* Jab kicker/eyebrow na ho — heading seedha, balanced top spacing */
 .hero__content > .hero__heading:first-child {
   margin-top: 0;
 }

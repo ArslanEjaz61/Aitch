@@ -10,18 +10,11 @@
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__content">
-      {% if section.settings.kicker != blank %}
-        <div class="hero__eyebrow fade-in">
-          <span class="hero__eyebrow-dot"></span>
-          <span>{{ section.settings.kicker | escape }}</span>
-        </div>
-      {% endif %}
+      <h1 class="hero__heading fade-in">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
 
-      <h1 class="hero__heading fade-in fade-in-delay-1">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
+      <p class="hero__description fade-in fade-in-delay-1">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
 
-      <p class="hero__description fade-in fade-in-delay-2">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
-
-      <div class="hero__actions fade-in fade-in-delay-3">
+      <div class="hero__actions fade-in fade-in-delay-2">
         {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
           <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
             <span>{{ section.settings.primary_label | escape }}</span>
@@ -406,13 +399,6 @@
     {
       "type": "header",
       "content": "Hero section"
-    },
-    {
-      "type": "text",
-      "id": "kicker",
-      "label": "Kicker / Eyebrow (optional)",
-      "info": "Leave empty to hide the small line above the hero heading.",
-      "default": ""
     },
     {
       "type": "text",
