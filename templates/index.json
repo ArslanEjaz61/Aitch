@@ -85,10 +85,10 @@
         "categories_home": {
           "type": "category",
           "settings": {
-            "collection": "home-convenience",
+            "collection": "home-convenience-items",
             "title": "Home convenience items",
             "subtitle": "Organize & simplify",
-            "link": "/collections/home-convenience"
+            "link": "/collections/home-convenience-items"
           }
         },
         "categories_kitchen": {

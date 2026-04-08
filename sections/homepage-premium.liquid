@@ -257,7 +257,9 @@
               if cat == blank and link_for_check contains '/collections/'
                 assign lh = link_for_check | split: '/collections/' | last | split: '/' | first | split: '?' | first
                 if lh != blank and collections[lh] == blank
-                  assign cat_url = routes.all_products_collection_url
+                  if lh == 'home-convenience' and collections['home-convenience-items'] != blank
+                    assign cat_url = collections['home-convenience-items'].url
+                  endif
                 endif
               endif
               assign cat_title = block.settings.title
@@ -274,7 +276,7 @@
                 if cat.handle == 'kitchen-products'
                   assign force_theme_asset = true
                   assign cat_fallback = 'category-kitchen.jpg'
-                elsif cat.handle == 'home-convenience'
+                elsif cat.handle == 'home-convenience' or cat.handle == 'home-convenience-items'
                   assign force_theme_asset = true
                   assign cat_fallback = 'category-home.jpg'
                 elsif cat.handle == 'cleaning-tools'
@@ -891,7 +893,7 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection",
-          "info": "Links this card to the collection page (shows that collection’s products). Create collections in Admin → Products → Collections with matching handles if you use the theme defaults."
+          "info": "Links this card to the collection page. Default handle for Home convenience is home-convenience-items (must match Admin → Collections)."
         },
         { "type": "image_picker", "id": "image", "label": "Image (optional)" },
         {
@@ -935,7 +937,7 @@
           "settings": {
             "title": "Home convenience items",
             "subtitle": "Organize & simplify",
-            "link": "/collections/home-convenience"
+            "link": "/collections/home-convenience-items"
           }
         },
         {

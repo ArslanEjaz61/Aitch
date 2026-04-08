@@ -54,7 +54,7 @@
             </a>
             <div class="header__dropdown-menu">
               {% for child_link in link.links %}
-                <a href="{{ child_link.url }}">{{ child_link.title | escape }}</a>
+                <a href="{% render 'nav-resolved-url', nav_link: child_link %}">{{ child_link.title | escape }}</a>
               {% endfor %}
             </div>
           </div>
@@ -107,7 +107,7 @@
       <a href="{{ link.url }}">{{ link.title | escape }}</a>
       {% if link.links.size > 0 %}
         {% for child_link in link.links %}
-          <a href="{{ child_link.url }}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
+          <a href="{% render 'nav-resolved-url', nav_link: child_link %}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
         {% endfor %}
       {% endif %}
     {% endfor %}
@@ -130,7 +130,8 @@
       "type": "link_list",
       "id": "menu",
       "label": "Menu",
-      "default": "main-menu"
+      "default": "main-menu",
+      "info": "Submenu links are taken from Admin → Navigation. If “Home convenience items” still opens All products, the theme maps that label to the collection handle home-convenience-items when it exists."
     },
     {
       "type": "header",

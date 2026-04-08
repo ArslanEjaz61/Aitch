@@ -1,0 +1,15 @@
+{% comment %}
+  When Navigation still links to /collections/all or an old handle, map known
+  submenu titles to the real collection handle (store: home-convenience-items).
+  Pass: nav_link — a Shopify link object.
+{% endcomment %}
+{% liquid
+  assign nav_resolved_href = nav_link.url
+  assign lt = nav_link.title | downcase | strip
+  if lt contains 'home convenience'
+    if collections['home-convenience-items'] != blank
+      assign nav_resolved_href = collections['home-convenience-items'].url
+    endif
+  endif
+%}
+{{- nav_resolved_href -}}
