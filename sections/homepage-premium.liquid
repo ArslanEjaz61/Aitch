@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="hero__media">
+    <div class="hero__media hero-media-entrance">
       {% if hero_image != blank %}
         <img
           srcset="
@@ -63,15 +63,15 @@
   <!-- Stats Bar -->
   <div class="hero__stats">
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_1_value | default: '20+' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_1_value | default: '20+' | escape }}">{{ section.settings.stat_1_value | default: '20+' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_1_label | default: 'Curated Products' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_2_label | default: 'Fast Shipping' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_3_value | default: '30 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_3_value | default: '30 Day' | escape }}">{{ section.settings.stat_3_value | default: '30 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_3_label | default: 'Easy Returns' | escape }}</div>
     </div>
   </div>
@@ -80,7 +80,7 @@
 <!-- ============================
      TRUST BAR
      ============================ -->
-<section class="trust-bar reveal">
+<section class="trust-bar reveal reveal--stagger">
   <div class="trust-bar__inner">
     <div class="trust-bar__item">
       <div class="trust-bar__icon">
@@ -124,7 +124,7 @@
 <!-- ============================
      FEATURED PRODUCTS GRID
      ============================ -->
-<section class="section-spacing reveal">
+<section class="section-spacing reveal reveal--stagger">
   <div class="container">
     <div class="section-header">
       <div class="section-header__text">
@@ -158,7 +158,7 @@
 <!-- ============================
      COLLECTION BANNER — Cleaning
      ============================ -->
-<section class="collection-banner reveal">
+<section class="collection-banner reveal reveal--stagger">
   <div class="collection-banner__content">
     <div class="collection-banner__eyebrow">{{ section.settings.banner_1_eyebrow | default: 'Top Category' | escape }}</div>
     <h2 class="collection-banner__heading">{{ section.settings.banner_1_heading | default: 'Cleaning Tools' | escape }}</h2>
@@ -194,7 +194,7 @@
 <!-- ============================
      COLLECTION BANNER — Kitchen (Reversed)
      ============================ -->
-<section class="collection-banner collection-banner--reverse reveal">
+<section class="collection-banner collection-banner--reverse reveal reveal--stagger">
   <div class="collection-banner__content">
     <div class="collection-banner__eyebrow">{{ section.settings.banner_2_eyebrow | default: 'Kitchen Essentials' | escape }}</div>
     <h2 class="collection-banner__heading">{{ section.settings.banner_2_heading | default: 'Kitchen Problem Solvers' | escape }}</h2>
@@ -230,7 +230,7 @@
 <!-- ============================
      CATEGORIES GRID
      ============================ -->
-<section class="section-spacing reveal">
+<section class="section-spacing reveal reveal--stagger">
   <div class="container">
     <div class="section-header">
       <div class="section-header__text">
@@ -286,7 +286,7 @@
 <!-- ============================
      TESTIMONIALS
      ============================ -->
-<section class="testimonials section-spacing reveal">
+<section class="testimonials section-spacing reveal reveal--stagger">
   <div class="container">
     <div class="section-header">
       <div class="section-header__text">
@@ -363,7 +363,7 @@
 <!-- ============================
      NEWSLETTER
      ============================ -->
-<section class="newsletter reveal">
+<section class="newsletter reveal reveal--stagger">
   <div class="newsletter__inner">
     <div>
       <h2 class="newsletter__heading">{{ section.settings.newsletter_heading | default: 'Join the Aitch Home Care family' | escape }}</h2>

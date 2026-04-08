@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html class="no-js" lang="{{ request.locale.iso_code }}" data-animations="{% if settings.animations_reveal %}on{% else %}off{% endif %}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,40 +40,23 @@
 
     {% sections 'footer-group' %}
 
-    <!-- Scroll Animations -->
+    {% if settings.animations_reveal %}
+      <script src="{{ 'theme-animations.js' | asset_url }}" defer></script>
+    {% else %}
+      <script>
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+      </script>
+    {% endif %}
+
     <script>
-      // Header scroll effect
       (function() {
         var header = document.querySelector('.header');
         if (!header) return;
-        var lastScroll = 0;
         window.addEventListener('scroll', function() {
-          var scrollY = window.pageYOffset;
-          if (scrollY > 50) {
-            header.classList.add('scrolled');
-          } else {
-            header.classList.remove('scrolled');
-          }
-          lastScroll = scrollY;
+          if (window.pageYOffset > 50) header.classList.add('scrolled');
+          else header.classList.remove('scrolled');
         }, { passive: true });
       })();
-
-      // Reveal on scroll
-      (function() {
-        var reveals = document.querySelectorAll('.reveal');
-        if (!reveals.length) return;
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        reveals.forEach(function(el) { observer.observe(el); });
-      })();
-
-      // Mobile menu
       (function() {
         var toggle = document.querySelector('.header__menu-toggle');
         var menu = document.querySelector('.mobile-menu');

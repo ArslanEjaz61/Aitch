@@ -3097,6 +3097,162 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
+/* — Staggered children (when parent .reveal gets .visible) — */
+.reveal--stagger:not(.visible) .trust-bar__item,
+.reveal--stagger:not(.visible) .product-grid .product-card,
+.reveal--stagger:not(.visible) .collection-banner__content > *,
+.reveal--stagger:not(.visible) .testimonials-grid .testimonial-card,
+.reveal--stagger:not(.visible) .categories-grid .category-card,
+.reveal--stagger:not(.visible) .section-header > *,
+.reveal--stagger:not(.visible) .newsletter__inner > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal--stagger.visible .trust-bar__item,
+.reveal--stagger.visible .product-grid .product-card,
+.reveal--stagger.visible .collection-banner__content > *,
+.reveal--stagger.visible .testimonials-grid .testimonial-card,
+.reveal--stagger.visible .categories-grid .category-card,
+.reveal--stagger.visible .section-header > *,
+.reveal--stagger.visible .newsletter__inner > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal--stagger.visible .trust-bar__item:nth-child(1) { transition-delay: 0.04s; }
+.reveal--stagger.visible .trust-bar__item:nth-child(2) { transition-delay: 0.1s; }
+.reveal--stagger.visible .trust-bar__item:nth-child(3) { transition-delay: 0.16s; }
+.reveal--stagger.visible .trust-bar__item:nth-child(4) { transition-delay: 0.22s; }
+
+.reveal--stagger.visible .product-grid .product-card:nth-child(1) { transition-delay: 0.04s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(2) { transition-delay: 0.09s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(3) { transition-delay: 0.14s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(4) { transition-delay: 0.19s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(5) { transition-delay: 0.24s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(6) { transition-delay: 0.29s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(7) { transition-delay: 0.34s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(8) { transition-delay: 0.39s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(9) { transition-delay: 0.44s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(10) { transition-delay: 0.49s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(11) { transition-delay: 0.54s; }
+.reveal--stagger.visible .product-grid .product-card:nth-child(12) { transition-delay: 0.59s; }
+
+.reveal--stagger.visible .collection-banner__content > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal--stagger.visible .collection-banner__content > *:nth-child(2) { transition-delay: 0.1s; }
+.reveal--stagger.visible .collection-banner__content > *:nth-child(3) { transition-delay: 0.15s; }
+.reveal--stagger.visible .collection-banner__content > *:nth-child(4) { transition-delay: 0.2s; }
+
+.reveal--stagger.visible .testimonials-grid .testimonial-card:nth-child(1) { transition-delay: 0.06s; }
+.reveal--stagger.visible .testimonials-grid .testimonial-card:nth-child(2) { transition-delay: 0.12s; }
+.reveal--stagger.visible .testimonials-grid .testimonial-card:nth-child(3) { transition-delay: 0.18s; }
+
+.reveal--stagger.visible .categories-grid .category-card:nth-child(1) { transition-delay: 0.05s; }
+.reveal--stagger.visible .categories-grid .category-card:nth-child(2) { transition-delay: 0.11s; }
+.reveal--stagger.visible .categories-grid .category-card:nth-child(3) { transition-delay: 0.17s; }
+.reveal--stagger.visible .categories-grid .category-card:nth-child(4) { transition-delay: 0.23s; }
+.reveal--stagger.visible .categories-grid .category-card:nth-child(5) { transition-delay: 0.29s; }
+.reveal--stagger.visible .categories-grid .category-card:nth-child(6) { transition-delay: 0.35s; }
+
+.reveal--stagger.visible .section-header > *:nth-child(1) { transition-delay: 0.04s; }
+.reveal--stagger.visible .section-header > *:nth-child(2) { transition-delay: 0.12s; }
+
+.reveal--stagger.visible .newsletter__inner > *:nth-child(1) { transition-delay: 0.06s; }
+.reveal--stagger.visible .newsletter__inner > *:nth-child(2) { transition-delay: 0.14s; }
+
+/* Hero image subtle entrance */
+.hero-media-entrance img {
+  animation: heroMediaIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes heroMediaIn {
+  from {
+    opacity: 0.92;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Cart badge */
+@keyframes cartCountPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.header__cart-count--pop {
+  animation: cartCountPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Buttons: snappier micro-motion */
+.btn--primary {
+  transition:
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn--secondary {
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn--secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--icon-right svg {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn--icon-right:hover svg {
+  transform: translateX(5px);
+}
+
+/* Product card: smoother second-image crossfade */
+.product-card__media-hover {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card__media img:first-of-type {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media-entrance img {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .reveal--stagger .trust-bar__item,
+  .reveal--stagger .product-grid .product-card,
+  .reveal--stagger .collection-banner__content > *,
+  .reveal--stagger .testimonials-grid .testimonial-card,
+  .reveal--stagger .categories-grid .category-card,
+  .reveal--stagger .section-header,
+  .reveal--stagger .newsletter__inner > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .header__cart-count--pop {
+    animation: none;
+  }
+  .btn--primary:hover,
+  .btn--secondary:hover {
+    transform: none;
+  }
+}
+
 /* =========================================================
    UTILITIES
    ========================================================= */
