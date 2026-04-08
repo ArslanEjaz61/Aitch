@@ -71,7 +71,41 @@
         "newsletter_text": "Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox.",
         "newsletter_placeholder": "Enter your email address",
         "newsletter_btn": "Subscribe"
-      }
+      },
+      "blocks": {
+        "categories_cleaning": {
+          "type": "category",
+          "settings": {
+            "collection": "cleaning-tools",
+            "title": "Cleaning Tools",
+            "subtitle": "Scrub, steam & shine",
+            "link": "/collections/cleaning-tools"
+          }
+        },
+        "categories_home": {
+          "type": "category",
+          "settings": {
+            "collection": "home-convenience",
+            "title": "Home convenience items",
+            "subtitle": "Organize & simplify",
+            "link": "/collections/home-convenience"
+          }
+        },
+        "categories_kitchen": {
+          "type": "category",
+          "settings": {
+            "collection": "kitchen-products",
+            "title": "Kitchen products",
+            "subtitle": "Cook, prep & store",
+            "link": "/collections/kitchen-products"
+          }
+        }
+      },
+      "block_order": [
+        "categories_cleaning",
+        "categories_home",
+        "categories_kitchen"
+      ]
     }
   },
   "order": [

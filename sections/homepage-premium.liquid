@@ -244,37 +244,73 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'category' %}
-            <a class="category-card" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+            {% liquid
+              assign cat = block.settings.collection
+              assign cat_url = block.settings.link
+              if cat != blank
+                assign cat_url = cat.url
+              endif
+              if cat_url == blank
+                assign cat_url = routes.all_products_collection_url
+              endif
+              assign cat_title = block.settings.title
+              if cat_title == blank and cat != blank
+                assign cat_title = cat.title
+              endif
+              if cat_title == blank
+                assign cat_title = 'Category'
+              endif
+            %}
+            <a
+              class="category-card"
+              href="{{ cat_url }}"
+              aria-label="{{ cat_title | escape }} — view products in this category"
+              {{ block.shopify_attributes }}
+            >
               {% if block.settings.image != blank %}
                 <img
                   src="{{ block.settings.image | image_url: width: 800 }}"
-                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                  alt="{{ block.settings.image.alt | default: cat_title | escape }}"
                   loading="lazy"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                 >
+              {% elsif cat != blank and cat.featured_image != blank %}
+                <img
+                  src="{{ cat.featured_image | image_url: width: 800 }}"
+                  alt="{{ cat.featured_image.alt | default: cat_title | escape }}"
+                  loading="lazy"
+                  width="{{ cat.featured_image.width }}"
+                  height="{{ cat.featured_image.height }}"
+                >
               {% else %}
                 {% liquid
                   assign fallback_img = 'category-cleaning.jpg'
-                  if block.settings.title contains 'Kitchen'
+                  if cat_title contains 'Kitchen'
                     assign fallback_img = 'category-kitchen.jpg'
-                  elsif block.settings.title contains 'Home'
+                  elsif cat_title contains 'Home'
                     assign fallback_img = 'category-home.jpg'
                   endif
                 %}
                 <img
                   src="{{ fallback_img | asset_url }}"
-                  alt="{{ block.settings.title | escape }}"
+                  alt="{{ cat_title | escape }}"
                   loading="lazy"
                   width="800"
-                  height="auto"
+                  height="600"
                   style="object-fit: cover; width: 100%; height: 100%;"
                 >
               {% endif %}
               <div class="category-card__overlay"></div>
               <div class="category-card__content">
-                <h3 class="category-card__title">{{ block.settings.title | escape }}</h3>
-                <div class="category-card__count">{{ block.settings.subtitle | default: 'Shop now →' | escape }}</div>
+                <h3 class="category-card__title">{{ cat_title | escape }}</h3>
+                <div class="category-card__meta">
+                  {%- if cat != blank and cat.products_count > 0 -%}
+                    <span class="category-card__badge">{{ cat.products_count }} {{ cat.products_count | pluralize: 'product', 'products' }}</span>
+                    <span class="category-card__sep" aria-hidden="true">·</span>
+                  {%- endif -%}
+                  <span class="category-card__cta">{{ block.settings.subtitle | default: 'Shop collection' | escape }}</span>
+                </div>
               </div>
             </a>
         {% endcase %}
@@ -804,10 +840,33 @@
       "type": "category",
       "name": "Category",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Cleaning" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "8 products" },
-        { "type": "url", "id": "link", "label": "Link" }
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Links this card to the collection page (shows that collection’s products). Create collections in Admin → Products → Collections with matching handles if you use the theme defaults."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category",
+          "info": "Shown on the card. If empty, the collection title is used."
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Tagline",
+          "default": "Shop collection",
+          "info": "Short line under the title (e.g. scrub, organize, cook)."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link",
+          "info": "Optional. Used only when no collection is selected."
+        }
       ]
     }
   ],
@@ -816,9 +875,30 @@
     {
       "name": "Premium homepage",
       "blocks": [
-        { "type": "category", "settings": { "title": "Cleaning Tools", "subtitle": "8 products" } },
-        { "type": "category", "settings": { "title": "Kitchen Essentials", "subtitle": "6 products" } },
-        { "type": "category", "settings": { "title": "Home Convenience", "subtitle": "6 products" } }
+        {
+          "type": "category",
+          "settings": {
+            "title": "Cleaning Tools",
+            "subtitle": "Scrub, steam & shine",
+            "link": "/collections/cleaning-tools"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Home convenience items",
+            "subtitle": "Organize & simplify",
+            "link": "/collections/home-convenience"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Kitchen products",
+            "subtitle": "Cook, prep & store",
+            "link": "/collections/kitchen-products"
+          }
+        }
       ]
     }
   ]
