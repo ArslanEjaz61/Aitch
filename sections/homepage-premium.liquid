@@ -253,12 +253,25 @@
               if cat_url == blank
                 assign cat_url = routes.all_products_collection_url
               endif
+              assign link_for_check = block.settings.link | default: ''
+              if cat == blank and link_for_check contains '/collections/'
+                assign lh = link_for_check | split: '/collections/' | last | split: '/' | first | split: '?' | first
+                if lh != blank and collections[lh] == blank
+                  assign cat_url = routes.all_products_collection_url
+                endif
+              endif
               assign cat_title = block.settings.title
               if cat_title == blank and cat != blank
                 assign cat_title = cat.title
               endif
               if cat_title == blank
                 assign cat_title = 'Category'
+              endif
+              assign cat_fallback = 'category-cleaning.jpg'
+              if cat_title contains 'Kitchen'
+                assign cat_fallback = 'category-kitchen.jpg'
+              elsif cat_title contains 'Home'
+                assign cat_fallback = 'category-home.jpg'
               endif
             %}
             <a
@@ -275,6 +288,15 @@
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                 >
+              {% elsif cat_title contains 'Kitchen' or cat_title contains 'Home' or cat_title contains 'Cleaning' %}
+                <img
+                  src="{{ cat_fallback | asset_url }}"
+                  alt="{{ cat_title | escape }}"
+                  loading="lazy"
+                  width="800"
+                  height="600"
+                  style="object-fit: cover; width: 100%; height: 100%;"
+                >
               {% elsif cat != blank and cat.featured_image != blank %}
                 <img
                   src="{{ cat.featured_image | image_url: width: 800 }}"
@@ -284,16 +306,8 @@
                   height="{{ cat.featured_image.height }}"
                 >
               {% else %}
-                {% liquid
-                  assign fallback_img = 'category-cleaning.jpg'
-                  if cat_title contains 'Kitchen'
-                    assign fallback_img = 'category-kitchen.jpg'
-                  elsif cat_title contains 'Home'
-                    assign fallback_img = 'category-home.jpg'
-                  endif
-                %}
                 <img
-                  src="{{ fallback_img | asset_url }}"
+                  src="{{ cat_fallback | asset_url }}"
                   alt="{{ cat_title | escape }}"
                   loading="lazy"
                   width="800"
