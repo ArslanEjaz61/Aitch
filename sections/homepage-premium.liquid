@@ -10,10 +10,12 @@
 <section class="hero">
   <div class="hero__inner">
     <div class="hero__content">
-      <div class="hero__eyebrow fade-in">
-        <span class="hero__eyebrow-dot"></span>
-        <span>{{ section.settings.kicker | default: 'Smart home solutions — delivered' | escape }}</span>
-      </div>
+      {% if section.settings.kicker != blank %}
+        <div class="hero__eyebrow fade-in">
+          <span class="hero__eyebrow-dot"></span>
+          <span>{{ section.settings.kicker | escape }}</span>
+        </div>
+      {% endif %}
 
       <h1 class="hero__heading fade-in fade-in-delay-1">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
 
@@ -408,8 +410,9 @@
     {
       "type": "text",
       "id": "kicker",
-      "label": "Kicker / Eyebrow",
-      "default": "Smart home solutions — delivered"
+      "label": "Kicker / Eyebrow (optional)",
+      "info": "Leave empty to hide the small line above the hero heading.",
+      "default": ""
     },
     {
       "type": "text",

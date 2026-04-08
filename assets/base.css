@@ -691,10 +691,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero__heading {
   font-size: var(--font-size-hero);
+  margin-top: 0;
   margin-bottom: var(--space-lg);
   line-height: 1.1;
   letter-spacing: -0.04em;
   font-weight: 800;
+}
+
+/* Jab kicker/eyebrow na ho — heading seedha, balanced top spacing */
+.hero__content > .hero__heading:first-child {
+  margin-top: 0;
 }
 
 .hero__description {
