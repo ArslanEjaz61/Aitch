@@ -267,11 +267,44 @@
               if cat_title == blank
                 assign cat_title = 'Category'
               endif
+              assign cat_title_lower = cat_title | downcase
               assign cat_fallback = 'category-cleaning.jpg'
-              if cat_title contains 'Kitchen'
-                assign cat_fallback = 'category-kitchen.jpg'
-              elsif cat_title contains 'Home'
-                assign cat_fallback = 'category-home.jpg'
+              assign force_theme_asset = false
+              if cat != blank
+                if cat.handle == 'kitchen-products'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif cat.handle == 'home-convenience'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif cat.handle == 'cleaning-tools'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
+              endif
+              if force_theme_asset == false
+                if link_for_check contains 'kitchen-products'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif link_for_check contains 'home-convenience'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif link_for_check contains 'cleaning-tools'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
+              endif
+              if force_theme_asset == false
+                if cat_title_lower contains 'kitchen'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif cat_title_lower contains 'home'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif cat_title_lower contains 'cleaning'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
               endif
             %}
             <a
@@ -280,15 +313,7 @@
               aria-label="{{ cat_title | escape }} — view products in this category"
               {{ block.shopify_attributes }}
             >
-              {% if block.settings.image != blank %}
-                <img
-                  src="{{ block.settings.image | image_url: width: 800 }}"
-                  alt="{{ block.settings.image.alt | default: cat_title | escape }}"
-                  loading="lazy"
-                  width="{{ block.settings.image.width }}"
-                  height="{{ block.settings.image.height }}"
-                >
-              {% elsif cat_title contains 'Kitchen' or cat_title contains 'Home' or cat_title contains 'Cleaning' %}
+              {% if force_theme_asset %}
                 <img
                   src="{{ cat_fallback | asset_url }}"
                   alt="{{ cat_title | escape }}"
@@ -296,6 +321,14 @@
                   width="800"
                   height="600"
                   style="object-fit: cover; width: 100%; height: 100%;"
+                >
+              {% elsif block.settings.image != blank %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.image.alt | default: cat_title | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
                 >
               {% elsif cat != blank and cat.featured_image != blank %}
                 <img
