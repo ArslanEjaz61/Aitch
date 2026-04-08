@@ -16,6 +16,14 @@
   assign page_w = settings.page_width | default: 1400
   assign btn_r = settings.buttons_radius | default: 4
   assign base_px = settings.type_body_size | default: 14
+  # logo_width baseline 140 → ~48px header height; scales in base.css via CSS vars
+  assign lw = settings.logo_width | default: 180
+  assign logo_h = lw | times: 48 | divided_by: 140
+  assign logo_max_w = lw | times: 220 | divided_by: 140
+  assign logo_h_md = lw | times: 40 | divided_by: 140
+  assign logo_max_w_md = lw | times: 200 | divided_by: 140
+  assign logo_h_sm = lw | times: 32 | divided_by: 140
+  assign logo_max_w_sm = lw | times: 160 | divided_by: 140
 %}
 <style id="theme-font-faces">
   {{ settings.type_header_font | font_face: font_display: 'swap' }}
@@ -53,6 +61,13 @@
     --radius-md: {{ btn_r | plus: 4 }}px;
     --radius-lg: {{ btn_r | plus: 8 }}px;
     --radius-pill: 999px;
+
+    --header-logo-height: {{ logo_h }}px;
+    --header-logo-max-width: {{ logo_max_w }}px;
+    --header-logo-height-md: {{ logo_h_md }}px;
+    --header-logo-max-width-md: {{ logo_max_w_md }}px;
+    --header-logo-height-sm: {{ logo_h_sm }}px;
+    --header-logo-max-width-sm: {{ logo_max_w_sm }}px;
   }
 
   html {

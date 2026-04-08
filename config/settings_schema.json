@@ -19,7 +19,7 @@
         "min": 60,
         "max": 250,
         "step": 10,
-        "default": 140,
+        "default": 180,
         "unit": "px"
       },
       {
