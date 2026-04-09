@@ -78,7 +78,10 @@
       <div class="product-page__vendor">{{ product.vendor | escape }}</div>
     {% endif %}
 
-    <h1 class="product-page__title">{{ product.title | escape }}</h1>
+    <div class="product-page__title-block">
+      <h1 class="product-page__title">{{ product.title | escape }}</h1>
+      {% render 'product-rating', product: product %}
+    </div>
 
     <p class="product-page__promise-row">
       {% if current_variant.available %}
@@ -163,6 +166,21 @@
       </form>
     </div>
 
+    <ul class="product-page__trust-bullets" role="list">
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <span><strong>Free shipping</strong> on orders $50+</span>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        <span><strong>30-day returns</strong> — hassle-free</span>
+      </li>
+      <li>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span><strong>Secure checkout</strong> — SSL encrypted</span>
+      </li>
+    </ul>
+
     <script>
       function syncVariantSelect(sel) {
         var opt = sel.options[sel.selectedIndex];
@@ -183,31 +201,6 @@
         }
       }
     </script>
-
-    <!-- Trust Badges -->
-    <div class="product-page__trust">
-      <div class="product-page__trust-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        <div>
-          <strong>Free Shipping</strong>
-          <span>Orders $50+</span>
-        </div>
-      </div>
-      <div class="product-page__trust-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <div>
-          <strong>Secure Checkout</strong>
-          <span>SSL Encrypted</span>
-        </div>
-      </div>
-      <div class="product-page__trust-item">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-        <div>
-          <strong>30-Day Returns</strong>
-          <span>Money back</span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -224,7 +217,7 @@
       </div>
 
       <div id="tab-desc" class="product-tabs__panel active">
-        <div class="product-page__description">
+        <div class="product-page__description product-page__description--rte">
           {{ product.description }}
         </div>
       </div>

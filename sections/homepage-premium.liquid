@@ -16,14 +16,14 @@
 
       <div class="hero__actions fade-in fade-in-delay-2">
         {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
-          <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
+          <a class="btn btn--primary btn--icon-right btn--lg" href="{{ section.settings.primary_link }}">
             <span>{{ section.settings.primary_label | escape }}</span>
             <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
           </a>
         {% endif %}
 
         {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
-          <a class="btn btn--secondary" href="{{ section.settings.secondary_link }}">
+          <a class="btn btn--secondary btn--lg" href="{{ section.settings.secondary_link }}">
             <span>{{ section.settings.secondary_label | escape }}</span>
           </a>
         {% endif %}
@@ -67,7 +67,7 @@
       <div class="hero__stat-label">{{ section.settings.stat_1_label | default: 'Curated Products' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2–5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2–5 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_2_label | default: 'Fast Shipping' | escape }}</div>
     </div>
     <div class="hero__stat">
@@ -133,7 +133,7 @@
         <p class="section-header__subtitle">{{ section.settings.grid_subheading | default: 'Our most popular products that solve everyday home problems.' | escape }}</p>
       </div>
       {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
-        <a class="btn btn--secondary" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
+        <a class="btn btn--secondary btn--section-cta" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
       {% endif %}
     </div>
 
@@ -544,7 +544,7 @@
       "type": "text",
       "id": "stat_2_value",
       "label": "Stat 2 value",
-      "default": "2-5 Day"
+      "default": "2–5 Day"
     },
     {
       "type": "text",

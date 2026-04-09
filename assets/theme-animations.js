@@ -38,6 +38,8 @@
   function parseStat(raw) {
     if (!raw || typeof raw !== 'string') return null;
     var s = raw.trim();
+    // "2–5 Day" / "2-5 Day" — keep static (no count-up)
+    if (/^\d+[\u2013-]\d+\s+Day$/i.test(s)) return null;
     // "20+", "99+"
     var mPlus = /^(\d+)\s*\+$/.exec(s);
     if (mPlus) return { n: parseInt(mPlus[1], 10), suffix: '+', duration: 900 };

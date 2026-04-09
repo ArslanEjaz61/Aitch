@@ -121,6 +121,30 @@
     {% endif %}
   </div>
 
+  <nav class="footer__utility" aria-label="Policies and customer service">
+    {% if pages.contact %}
+      <a href="{{ pages.contact.url }}">Contact</a>
+    {% else %}
+      <a href="/pages/contact">Contact</a>
+    {% endif %}
+    {% if shop.shipping_policy %}
+      <a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>
+    {% endif %}
+    {% if shop.refund_policy %}
+      <a href="{{ shop.refund_policy.url }}">Refund Policy</a>
+    {% endif %}
+    {% if shop.privacy_policy %}
+      <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>
+    {% endif %}
+    {% if section.settings.track_order_url != blank %}
+      <a href="{{ section.settings.track_order_url }}">Track order</a>
+    {% elsif pages['track-order'] %}
+      <a href="{{ pages['track-order'].url }}">Track order</a>
+    {% else %}
+      <a href="{{ routes.account_url }}">Track order</a>
+    {% endif %}
+  </nav>
+
   <!-- Footer Bottom -->
   <div class="footer__bottom">
     <div class="footer__bottom-inner">
@@ -160,6 +184,12 @@
       "id": "legal",
       "label": "Legal line",
       "default": "All rights reserved."
+    },
+    {
+      "type": "url",
+      "id": "track_order_url",
+      "label": "Track order URL (optional)",
+      "info": "If empty, uses a page with handle “track-order” when present, otherwise the customer account URL."
     },
     {
       "type": "header",

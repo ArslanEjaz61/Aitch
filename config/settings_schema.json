@@ -184,6 +184,20 @@
       },
       {
         "type": "checkbox",
+        "id": "show_product_rating",
+        "label": "Show product ratings",
+        "default": true,
+        "info": "Uses Shopify standard metafields (reviews.rating) when a reviews app or Shopify Reviews has added data. Hidden if no rating exists."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_best_seller_badge",
+        "label": "Show “Best Seller” badge on cards",
+        "default": true,
+        "info": "Shows when a product is tagged best-seller, Best Seller, or bestseller."
+      },
+      {
+        "type": "checkbox",
         "id": "show_quick_view",
         "label": "Show “Quick view” on product image (desktop hover)",
         "default": true
