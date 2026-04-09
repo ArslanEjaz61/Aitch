@@ -16,14 +16,14 @@
 
       <div class="hero__actions fade-in fade-in-delay-2">
         {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
-          <a class="btn btn--primary btn--icon-right btn--lg" href="{{ section.settings.primary_link }}">
+          <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
             <span>{{ section.settings.primary_label | escape }}</span>
             <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
           </a>
         {% endif %}
 
         {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
-          <a class="btn btn--secondary btn--lg" href="{{ section.settings.secondary_link }}">
+          <a class="btn btn--secondary" href="{{ section.settings.secondary_link }}">
             <span>{{ section.settings.secondary_label | escape }}</span>
           </a>
         {% endif %}
@@ -67,7 +67,7 @@
       <div class="hero__stat-label">{{ section.settings.stat_1_label | default: 'Curated Products' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2–5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2–5 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_2_label | default: 'Fast Shipping' | escape }}</div>
     </div>
     <div class="hero__stat">
@@ -133,7 +133,7 @@
         <p class="section-header__subtitle">{{ section.settings.grid_subheading | default: 'Our most popular products that solve everyday home problems.' | escape }}</p>
       </div>
       {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
-        <a class="btn btn--secondary btn--section-cta" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
+        <a class="btn btn--secondary" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
       {% endif %}
     </div>
 
@@ -382,18 +382,19 @@
     </div>
 
     <div class="testimonials-grid">
+      {% assign star_svg = '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' %}
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_1_text | default: 'The Electric Spin Brush is a game changer! My bathroom has never been this clean. Saves so much time and effort.' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-1.jpg' | asset_url }}" alt="Sarah M." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-1.jpg' | asset_url }}" alt="Sarah M." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_1_name | default: 'Sarah M.' | escape }}</div>
@@ -403,17 +404,17 @@
       </div>
 
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_2_text | default: 'The steam cleaner works amazingly on kitchen grease. I use it on everything — countertops, stovetop, even the oven.' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-2.jpg' | asset_url }}" alt="James R." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-2.jpg' | asset_url }}" alt="James R." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_2_name | default: 'James R.' | escape }}</div>
@@ -423,17 +424,17 @@
       </div>
 
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_3_text | default: 'Love the under-sink organizer and foldable storage boxes. My kitchen is finally organized. Will buy more!' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-3.jpg' | asset_url }}" alt="Maria L." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-3.jpg' | asset_url }}" alt="Maria L." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_3_name | default: 'Maria L.' | escape }}</div>
@@ -451,26 +452,39 @@
 <section class="newsletter reveal reveal--stagger">
   <div class="newsletter__inner">
     <div>
+      <div class="newsletter__badge">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Newsletter
+      </div>
       <h2 class="newsletter__heading">{{ section.settings.newsletter_heading | default: 'Join the Aitch Home Care family' | escape }}</h2>
       <p class="newsletter__text">{{ section.settings.newsletter_text | default: 'Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox.' | escape }}</p>
     </div>
     <div>
       {% form 'customer' %}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="newsletter__form">
-          <input
-            class="newsletter__input"
-            type="email"
-            name="contact[email]"
-            placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address' | escape }}"
-            autocomplete="email"
-            required
-          >
-          <button class="btn btn--primary" type="submit">
-            {{ section.settings.newsletter_btn | default: 'Subscribe' | escape }}
-          </button>
-        </div>
+        {% if form.posted_successfully? %}
+          <div class="newsletter__success">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <p>Thanks for subscribing! Check your inbox.</p>
+          </div>
+        {% else %}
+          <div class="newsletter__form">
+            <input
+              class="newsletter__input"
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address' | escape }}"
+              autocomplete="email"
+              required
+            >
+            <button class="btn btn--primary newsletter__btn" type="submit">
+              {{ section.settings.newsletter_btn | default: 'Subscribe' | escape }}
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        {% endif %}
       {% endform %}
+      <p class="newsletter__privacy">No spam, ever. Unsubscribe anytime.</p>
     </div>
   </div>
 </section>
@@ -544,7 +558,7 @@
       "type": "text",
       "id": "stat_2_value",
       "label": "Stat 2 value",
-      "default": "2–5 Day"
+      "default": "2-5 Day"
     },
     {
       "type": "text",

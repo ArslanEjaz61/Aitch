@@ -11,16 +11,15 @@
 
 <article class="product-card product-card--ratio-{{ settings.product_card_ratio | default: 'square' }}">
   <div class="product-card__badges">
+    {% if product.tags contains 'best-seller' or product.tags contains 'Best Seller' %}
+      <span class="product-card__badge product-card__badge--best">Best Seller</span>
+    {% endif %}
     {% if product.compare_at_price_max > product.price %}
-      <span class="product-card__badge product-card__badge--sale">Sale</span>
+      {% assign card_savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
+      <span class="product-card__badge product-card__badge--sale">{{ card_savings }}% Off</span>
     {% endif %}
     {% if product.tags contains 'new' or product.tags contains 'New' %}
       <span class="product-card__badge product-card__badge--new">New</span>
-    {% endif %}
-    {% if settings.show_best_seller_badge != false %}
-      {% if product.tags contains 'best-seller' or product.tags contains 'Best Seller' or product.tags contains 'bestseller' or product.tags contains 'Bestseller' %}
-        <span class="product-card__badge product-card__badge--bestseller">Best Seller</span>
-      {% endif %}
     {% endif %}
   </div>
 
@@ -76,8 +75,6 @@
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
 
-    {% render 'product-rating', product: product, compact: true %}
-
     <div class="product-card__price">
       {% if product.compare_at_price_max > product.price %}
         <span class="product-card__price-sale">{{ product.price | money }}</span>
@@ -87,13 +84,16 @@
       {% endif %}
     </div>
 
+    {% unless product.available %}
+      <div class="product-card__sold-out">Sold Out</div>
+    {% endunless %}
+
     <div class="product-card__actions">
-      <a href="{{ product.url }}" class="btn btn--secondary product-card__shop-btn">Shop Now</a>
       <form action="{{ routes.cart_add_url }}" method="post" class="product-card__atc-form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/cart">
-        <button type="submit" class="btn btn--primary btn--full product-card__atc-btn">
+        <button type="submit" class="btn btn--primary btn--full">
           <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6"/></svg>
           Add to Cart
         </button>

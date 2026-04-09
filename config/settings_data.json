@@ -24,8 +24,6 @@
     "buttons_radius": 4,
     "type_body_size": 14,
     "show_product_vendor": true,
-    "show_product_rating": true,
-    "show_best_seller_badge": true,
     "show_quick_view": true,
     "product_card_ratio": "square",
     "animations_reveal": true,
