@@ -50,20 +50,176 @@
 
     <script>
       (function() {
+        /* ============================
+           HEADER SCROLL EFFECT
+           ============================ */
         var header = document.querySelector('.header');
-        if (!header) return;
-        window.addEventListener('scroll', function() {
-          if (window.pageYOffset > 50) header.classList.add('scrolled');
-          else header.classList.remove('scrolled');
-        }, { passive: true });
-      })();
-      (function() {
+        if (header) {
+          window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+          }, { passive: true });
+        }
+
+        /* ============================
+           MOBILE MENU
+           ============================ */
         var toggle = document.querySelector('.header__menu-toggle');
         var menu = document.querySelector('.mobile-menu');
         var close = document.querySelector('.mobile-menu__close');
-        if (!toggle || !menu) return;
-        toggle.addEventListener('click', function() { menu.classList.add('active'); document.body.style.overflow = 'hidden'; });
-        if (close) close.addEventListener('click', function() { menu.classList.remove('active'); document.body.style.overflow = ''; });
+        if (toggle && menu) {
+          toggle.addEventListener('click', function() { menu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+          if (close) close.addEventListener('click', function() { menu.classList.remove('active'); document.body.style.overflow = ''; });
+        }
+
+        /* ============================
+           PAGE LOAD FADE-IN
+           ============================ */
+        var main = document.getElementById('MainContent');
+        if (main) main.classList.add('page-transition-in');
+
+        /* ============================
+           SCROLL REVEAL — IntersectionObserver
+           ============================ */
+        function initScrollReveal() {
+          var elements = document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+          if (!elements.length) return;
+
+          if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+            elements.forEach(function(el) { observer.observe(el); });
+          } else {
+            // Fallback: show all
+            elements.forEach(function(el) { el.classList.add('is-visible'); });
+          }
+        }
+
+        /* Auto-apply reveal classes to sections & grid items */
+        function autoApplyRevealClasses() {
+          // Sections get reveal-on-scroll
+          var sections = document.querySelectorAll('.section-spacing, .hero, .newsletter, .product-tabs, .related-products, .section-header');
+          sections.forEach(function(s) {
+            if (!s.classList.contains('reveal-on-scroll')) s.classList.add('reveal-on-scroll');
+          });
+
+          // Product cards get staggered reveals
+          var grids = document.querySelectorAll('.product-grid');
+          grids.forEach(function(grid) {
+            var cards = grid.querySelectorAll('.product-card');
+            cards.forEach(function(card, i) {
+              card.classList.add('reveal-on-scroll');
+              card.classList.add('stagger-' + Math.min(i + 1, 8));
+            });
+          });
+
+          // Category cards
+          var catCards = document.querySelectorAll('.category-card');
+          catCards.forEach(function(card, i) {
+            card.classList.add('reveal-on-scroll');
+            card.classList.add('stagger-' + Math.min(i + 1, 8));
+          });
+
+          // Trust badges
+          var trustItems = document.querySelectorAll('.product-page__trust-item');
+          trustItems.forEach(function(item, i) {
+            item.classList.add('reveal-on-scroll');
+            item.classList.add('stagger-' + (i + 1));
+          });
+
+          // Testimonial cards
+          var testimonials = document.querySelectorAll('.testimonial-card');
+          testimonials.forEach(function(card, i) {
+            card.classList.add('reveal-on-scroll');
+            card.classList.add('stagger-' + Math.min(i + 1, 8));
+          });
+        }
+
+        /* ============================
+           HERO PARALLAX
+           ============================ */
+        function initParallax() {
+          var heroMedia = document.querySelector('.hero__media');
+          if (!heroMedia) return;
+          window.addEventListener('scroll', function() {
+            var scrolled = window.pageYOffset;
+            if (scrolled < window.innerHeight) {
+              heroMedia.style.transform = 'translateY(' + (scrolled * 0.15) + 'px)';
+            }
+          }, { passive: true });
+        }
+
+        /* ============================
+           NUMBER COUNTER ANIMATION
+           ============================ */
+        function initCounters() {
+          var counters = document.querySelectorAll('[data-count]');
+          if (!counters.length) return;
+
+          var counterObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                var el = entry.target;
+                var target = parseInt(el.getAttribute('data-count'), 10);
+                var duration = 1500;
+                var start = 0;
+                var startTime = null;
+
+                function animate(timestamp) {
+                  if (!startTime) startTime = timestamp;
+                  var progress = Math.min((timestamp - startTime) / duration, 1);
+                  var eased = 1 - Math.pow(1 - progress, 3);
+                  el.textContent = Math.floor(eased * target).toLocaleString();
+                  if (progress < 1) requestAnimationFrame(animate);
+                  else el.textContent = target.toLocaleString();
+                }
+                requestAnimationFrame(animate);
+                counterObserver.unobserve(el);
+              }
+            });
+          }, { threshold: 0.5 });
+
+          counters.forEach(function(c) { counterObserver.observe(c); });
+        }
+
+        /* ============================
+           CART WIGGLE — Add to cart feedback
+           ============================ */
+        document.addEventListener('submit', function(e) {
+          var form = e.target;
+          if (form.action && form.action.indexOf('/cart/add') > -1) {
+            var cartBtn = document.querySelector('.header__action-btn[aria-label="Cart"]');
+            if (cartBtn) {
+              cartBtn.classList.add('cart-wiggle');
+              setTimeout(function() { cartBtn.classList.remove('cart-wiggle'); }, 700);
+            }
+          }
+        });
+
+        /* ============================
+           INIT ALL
+           ============================ */
+        document.addEventListener('DOMContentLoaded', function() {
+          autoApplyRevealClasses();
+          initScrollReveal();
+          initParallax();
+          initCounters();
+        });
+
+        // Fallback if DOMContentLoaded already fired
+        if (document.readyState !== 'loading') {
+          autoApplyRevealClasses();
+          initScrollReveal();
+          initParallax();
+          initCounters();
+        }
       })();
     </script>
   </body>

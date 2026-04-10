@@ -44,7 +44,15 @@
                   {% if item.image %}
                     <img
                       src="{{ item.image | image_url: width: 240 }}"
-                      alt="{{ item.image.alt | escape }}"
+                      alt="{{ item.image.alt | default: item.product.title | escape }}"
+                      loading="lazy"
+                      width="120"
+                      height="120"
+                    >
+                  {% elsif item.product.featured_image %}
+                    <img
+                      src="{{ item.product.featured_image | image_url: width: 240 }}"
+                      alt="{{ item.product.title | escape }}"
                       loading="lazy"
                       width="120"
                       height="120"
