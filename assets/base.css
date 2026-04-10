@@ -1250,26 +1250,43 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .product-card__atc-form {
-  flex: 1;
-  min-width: 0;
+  margin-top: var(--space-sm);
 }
 
-.product-card__atc-form .btn {
-  padding: 12px 14px;
-  font-size: var(--font-size-xs);
-  gap: 5px;
+.product-card__atc-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: transparent;
+  border: 1.5px solid var(--color-border);
   border-radius: var(--radius-sm);
-  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  letter-spacing: 0.02em;
 }
 
-@media (max-width: 640px) {
-  .product-card__actions {
-    flex-direction: column;
-  }
-  .product-card__shop-btn {
-    width: 100%;
-    justify-content: center;
-  }
+.product-card__atc-btn:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.product-card__atc-btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.product-card__atc-btn svg {
+  flex-shrink: 0;
 }
 
 /* =========================================================
