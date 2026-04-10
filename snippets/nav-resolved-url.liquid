@@ -17,5 +17,24 @@
       assign nav_resolved_href = '/collections/all'
     endunless
   endif
+
+  # Best Sellers nav item often points to Contact in Admin; rewrite to page best-sellers.
+  assign fix_best_sellers = false
+  if lt == 'best sellers' or lt == 'best sallers' or lt == 'best seller' or lt == 'bestsellers' or lt == 'best sales'
+    assign fix_best_sellers = true
+  endif
+  if nav_resolved_href contains '/pages/contact' and lt contains 'best sell'
+    assign fix_best_sellers = true
+  endif
+  if nav_resolved_href contains '/pages/contact' and lt contains 'best sall'
+    assign fix_best_sellers = true
+  endif
+  if fix_best_sellers
+    if pages['best-sellers'] != blank
+      assign nav_resolved_href = pages['best-sellers'].url
+    else
+      assign nav_resolved_href = '/pages/best-sellers'
+    endif
+  endif
 %}
 {{- nav_resolved_href -}}
