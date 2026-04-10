@@ -1,11 +1,16 @@
 {% liquid
   assign products_per_page = section.settings.products_per_page | default: 16
+  assign is_best_sellers = false
+  assign ch = collection.handle
+  if ch == 'best-sales' or ch == 'best-sellers' or ch == 'bestsellers'
+    assign is_best_sellers = true
+  endif
 %}
 
 {% paginate collection.products by products_per_page %}
 
 <!-- Collection Hero Banner -->
-<div class="collection-hero">
+<div class="collection-hero{% if is_best_sellers %} collection-hero--featured{% endif %}">
   {% if collection.image %}
     <img
       class="collection-hero__bg"
@@ -23,9 +28,17 @@
       <span aria-hidden="true">›</span>
       <span>{{ collection.title | escape }}</span>
     </nav>
-    <h1 class="collection-hero__title">{{ collection.title | escape }}</h1>
+    {% if is_best_sellers %}
+      <div class="collection-hero__eyebrow">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Most Popular
+      </div>
+    {% endif %}
+    <h1 class="collection-hero__title">{% if is_best_sellers %}Best Sellers{% else %}{{ collection.title | escape }}{% endif %}</h1>
     {% if collection.description != blank %}
       <p class="collection-hero__desc">{{ collection.description | strip_html | truncate: 180 | escape }}</p>
+    {% elsif is_best_sellers %}
+      <p class="collection-hero__desc">Our top-rated products that customers come back for again and again. Trusted by thousands across USA & Canada.</p>
     {% endif %}
     <div class="collection-hero__count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</div>
   </div>

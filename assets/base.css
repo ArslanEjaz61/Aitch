@@ -3486,6 +3486,31 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-sm);
 }
 
+.collection-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #f5c518;
+  margin-bottom: var(--space-sm);
+}
+
+.collection-hero__eyebrow svg {
+  fill: #f5c518;
+  stroke: #f5c518;
+}
+
+.collection-hero--featured {
+  min-height: 280px;
+}
+
+.collection-hero--featured .collection-hero__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
 .collection-hero__count {
   font-size: var(--font-size-sm);
   color: rgba(255,255,255,0.5);
