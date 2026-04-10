@@ -1,23 +1,66 @@
 {% liquid
-  assign products = collection.products
-  assign product_limit = section.settings.products_per_page | default: 16
+  assign products_per_page = section.settings.products_per_page | default: 16
 %}
 
-<div class="container section-spacing">
-  <!-- Collection Header -->
-  <div class="section-header">
-    <div class="section-header__text">
-      <div class="section-header__eyebrow">Collection</div>
-      <h1 class="section-header__title">{{ collection.title | escape }}</h1>
-      {% if collection.description != blank %}
-        <p class="section-header__subtitle">{{ collection.description | strip_html | escape }}</p>
-      {% endif %}
-    </div>
-    <div style="font-size:var(--font-size-sm);color:var(--color-text-secondary);">
-      {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+{% paginate collection.products by products_per_page %}
+
+<!-- Collection Hero Banner -->
+<div class="collection-hero">
+  {% if collection.image %}
+    <img
+      class="collection-hero__bg"
+      src="{{ collection.image | image_url: width: 1600 }}"
+      alt="{{ collection.title | escape }}"
+      loading="eager"
+      width="{{ collection.image.width }}"
+      height="{{ collection.image.height }}"
+    >
+  {% endif %}
+  <div class="collection-hero__overlay"></div>
+  <div class="collection-hero__content">
+    <nav class="collection-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      <span>{{ collection.title | escape }}</span>
+    </nav>
+    <h1 class="collection-hero__title">{{ collection.title | escape }}</h1>
+    {% if collection.description != blank %}
+      <p class="collection-hero__desc">{{ collection.description | strip_html | truncate: 180 | escape }}</p>
+    {% endif %}
+    <div class="collection-hero__count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</div>
+  </div>
+</div>
+
+<!-- Toolbar: Sort + Filter -->
+<div class="collection-toolbar">
+  <div class="container">
+    <div class="collection-toolbar__inner">
+      <div class="collection-toolbar__left">
+        <span class="collection-toolbar__results">
+          Showing {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: collection.products_count }} of {{ collection.products_count }}
+        </span>
+      </div>
+      <div class="collection-toolbar__right">
+        <div class="collection-toolbar__sort">
+          <label for="sort-by" class="collection-toolbar__label">Sort by</label>
+          <select id="sort-by" class="collection-toolbar__select" onchange="window.location.href=this.value;">
+            {% assign sort_options = 'manual|best-selling|title-ascending|title-descending|price-ascending|price-descending|created-ascending|created-descending' | split: '|' %}
+            {% assign sort_labels = 'Featured|Best Selling|A – Z|Z – A|Price: Low → High|Price: High → Low|Oldest|Newest' | split: '|' %}
+            {% for option in sort_options %}
+              <option
+                value="{{ collection.url }}?sort_by={{ option }}"
+                {% if collection.sort_by == option or collection.default_sort_by == option and collection.sort_by == blank %}selected{% endif %}
+              >{{ sort_labels[forloop.index0] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
+<!-- Product Grid -->
+<div class="container section-spacing">
   {% if collection.products_count == 0 %}
     <div class="empty-state">
       <div class="empty-state__icon">
@@ -28,21 +71,74 @@
       <a class="btn btn--primary" href="{{ routes.root_url }}">Back to Home</a>
     </div>
   {% else %}
-    <div class="product-grid product-grid--4">
-      {% for product in products limit: product_limit %}
+    <div class="product-grid product-grid--4 reveal reveal--stagger">
+      {% for product in collection.products %}
         {% render 'product-card', product: product %}
       {% endfor %}
     </div>
 
-    {% if collection.products_count > product_limit %}
-      <div style="text-align:center;margin-top:var(--space-2xl);">
-        {% paginate collection.products by product_limit %}
-          {{ paginate | default_pagination }}
-        {% endpaginate %}
-      </div>
+    <!-- Pagination -->
+    {% if paginate.pages > 1 %}
+      <nav class="pagination" aria-label="Pagination">
+        <div class="pagination__inner">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="pagination__btn pagination__btn--prev" aria-label="Previous page">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              Previous
+            </a>
+          {% endif %}
+
+          <div class="pagination__pages">
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}" class="pagination__page">{{ part.title }}</a>
+              {% else %}
+                {% if part.title == paginate.current_page %}
+                  <span class="pagination__page pagination__page--current" aria-current="page">{{ part.title }}</span>
+                {% else %}
+                  <span class="pagination__page pagination__page--gap">{{ part.title }}</span>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="pagination__btn pagination__btn--next" aria-label="Next page">
+              Next
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          {% endif %}
+        </div>
+      </nav>
     {% endif %}
   {% endif %}
 </div>
+
+<!-- Collection Trust Strip -->
+<div class="collection-trust">
+  <div class="container">
+    <div class="collection-trust__inner">
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <span>Free Shipping $50+</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        <span>30-Day Returns</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Secure Checkout</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Quality Guaranteed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endpaginate %}
 
 {% schema %}
 {
@@ -51,7 +147,7 @@
     {
       "type": "range",
       "id": "products_per_page",
-      "label": "Products to show",
+      "label": "Products per page",
       "min": 8,
       "max": 36,
       "step": 4,

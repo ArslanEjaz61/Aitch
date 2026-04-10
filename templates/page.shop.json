@@ -1,26 +1,16 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "featured-collection-grid",
       "settings": {
-        "heading": "Shop",
+        "eyebrow": "All Products",
+        "heading": "Shop All",
         "subheading": "Premium problem-solving products for every home — curated for quick results.",
         "product_limit": 20,
-        "cta_label": "View All",
-        "cta_link": "/collections/all"
+        "cta_label": "View All Collections",
+        "cta_link": "/collections"
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
