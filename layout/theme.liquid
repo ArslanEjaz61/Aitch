@@ -146,9 +146,12 @@
            HERO PARALLAX
            ============================ */
         function initParallax() {
-          var heroMedia = document.querySelector('.hero__media');
-          if (!heroMedia) return;
           window.addEventListener('scroll', function() {
+            var activeSlide = document.querySelector('[data-hero-slide][aria-hidden="false"]');
+            var heroMedia = activeSlide
+              ? activeSlide.querySelector('.hero-slider__media')
+              : document.querySelector('.hero-slider__media');
+            if (!heroMedia) return;
             var scrolled = window.pageYOffset;
             if (scrolled < window.innerHeight) {
               heroMedia.style.transform = 'translateY(' + (scrolled * 0.15) + 'px)';

@@ -12,6 +12,9 @@
     "main": {
       "type": "homepage-premium",
       "settings": {
+        "hero_autoplay": true,
+        "hero_autoplay_seconds": 6,
+        "hero_slider_a11y_label": "Featured promotions",
         "heading": "Solve everyday home problems. Effortlessly.",
         "subheading": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.",
         "primary_label": "Shop Best Sellers",
@@ -73,6 +76,51 @@
         "newsletter_btn": "Subscribe"
       },
       "blocks": {
+        "hero_slide_1": {
+          "type": "hero_slide",
+          "settings": {
+            "eyebrow": "",
+            "heading": "Solve everyday home problems. Effortlessly.",
+            "subheading": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.",
+            "badge": "",
+            "badge_subtext": "",
+            "primary_label": "Shop Best Sellers",
+            "primary_link": "/collections/all",
+            "secondary_label": "Explore Collections",
+            "secondary_link": "/collections/all",
+            "content_alignment": "left"
+          }
+        },
+        "hero_slide_2": {
+          "type": "hero_slide",
+          "settings": {
+            "eyebrow": "Curated for your home",
+            "heading": "Tools that actually work",
+            "subheading": "From deep-clean brushes to kitchen organizers — every pick is chosen for real results.",
+            "badge": "",
+            "badge_subtext": "",
+            "primary_label": "Shop cleaning",
+            "primary_link": "/collections/cleaning-tools",
+            "secondary_label": "Shop kitchen",
+            "secondary_link": "/collections/kitchen-products",
+            "content_alignment": "left"
+          }
+        },
+        "hero_slide_3": {
+          "type": "hero_slide",
+          "settings": {
+            "eyebrow": "",
+            "heading": "Your spring refresh starts here",
+            "subheading": "Stock up on customer favourites before they are gone.",
+            "badge": "50% OFF",
+            "badge_subtext": "Limited time — select best sellers",
+            "primary_label": "Shop the sale",
+            "primary_link": "/collections/best-sales",
+            "secondary_label": "View all",
+            "secondary_link": "/collections/all",
+            "content_alignment": "center"
+          }
+        },
         "categories_cleaning": {
           "type": "category",
           "settings": {
@@ -102,6 +150,9 @@
         }
       },
       "block_order": [
+        "hero_slide_1",
+        "hero_slide_2",
+        "hero_slide_3",
         "categories_cleaning",
         "categories_home",
         "categories_kitchen"
