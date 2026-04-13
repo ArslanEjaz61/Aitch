@@ -35,12 +35,12 @@
               endif
             %}
             <article
-              class="hero-slider__slide{{ promo_class }}"
+              class="hero-slider__slide{{ promo_class }}{% if forloop.first %} is-active{% endif %}"
               data-hero-slide
               aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
               {{ block.shopify_attributes }}
             >
-              <div class="hero-slider__media hero-media-entrance">
+              <div class="hero-slider__media">
                 {% if slide_img != blank %}
                   <img
                     srcset="
@@ -78,7 +78,7 @@
               </div>
               <div class="hero-slider__scrim" aria-hidden="true"></div>
               <div class="hero-slider__inner container {{ align_class }}">
-                <div class="hero-slider__content fade-in">
+                <div class="hero-slider__content">
                   {% if block.settings.badge != blank %}
                     <p class="hero-slider__badge" aria-hidden="false">
                       <span class="hero-slider__badge-main">{{ block.settings.badge | escape }}</span>
@@ -96,9 +96,9 @@
                     <h2 class="hero-slider__heading">{{ block.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h2>
                   {% endif %}
                   {% if block.settings.subheading != blank %}
-                    <p class="hero-slider__description fade-in-delay-1">{{ block.settings.subheading | escape }}</p>
+                    <p class="hero-slider__description">{{ block.settings.subheading | escape }}</p>
                   {% endif %}
-                  <div class="hero-slider__actions fade-in-delay-2">
+                  <div class="hero-slider__actions">
                     {% if block.settings.primary_label != blank and block.settings.primary_link != blank %}
                       <a class="btn btn--primary btn--icon-right" href="{{ block.settings.primary_link }}">
                         <span>{{ block.settings.primary_label | escape }}</span>
@@ -117,8 +117,8 @@
           {% endfor %}
         {% else %}
           {% comment %} Legacy: no slide blocks — use section hero settings {% endcomment %}
-          <article class="hero-slider__slide" data-hero-slide aria-hidden="false">
-            <div class="hero-slider__media hero-media-entrance">
+          <article class="hero-slider__slide is-active" data-hero-slide aria-hidden="false">
+            <div class="hero-slider__media">
               {% if section.settings.hero_image != blank %}
                 {% assign hero_image = section.settings.hero_image %}
                 <img
@@ -148,10 +148,10 @@
             </div>
             <div class="hero-slider__scrim" aria-hidden="true"></div>
             <div class="hero-slider__inner container hero-slider__inner--left">
-              <div class="hero-slider__content fade-in">
+              <div class="hero-slider__content">
                 <h1 class="hero-slider__heading">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
-                <p class="hero-slider__description fade-in-delay-1">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
-                <div class="hero-slider__actions fade-in-delay-2">
+                <p class="hero-slider__description">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
+                <div class="hero-slider__actions">
                   {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
                     <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
                       <span>{{ section.settings.primary_label | escape }}</span>
@@ -192,7 +192,12 @@
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </div>
-      <div class="hero-slider__dots" data-hero-dots role="tablist" aria-label="{{ section.settings.hero_slider_a11y_label | default: 'Slides' | escape }}"></div>
+      <div class="hero-slider__dots-wrap">
+        <div class="hero-slider__dots" data-hero-dots role="tablist" aria-label="{{ section.settings.hero_slider_a11y_label | default: 'Slides' | escape }}"></div>
+      </div>
+      <div class="hero-slider__progress" data-hero-progress aria-hidden="true">
+        <span class="hero-slider__progress-bar" data-hero-progress-bar></span>
+      </div>
     {% endif %}
   </div>
 
@@ -635,6 +640,7 @@
       var dotsWrap = root.querySelector('[data-hero-dots]');
       var prev = root.querySelector('[data-hero-prev]');
       var next = root.querySelector('[data-hero-next]');
+      var progressBar = root.querySelector('[data-hero-progress-bar]');
       if (!track || slides.length < 2) return;
 
       var autoplay = root.getAttribute('data-autoplay') === 'true';
@@ -643,10 +649,19 @@
       var timer;
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      function restartProgress() {
+        if (!progressBar || !autoplay || reduceMotion) return;
+        progressBar.classList.remove('hero-slider__progress-bar--run');
+        progressBar.style.animationDuration = interval / 1000 + 's';
+        void progressBar.offsetWidth;
+        progressBar.classList.add('hero-slider__progress-bar--run');
+      }
+
       function go(n) {
         i = (n + slides.length) % slides.length;
         track.style.transform = 'translateX(-' + i * 100 + '%)';
         slides.forEach(function (s, j) {
+          s.classList.toggle('is-active', j === i);
           s.setAttribute('aria-hidden', j === i ? 'false' : 'true');
         });
         if (dotsWrap) {
@@ -656,6 +671,20 @@
             b.tabIndex = j === i ? 0 : -1;
           });
         }
+      }
+
+      function startAutoplay() {
+        if (timer) clearInterval(timer);
+        timer = null;
+        if (!autoplay || reduceMotion || slides.length < 2) {
+          if (progressBar) progressBar.classList.remove('hero-slider__progress-bar--run');
+          return;
+        }
+        restartProgress();
+        timer = setInterval(function () {
+          go(i + 1);
+          restartProgress();
+        }, interval);
       }
 
       function dotButtons() {
@@ -669,18 +698,10 @@
           b.setAttribute('aria-label', 'Go to slide ' + (j + 1));
           b.addEventListener('click', function () {
             go(j);
-            resetTimer();
+            startAutoplay();
           });
           dotsWrap.appendChild(b);
         });
-      }
-
-      function resetTimer() {
-        if (timer) clearInterval(timer);
-        if (!autoplay || reduceMotion || slides.length < 2) return;
-        timer = setInterval(function () {
-          go(i + 1);
-        }, interval);
       }
 
       dotButtons();
@@ -689,20 +710,25 @@
       if (prev)
         prev.addEventListener('click', function () {
           go(i - 1);
-          resetTimer();
+          startAutoplay();
         });
       if (next)
         next.addEventListener('click', function () {
           go(i + 1);
-          resetTimer();
+          startAutoplay();
         });
 
       root.addEventListener('mouseenter', function () {
         if (timer) clearInterval(timer);
+        timer = null;
+        root.classList.add('hero-slider--paused');
       });
-      root.addEventListener('mouseleave', resetTimer);
+      root.addEventListener('mouseleave', function () {
+        root.classList.remove('hero-slider--paused');
+        startAutoplay();
+      });
 
-      resetTimer();
+      startAutoplay();
     })();
   </script>
 {% endif %}
