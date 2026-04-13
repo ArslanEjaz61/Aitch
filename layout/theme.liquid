@@ -104,9 +104,11 @@
 
         /* Auto-apply reveal classes to sections & grid items */
         function autoApplyRevealClasses() {
-          // Sections get reveal-on-scroll
-          var sections = document.querySelectorAll('.section-spacing, .hero, .newsletter, .product-tabs, .related-products, .section-header');
-          sections.forEach(function(s) {
+          var isProduct = document.body.classList.contains('template-product');
+          // Sections get reveal-on-scroll (product description tabs excluded — must show immediately, not after scroll)
+          var sectionSelector = '.section-spacing, .hero, .newsletter, .related-products, .section-header';
+          if (!isProduct) sectionSelector += ', .product-tabs';
+          document.querySelectorAll(sectionSelector).forEach(function(s) {
             if (!s.classList.contains('reveal-on-scroll')) s.classList.add('reveal-on-scroll');
           });
 
@@ -127,12 +129,13 @@
             card.classList.add('stagger-' + Math.min(i + 1, 8));
           });
 
-          // Trust badges
-          var trustItems = document.querySelectorAll('.product-page__trust-item');
-          trustItems.forEach(function(item, i) {
-            item.classList.add('reveal-on-scroll');
-            item.classList.add('stagger-' + (i + 1));
-          });
+          // Trust badges (skip on PDP — keep buy box visible immediately)
+          if (!isProduct) {
+            document.querySelectorAll('.product-page__trust-item').forEach(function(item, i) {
+              item.classList.add('reveal-on-scroll');
+              item.classList.add('stagger-' + (i + 1));
+            });
+          }
 
           // Testimonial cards
           var testimonials = document.querySelectorAll('.testimonial-card');

@@ -2807,6 +2807,14 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-2xl) 0 var(--space-3xl);
 }
 
+/* PDP: description tabs must never stay hidden behind scroll-reveal */
+body.template-product .product-tabs.reveal-on-scroll {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
 .product-tabs__nav {
   display: flex;
   gap: 0;

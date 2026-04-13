@@ -1,5 +1,8 @@
 {% liquid
   assign featured = product.featured_image
+  if featured == blank and product.images.size > 0
+    assign featured = product.images.first
+  endif
   assign related_collection = product.collections.first
   assign current_variant = product.selected_or_first_available_variant
 %}
@@ -278,6 +281,7 @@
 
   <script>
     (function () {
+      function enhancePdpDescription() {
       var root = document.querySelector('[data-pdp-description]');
       if (!root || root.getAttribute('data-pdp-enhanced') === '1') return;
       root.setAttribute('data-pdp-enhanced', '1');
@@ -341,6 +345,13 @@
 
       wrapDescImages(root);
       boldLeadLabels(root);
+      }
+
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(enhancePdpDescription, { timeout: 150 });
+      } else {
+        window.setTimeout(enhancePdpDescription, 0);
+      }
     })();
   </script>
 {% endif %}
