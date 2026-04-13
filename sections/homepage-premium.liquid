@@ -11,7 +11,7 @@
   class="hero hero--slider"
   data-hero-slider
   data-autoplay="{% if section.settings.hero_autoplay %}true{% else %}false{% endif %}"
-  data-interval="{{ section.settings.hero_autoplay_seconds | default: 6 | times: 1000 }}"
+  data-interval="{{ section.settings.hero_autoplay_seconds | default: 4 | times: 1000 }}"
 >
   <div
     class="hero-slider"
@@ -644,7 +644,7 @@
       if (!track || slides.length < 2) return;
 
       var autoplay = root.getAttribute('data-autoplay') === 'true';
-      var interval = parseInt(root.getAttribute('data-interval'), 10) || 6000;
+      var interval = parseInt(root.getAttribute('data-interval'), 10) || 4000;
       var i = 0;
       var timer;
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -757,10 +757,10 @@
       "type": "range",
       "id": "hero_autoplay_seconds",
       "label": "Autoplay interval (seconds)",
-      "min": 4,
+      "min": 3,
       "max": 12,
       "step": 1,
-      "default": 6,
+      "default": 4,
       "unit": "s"
     },
     {
