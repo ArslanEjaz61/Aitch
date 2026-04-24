@@ -30,8 +30,7 @@
           alt="{{ shop.name | escape }}"
           loading="eager"
           width="120"
-          height="auto"
-          style="max-width: 120px; width: 100%; height: auto"
+          style="max-width: 120px; width: 100%; height: auto;"
         >
       {% else %}
         <img
@@ -40,8 +39,7 @@
           alt="{{ shop.name | escape }}"
           loading="eager"
           width="120"
-          height="auto"
-          style="max-width: 120px; width: 100%; height: auto"
+          style="max-width: 120px; width: 100%; height: auto;"
         >
       {% endif %}
     </a>
@@ -96,9 +94,9 @@
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" height="auto" style="max-width: 100px; width: 100%; height: auto">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
       {% else %}
-        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" height="auto" style="max-width: 100px; width: 100%; height: auto">
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
       {% endif %}
     </a>
     <button class="mobile-menu__close" aria-label="Close menu">
