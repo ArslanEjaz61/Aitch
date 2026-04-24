@@ -29,14 +29,6 @@
     "animations_reveal": true,
     "show_payment_icons": true,
     "bg_color": "#ffffff",
-    "blocks": {
-      "614082290850464558": {
-        "disabled": false,
-        "settings": {},
-        "type": "shopify://apps//blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3"
-      }
-    },
-    "brand_color": "#1a1a1a",
     "logo_width": 180,
     "text_color": "#1a1a1a"
   },
