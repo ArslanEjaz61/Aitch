@@ -29,8 +29,9 @@
           src="{{ settings.logo | image_url: width: 400 }}"
           alt="{{ shop.name | escape }}"
           loading="eager"
-          width="{{ settings.logo_width | default: 180 }}"
+          width="180"
           height="auto"
+          style="max-width: 180px; width: 100%; height: auto;"
         >
       {% else %}
         <img
@@ -38,11 +39,11 @@
           src="{{ 'logo.png' | asset_url }}"
           alt="{{ shop.name | escape }}"
           loading="eager"
-          width="200"
+          width="180"
           height="auto"
+          style="max-width: 180px; width: 100%; height: auto;"
         >
       {% endif %}
-      <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
 
     <!-- Desktop nav — centered (column 2) -->
@@ -95,11 +96,10 @@
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="{{ settings.logo_width | default: 180 }}" height="auto">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="160" height="auto" style="max-width: 160px; width: 100%; height: auto;">
       {% else %}
-        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="{{ settings.logo_width | default: 180 }}" height="auto">
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="160" height="auto" style="max-width: 160px; width: 100%; height: auto;">
       {% endif %}
-      <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
     <button class="mobile-menu__close" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

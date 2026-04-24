@@ -26,12 +26,12 @@
         {% if settings.logo != blank %}
           <img
             class="header__logo-img"
-            src="{{ settings.logo | image_url: width: settings.logo_width | default: 140 }}"
+            src="{{ settings.logo | image_url: width: 400 }}"
             alt="{{ shop.name | escape }}"
             loading="lazy"
-            width="{{ settings.logo_width | default: 140 }}"
+            width="140"
             height="auto"
-            style="max-height:32px;width:auto;"
+            style="max-width: 140px; width: 100%; height: auto;"
           >
         {% else %}
           <img
@@ -41,10 +41,9 @@
             loading="lazy"
             width="140"
             height="auto"
-            style="max-height:32px;width:auto;"
+            style="max-width: 140px; width: 100%; height: auto;"
           >
         {% endif %}
-        <span class="footer__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
       </div>
       <p class="footer__brand-text">{{ section.settings.tagline | default: 'Simple solutions for everyday home problems. Curated cleaning tools, kitchen essentials, and home convenience products — shipped fast across North America.' | escape }}</p>
 
