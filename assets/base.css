@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    AITCH HOME CARE — Atlas-Inspired Professional Theme
    ========================================================= */
 
@@ -2355,12 +2355,15 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   gap: var(--space-sm);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .footer__payments svg {
   height: 24px;
   width: auto;
-  opacity: 0.4;
+  opacity: 1;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 
 @media (max-width: 900px) {
@@ -5222,7 +5225,7 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 
 /* ================================
-   PREMIUM FOOTER � US Store
+   PREMIUM FOOTER � US Store
    ================================ */
 
 .footer--premium {
@@ -5427,3 +5430,4 @@ body.template-product .product-tabs.reveal-on-scroll {
     align-items: flex-start;
   }
 }
+
