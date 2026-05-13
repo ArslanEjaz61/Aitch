@@ -18,152 +18,187 @@
   assign social_youtube = settings.social_youtube
   assign social_pinterest = settings.social_pinterest
 %}
-<footer class="footer">
+
+<footer class="footer footer--premium">
+
+  <!-- ==================== FOOTER MAIN ==================== -->
   <div class="footer__main">
-    <!-- Brand Column -->
-    <div class="footer__brand">
-      <div class="footer__logo">
-        {% if settings.logo != blank %}
-          <img
-            class="header__logo-img"
-            src="{{ settings.logo | image_url: width: 400 }}"
-            alt="{{ shop.name | escape }}"
-            loading="lazy"
-            width="100"
-            height="auto"
-            style="max-width: 100px; width: 100%; height: auto;"
-          >
-        {% else %}
-          <img
-            class="header__logo-img"
-            src="{{ 'logo.png' | asset_url }}"
-            alt="{{ shop.name | escape }}"
-            loading="lazy"
-            width="100"
-            style="max-width: 100px; width: 100%; height: auto;"
-          >
-        {% endif %}
-      </div>
-      <p class="footer__brand-text">{{ section.settings.tagline | default: 'Simple solutions for everyday home problems. Curated cleaning tools, kitchen essentials, and home convenience products — shipped fast across North America.' | escape }}</p>
+    <div class="container footer__grid">
 
-      <div class="footer__social">
-        {% if social_facebook != blank %}
-          <a href="{{ social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </a>
-        {% endif %}
-        {% if social_instagram != blank %}
-          <a href="{{ social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
-          </a>
-        {% endif %}
-        {% if social_tiktok != blank %}
-          <a href="{{ social_tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
-          </a>
-        {% endif %}
-        {% if social_twitter != blank %}
-          <a href="{{ social_twitter }}" aria-label="X / Twitter" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M4 4l11.733 16h4.267l-11.733-16z"/><path d="M4 20l6.768-6.768M20 4l-6.768 6.768"/></svg>
-          </a>
-        {% endif %}
-        {% if social_youtube != blank %}
-          <a href="{{ social_youtube }}" aria-label="YouTube" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1 31.7 31.7 0 00.5-5.8 31.7 31.7 0 00-.5-5.8zM9.7 15.5V8.4l6.2 3.6-6.2 3.5z"/></svg>
-          </a>
-        {% endif %}
-        {% if social_pinterest != blank %}
-          <a href="{{ social_pinterest }}" aria-label="Pinterest" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 00-4.4 23.2c-.1-1-.2-2.5 0-3.6.2-1 1.3-6.5 1.3-6.5s-.3-.7-.3-1.7c0-1.6.9-2.8 2.1-2.8 1 0 1.5.7 1.5 1.6 0 1-.6 2.5-1 3.9-.3 1.2.6 2.1 1.8 2.1 2.1 0 3.8-2.2 3.8-5.5 0-2.9-2.1-4.9-5-4.9-3.4 0-5.4 2.6-5.4 5.2 0 1 .4 2.1.9 2.7.1.1.1.3.1.4l-.3 1.4c-.1.4-.4.5-.8.3-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.1-2.6 7.4-6.2 7.4-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1.1 2.5-1.6 3.4A12 12 0 1012 0z"/></svg>
-          </a>
-        {% endif %}
-      </div>
-    </div>
+      <!-- Brand Column -->
+      <div class="footer__brand">
+        <div class="footer__logo">
+          {% if settings.logo != blank %}
+            <img
+              src="{{ settings.logo | image_url: width: 400 }}"
+              alt="{{ shop.name | escape }}"
+              loading="lazy"
+              width="120"
+              style="max-width:120px;width:100%;height:auto;"
+            >
+          {% else %}
+            <img
+              src="{{ 'logo.png' | asset_url }}"
+              alt="{{ shop.name | escape }}"
+              loading="lazy"
+              width="120"
+              style="max-width:120px;width:100%;height:auto;"
+            >
+          {% endif %}
+        </div>
 
-    <!-- Footer Menu Columns — uses Shopify Menus (linklists) -->
-    {% assign footer_menu_1 = linklists[section.settings.footer_menu_1] %}
-    {% assign footer_menu_2 = linklists[section.settings.footer_menu_2] %}
-    {% assign footer_menu_3 = linklists[section.settings.footer_menu_3] %}
+        <p class="footer__tagline">{{ section.settings.tagline | default: 'Premium products for every need — from trending gadgets to everyday essentials, delivered fast across the US.' | escape }}</p>
 
-    {% if footer_menu_1.links.size > 0 %}
-      <div class="footer__column">
-        <h4>{{ footer_menu_1.title | escape }}</h4>
-        <ul>
-          {% for link in footer_menu_1.links %}
-            <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
+        <!-- Trust badges -->
+        <div class="footer__trust">
+          <div class="footer__trust-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Secure Checkout</span>
+          </div>
+          <div class="footer__trust-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span>Fast US Shipping</span>
+          </div>
+          <div class="footer__trust-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.5 15a9 9 0 11-2.5-8.4L23 10"/></svg>
+            <span>30-Day Returns</span>
+          </div>
+        </div>
 
-    {% if footer_menu_2.links.size > 0 %}
-      <div class="footer__column">
-        <h4>{{ footer_menu_2.title | escape }}</h4>
-        <ul>
-          {% for link in footer_menu_2.links %}
-            <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
-          {% endfor %}
-        </ul>
+        <!-- Social Icons -->
+        <div class="footer__social">
+          {% if social_facebook != blank %}
+            <a href="{{ social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+          {% endif %}
+          {% if social_instagram != blank %}
+            <a href="{{ social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+            </a>
+          {% endif %}
+          {% if social_tiktok != blank %}
+            <a href="{{ social_tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+            </a>
+          {% endif %}
+          {% if social_twitter != blank %}
+            <a href="{{ social_twitter }}" aria-label="X / Twitter" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M4 4l11.733 16h4.267l-11.733-16z"/><path d="M4 20l6.768-6.768M20 4l-6.768 6.768"/></svg>
+            </a>
+          {% endif %}
+          {% if social_youtube != blank %}
+            <a href="{{ social_youtube }}" aria-label="YouTube" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1 31.7 31.7 0 00.5-5.8 31.7 31.7 0 00-.5-5.8zM9.7 15.5V8.4l6.2 3.6-6.2 3.5z"/></svg>
+            </a>
+          {% endif %}
+        </div>
       </div>
-    {% endif %}
 
-    {% if footer_menu_3.links.size > 0 %}
-      <div class="footer__column">
-        <h4>{{ footer_menu_3.title | escape }}</h4>
-        <ul>
-          {% for link in footer_menu_3.links %}
-            <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
+      <!-- Menus via Shopify linklists -->
+      {% assign footer_menu_1 = linklists[section.settings.footer_menu_1] %}
+      {% assign footer_menu_2 = linklists[section.settings.footer_menu_2] %}
+      {% assign footer_menu_3 = linklists[section.settings.footer_menu_3] %}
 
-    {% if footer_menu_1.links.size == 0 and footer_menu_2.links.size == 0 and footer_menu_3.links.size == 0 %}
-      <div class="footer__column">
-        <h4>Shop</h4>
-        <ul>
-          <li><a href="/collections/all">All Products</a></li>
-          <li><a href="/collections/cleaning-tools">Cleaning Tools</a></li>
-          <li><a href="/collections/kitchen-products">Kitchen Products</a></li>
-          <li><a href="/collections/home-convenience-items">Home Convenience</a></li>
-        </ul>
-      </div>
-      <div class="footer__column">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="/pages/contact">Contact Us</a></li>
-          <li><a href="/pages/track-order">Track Order</a></li>
-          <li><a href="/pages/faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="footer__column">
-        <h4>Policies</h4>
-        <ul>
-          <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
-          <li><a href="/policies/refund-policy">Refund Policy</a></li>
-          <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-          <li><a href="/policies/terms-of-service">Terms of Service</a></li>
-        </ul>
-      </div>
-    {% endif %}
-  </div>
+      {% if footer_menu_1.links.size > 0 %}
+        <div class="footer__column">
+          <h4 class="footer__col-title">{{ footer_menu_1.title | escape }}</h4>
+          <ul>
+            {% for link in footer_menu_1.links %}
+              <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
 
-  <!-- Footer Bottom -->
+      {% if footer_menu_2.links.size > 0 %}
+        <div class="footer__column">
+          <h4 class="footer__col-title">{{ footer_menu_2.title | escape }}</h4>
+          <ul>
+            {% for link in footer_menu_2.links %}
+              <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if footer_menu_3.links.size > 0 %}
+        <div class="footer__column">
+          <h4 class="footer__col-title">{{ footer_menu_3.title | escape }}</h4>
+          <ul>
+            {% for link in footer_menu_3.links %}
+              <li><a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Fallback columns when no menus configured -->
+      {% if footer_menu_1.links.size == 0 and footer_menu_2.links.size == 0 and footer_menu_3.links.size == 0 %}
+        <div class="footer__column">
+          <h4 class="footer__col-title">Shop</h4>
+          <ul>
+            <li><a href="/collections/all">All Products</a></li>
+            <li><a href="/collections/trending-now">Trending Now</a></li>
+            <li><a href="/collections/best-sales">Best Sellers</a></li>
+            <li><a href="/collections/new-arrivals">New Arrivals</a></li>
+          </ul>
+        </div>
+        <div class="footer__column">
+          <h4 class="footer__col-title">Support</h4>
+          <ul>
+            <li><a href="/pages/contact">Contact Us</a></li>
+            <li><a href="/pages/track-order">Track Order</a></li>
+            <li><a href="/pages/faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__column">
+          <h4 class="footer__col-title">Policies</h4>
+          <ul>
+            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
+            <li><a href="/policies/refund-policy">Refund Policy</a></li>
+            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+          </ul>
+        </div>
+      {% endif %}
+
+    </div><!-- /.footer__grid -->
+  </div><!-- /.footer__main -->
+
+  <!-- ==================== FOOTER BOTTOM ==================== -->
   <div class="footer__bottom">
-    <div class="footer__bottom-inner">
+    <div class="container footer__bottom-inner">
+
       <div class="footer__copyright">
         &copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. {{ section.settings.legal | default: 'All rights reserved.' | escape }}
       </div>
-      <div class="footer__payments"{% if settings.show_payment_icons == false %} hidden{% endif %}>
+
+      <!-- Payment Icons -->
+      <div class="footer__payments">
+
         <!-- Visa -->
-        <svg viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><path d="M15.764 16.537h-2.408l1.505-9.303h2.408l-1.505 9.303z" fill="#3C58BF"/><path d="M24.633 7.449c-.475-.188-1.218-.39-2.145-.39-2.367 0-4.034 1.258-4.048 3.06-.028 1.33 1.19 2.073 2.1 2.516.924.452 1.239.747 1.239 1.148-.014.618-.747.9-1.435.9-1.505 0-2.311-.284-3.547-.916l-.047-.024-.52 3.169c.475.215 1.352.404 2.263.418 2.517 0 4.148-1.244 4.162-3.17.014-1.057-.632-1.862-2.016-2.525-.84-.429-1.355-.714-1.355-1.148.014-.396.437-.806 1.382-.806.787-.014 1.359.166 1.8.35l.215.104.52-3.105-.014.014-.014-.001z" fill="#3C58BF"/><path d="M28.863 7.234h-1.85c-.57 0-1 .166-1.25.77l-3.533 8.533h2.503l.502-1.375 3.055.004c.07.32.29 1.371.29 1.371h2.212L28.863 7.234zm-2.926 6.14c.2-.532 1.077-2.945 1.077-2.945l-.014.028c.07-.18.344-.926.56-1.52l.287 1.37.627 3.068H25.937v-.001z" fill="#3C58BF"/><path d="M12.132 7.234l-2.34 6.346-.256-1.285c-.437-1.493-1.8-3.115-3.324-3.925l2.131 8.154h2.531l3.769-9.29h-2.511z" fill="#3C58BF"/><path d="M8.109 7.234H4.34l-.034.18c3.003.764 4.993 2.613 5.815 4.834l-.84-4.244c-.145-.59-.57-.756-1.173-.77z" fill="#E8A723"/></svg>
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><path d="M15.764 16.537h-2.408l1.505-9.303h2.408l-1.505 9.303z" fill="#3C58BF"/><path d="M24.633 7.449c-.475-.188-1.218-.39-2.145-.39-2.367 0-4.034 1.258-4.048 3.06-.028 1.33 1.19 2.073 2.1 2.516.924.452 1.239.747 1.239 1.148-.014.618-.747.9-1.435.9-1.505 0-2.311-.284-3.547-.916l-.047-.024-.52 3.169c.475.215 1.352.404 2.263.418 2.517 0 4.148-1.244 4.162-3.17.014-1.057-.632-1.862-2.016-2.525-.84-.429-1.355-.714-1.355-1.148.014-.396.437-.806 1.382-.806.787-.014 1.359.166 1.8.35l.215.104.52-3.105z" fill="#3C58BF"/><path d="M28.863 7.234h-1.85c-.57 0-1 .166-1.25.77l-3.533 8.533h2.503l.502-1.375 3.055.004c.07.32.29 1.371.29 1.371h2.212L28.863 7.234zm-2.926 6.14c.2-.532 1.077-2.945 1.077-2.945l-.014.028c.07-.18.344-.926.56-1.52l.287 1.37.627 3.068H25.937v-.001z" fill="#3C58BF"/><path d="M12.132 7.234l-2.34 6.346-.256-1.285c-.437-1.493-1.8-3.115-3.324-3.925l2.131 8.154h2.531l3.769-9.29h-2.511z" fill="#3C58BF"/><path d="M8.109 7.234H4.34l-.034.18c3.003.764 4.993 2.613 5.815 4.834l-.84-4.244c-.145-.59-.57-.756-1.173-.77z" fill="#E8A723"/></svg>
+
         <!-- Mastercard -->
-        <svg viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 7.2a7 7 0 012.8 4.8 7 7 0 01-2.8 4.8 7 7 0 01-2.8-4.8A7 7 0 0119 7.2z" fill="#FF5F00"/></svg>
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mastercard"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 7.2a7 7 0 012.8 4.8 7 7 0 01-2.8 4.8 7 7 0 01-2.8-4.8A7 7 0 0119 7.2z" fill="#FF5F00"/></svg>
+
+        <!-- Apple Pay -->
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Apple Pay"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#000" stroke="#222"/><path d="M11.5 9.3c.4-.5.7-1.1.6-1.8-.6 0-1.3.4-1.7.9-.4.4-.7 1-.6 1.7.6 0 1.3-.4 1.7-.8zM12.1 10.2c-.9-.1-1.7.5-2.2.5-.5 0-1.2-.5-2-.5-1 0-2 .6-2.5 1.5-1.1 1.9-.3 4.7.8 6.2.5.8 1.1 1.6 1.9 1.6.8 0 1-.5 2-.5s1.2.5 2 .5c.8 0 1.4-.8 1.9-1.5.6-.9.8-1.8.8-1.8s-1.6-.6-1.6-2.3c0-1.4 1.2-2.1 1.2-2.1s-.6-.9-1.7-.9l-.6.3z" fill="#fff"/><path d="M19.6 8.5h-2.2v7.8h1.4v-2.7h1.5c1.2 0 2.1-.9 2.1-2.6s-.9-2.5-2.8-2.5zm.2 3.9h-1v-2.7h1c.8 0 1.3.5 1.3 1.3 0 .9-.5 1.4-1.3 1.4zM25.4 16.4c-.6 0-1-.3-1-.7 0-.4.3-.7 1-.8l1.2-.1v.3c0 .8-.5 1.3-1.2 1.3zm-.4 1.1c.7 0 1.4-.3 1.7-.9h0v.8h1.3V13c0-1.1-.9-1.8-2.3-1.8-1.4 0-2.4.7-2.4 1.8h1.2c.1-.5.5-.8 1.1-.8.7 0 1.1.4 1.1 1v.4l-1.4.1c-1.3.1-2 .7-2 1.7 0 1 .8 1.7 1.7 1.7z" fill="#fff"/><path d="M30.4 11.2l-1.3 4.3h0l-1.3-4.3H26l2 5.8-.1.4c-.2.6-.5.8-1 .8h-.5v1.1h.6c1.2 0 1.8-.5 2.3-1.8l2.2-6.3h-1.1z" fill="#fff"/></svg>
+
+        <!-- Google Pay -->
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Google Pay"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><path d="M18.5 12.3v2.5h-.8v-6.1h2.1c.5 0 1 .2 1.4.5.4.4.6.8.6 1.3 0 .5-.2 1-.6 1.3-.4.3-.8.5-1.4.5h-1.3zm0-2.9v2.2h1.3c.3 0 .6-.1.8-.3.2-.2.3-.5.3-.8s-.1-.6-.3-.8c-.2-.2-.5-.3-.8-.3h-1.3z" fill="#3C4043"/><path d="M22.9 10.9c.6 0 1 .2 1.4.5.3.3.5.8.5 1.4v2.9h-.7v-.7h0c-.3.5-.8.8-1.4.8-.5 0-.9-.1-1.3-.4-.3-.3-.5-.7-.5-1.1 0-.5.2-.8.5-1.1.4-.3.8-.4 1.4-.4.5 0 .9.1 1.2.3v-.2c0-.4-.1-.7-.4-.9-.3-.2-.6-.4-.9-.4-.5 0-.9.2-1.2.6l-.6-.4c.4-.6 1-.9 1.9-.9zm-.2 4.4c.3 0 .6-.1.8-.3.3-.2.4-.5.4-.8 0-.3-.1-.5-.3-.7-.2-.2-.5-.2-.8-.2-.4 0-.7.1-.9.3-.3.2-.4.5-.4.8 0 .3.1.5.4.7.2.2.5.2.8.2z" fill="#3C4043"/><path d="M27.2 10.9l-2.1 4.8h-.8l.8-1.7-1.4-3.1h.8l1 2.4h0l.9-2.4h.8z" fill="#3C4043"/><path d="M14.6 12.1c0-.2 0-.5-.1-.7h-3.2v1.4h1.8c-.1.4-.3.8-.6 1.1v.9h1c.6-.6.9-1.5.9-2.5l.2-.2z" fill="#4285F4"/><path d="M11.3 15.5c.9 0 1.7-.3 2.2-.8l-1-.9c-.3.2-.7.3-1.2.3-.9 0-1.7-.6-2-1.5H8.2v.9c.6 1.2 1.8 2 3.1 2z" fill="#34A853"/><path d="M9.4 12.6c-.1-.3-.1-.6-.1-.9 0-.3 0-.6.1-.9v-.9H8.2c-.3.6-.4 1.2-.4 1.8 0 .6.1 1.2.4 1.8l1.2-.9z" fill="#FBBC05"/><path d="M11.3 10.3c.5 0 1 .2 1.3.5l.9-.9c-.6-.5-1.4-.8-2.2-.8-1.3 0-2.5.8-3.1 2l1.2.9c.3-.9 1.1-1.5 2-1.7h-.1z" fill="#EA4335"/></svg>
+
         <!-- PayPal -->
-        <svg viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><path fill-rule="evenodd" clip-rule="evenodd" d="M19.658 15.35c-.338-.288-.612-.574-.89-.862l-.14.862H16.08l1.5-9.3h2.408l-.748 4.556c.35-.378.77-.84 1.37-1.218.596-.378 1.282-.574 2.05-.574.896 0 1.602.28 2.12.84.52.562.77 1.342.77 2.344 0 .378-.046.764-.14 1.148-.188.858-.52 1.604-.98 2.232-.456.628-1.002 1.092-1.627 1.394-.626.302-1.267.448-1.917.448-.854 0-1.472-.224-1.862-.673l-.396-.197zm2.212-1.54c.334-.194.608-.45.82-.77.214-.318.376-.67.484-1.054.082-.28.124-.556.124-.826 0-.438-.112-.786-.332-1.044-.222-.258-.534-.388-.936-.388-.376 0-.738.136-1.082.41-.346.272-.622.654-.828 1.148-.17.404-.268.818-.292 1.242-.018.28.034.538.156.774.122.234.3.416.536.546.236.128.516.194.838.194.178 0 .34-.024.488-.072l.024-.16z" fill="#009EE3"/></svg>
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PayPal"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#d9d9d9"/><path d="M17.5 8.5h-3.2c-.2 0-.4.1-.4.4l-1.3 8.1c0 .2.1.3.3.3h1.5c.2 0 .4-.1.4-.4l.4-2.3c0-.2.2-.4.4-.4h1c2.1 0 3.3-1 3.6-3 .1-.8 0-1.5-.4-2-.5-.5-1.2-.7-2.3-.7zM18 11.5c-.2 1.2-1 1.2-1.8 1.2h-.5l.3-2c0-.1.1-.2.3-.2h.2c.5 0 1 0 1.3.3.2.2.2.4.2.7z" fill="#003087"/><path d="M24.3 11.4h-1.5c-.1 0-.3.1-.3.2l-.1.5-.1-.1c-.3-.5-1-.6-1.7-.6-1.6 0-3 1.2-3.2 2.9-.1.9.1 1.7.6 2.2.5.5 1.1.7 1.9.7 1.3 0 2-.9 2-.9l-.1.5c0 .2.1.3.3.3h1.4c.2 0 .4-.1.4-.4l.8-4.9c0-.3-.2-.4-.4-.4zm-2.1 2.9c-.1.8-.7 1.4-1.5 1.4-.4 0-.7-.1-.9-.4-.2-.2-.3-.6-.3-1 .1-.8.7-1.4 1.5-1.4.4 0 .7.1.9.4.2.3.3.6.3 1z" fill="#003087"/><path d="M29.5 11.4H28c-.2 0-.3.1-.4.2l-2.1 3.1-.9-3c-.1-.2-.2-.3-.4-.3h-1.5c-.2 0-.3.2-.3.4l1.6 4.8-1.5 2.1c-.2.2 0 .5.2.5h1.5c.2 0 .3-.1.4-.2l4.8-6.9c.2-.3 0-.7-.4-.7z" fill="#009CDE"/></svg>
+
+        <!-- American Express -->
+        <svg class="payment-icon" viewBox="0 0 38 24" width="38" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="American Express"><rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#2E77BC"/><path d="M7 15.5l.7-1.8H10l.7 1.8h1.3l-2.8-6.7H7.9L5 15.5H7zm2.3-5.4l.9 2.5H8.4l.9-2.5zM12 15.5h1.2V12l2.7 3.5h1V8.8h-1.2v3.4L13.2 8.8H12v6.7zM20.5 14.4h-2.9v-1.7h2.8v-1h-2.8V9.9h2.9v-1H16.4v6.7h4v-1.2zM25.7 15.5l1.9-6.7h-1.3l-1.3 5-1.3-5H22l-1.3 5-1.3-5h-1.3l2 6.7h1.3l1.3-5 1.3 5h1.7zM28 15.5h1.2V8.8H28v6.7z" fill="#fff"/></svg>
+
       </div>
     </div>
   </div>
+
 </footer>
 
 {% schema %}
@@ -171,16 +206,10 @@
   "name": "Footer",
   "settings": [
     {
-      "type": "text",
-      "id": "brand_text",
-      "label": "Brand text",
-      "default": "Aitch Home Care"
-    },
-    {
       "type": "textarea",
       "id": "tagline",
-      "label": "Tagline",
-      "default": "Simple solutions for everyday home problems. Curated cleaning tools, kitchen essentials, and home convenience products — shipped fast across North America."
+      "label": "Brand tagline",
+      "default": "Premium products for every need — from trending gadgets to everyday essentials, delivered fast across the US."
     },
     {
       "type": "text",
@@ -206,11 +235,11 @@
     {
       "type": "link_list",
       "id": "footer_menu_3",
-      "label": "Footer menu 3 (e.g. Company)"
+      "label": "Footer menu 3 (e.g. Policies)"
     },
     {
       "type": "paragraph",
-      "content": "Social icons use Theme settings → Social & trust first. URLs below are optional fallbacks if a theme field is empty."
+      "content": "Social icons use Theme settings → Social & trust first. URLs below are optional fallbacks."
     },
     {
       "type": "url",

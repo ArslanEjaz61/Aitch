@@ -5220,3 +5220,210 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 
 
+
+/* ================================
+   PREMIUM FOOTER — US Store
+   ================================ */
+
+.footer--premium {
+  background-color: #0d0f14;
+  background-image: url('footer-bg.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  position: relative;
+  color: rgba(255,255,255,0.75);
+}
+
+.footer--premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,12,18,0.88) 0%, rgba(5,7,12,0.97) 100%);
+  z-index: 0;
+}
+
+.footer--premium .footer__main,
+.footer--premium .footer__bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.footer--premium .footer__main {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Grid layout: brand + 3 columns */
+.footer--premium .footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Brand column */
+.footer--premium .footer__brand .footer__logo {
+  margin-bottom: 1.25rem;
+}
+
+.footer--premium .footer__tagline {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1.5rem;
+  max-width: 280px;
+}
+
+/* Trust badges */
+.footer--premium .footer__trust {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer--premium .footer__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.footer--premium .footer__trust-item svg {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* Social icons */
+.footer--premium .footer__social {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.footer--premium .footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.65);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.footer--premium .footer__social a:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.4);
+  color: #ffffff;
+}
+
+.footer--premium .footer__social svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+/* Menu columns */
+.footer--premium .footer__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer--premium .footer__col-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer--premium .footer__column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.footer--premium .footer__column ul li a {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer--premium .footer__column ul li a:hover {
+  color: #ffffff;
+}
+
+/* Footer bottom bar */
+.footer--premium .footer__bottom {
+  padding: 1.25rem 0;
+}
+
+.footer--premium .footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer--premium .footer__copyright {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+}
+
+/* Payment icons row */
+.footer--premium .footer__payments {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.footer--premium .payment-icon {
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 1024px) {
+  .footer--premium .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .footer--premium .footer__brand {
+    grid-column: span 2;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .footer--premium .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .footer--premium .footer__brand {
+    grid-column: span 2;
+  }
+  .footer--premium .footer__main {
+    padding: 2.5rem 0 2rem;
+  }
+  .footer--premium .footer__bottom-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
