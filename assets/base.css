@@ -4971,7 +4971,26 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 .home-product-row--trending {
   background-color: #1a1a1a;
+  background-image: url('trending-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
   padding: 2.5rem 0 3rem;
+}
+
+/* Dark overlay so text stays readable over background */
+.home-product-row--trending > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.home-product-row--trending::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 15, 15, 0.82);
+  z-index: 0;
 }
 
 /* Section header: heading left, button right */
@@ -5051,11 +5070,12 @@ body.template-product .product-tabs.reveal-on-scroll {
   box-shadow: 0 8px 24px rgba(0,0,0,0.35);
 }
 
-/* Compact image area */
+/* Compact image area — no crop */
 .home-product-row--trending .product-card__media {
   aspect-ratio: 1 / 1;
-  max-height: 200px;
+  overflow: hidden;
 }
+
 
 /* Info section tighter */
 .home-product-row--trending .product-card__info {
