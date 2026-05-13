@@ -1,6 +1,4 @@
 {% liquid
-  assign collection = section.settings.collection
-  assign product_limit = section.settings.product_limit | default: 8
   assign hero_slides = section.blocks | where: 'type', 'hero_slide'
 %}
 
@@ -218,6 +216,55 @@
   </div>
 </section>
 
+{% liquid
+  assign t_limit = section.settings.trending_product_limit | default: 4
+  assign a_limit = section.settings.all_product_limit | default: 8
+  
+  assign c_all = section.settings.all_collection
+  if c_all == blank
+    assign c_all = collections.all
+  endif
+
+  # Trending resolution
+  assign c_trending = section.settings.trending_collection
+  if c_trending != blank and c_trending.handle == blank
+    assign c_trending = collections[c_trending]
+  endif
+  if c_trending == blank
+    assign c_trending = section.settings.collection
+    if c_trending != blank and c_trending.handle == blank
+      assign c_trending = collections[c_trending]
+    endif
+  endif
+  if c_trending == blank
+    assign c_trending = collections['trending-now']
+  endif
+  if c_trending == blank
+    assign c_trending = collections['best-sales']
+  endif
+%}
+
+{% render 'homepage-product-row',
+  collection: c_trending,
+  row_variant: 'trending',
+  eyebrow: section.settings.trending_eyebrow,
+  heading: section.settings.trending_heading,
+  subheading: section.settings.trending_subheading,
+  product_limit: t_limit,
+  cta_label: section.settings.trending_cta_label,
+  cta_link: section.settings.trending_cta_link
+%}
+
+{% render 'homepage-product-row',
+  collection: c_all,
+  eyebrow: section.settings.all_eyebrow,
+  heading: section.settings.all_heading,
+  subheading: section.settings.all_subheading,
+  product_limit: a_limit,
+  cta_label: section.settings.all_cta_label,
+  cta_link: section.settings.all_cta_link
+%}
+
 <!-- ============================
      TRUST BAR
      ============================ -->
@@ -259,40 +306,6 @@
         <span>{{ section.settings.trust_4_text | default: 'Hassle-free money back guarantee' | escape }}</span>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============================
-     FEATURED PRODUCTS GRID
-     ============================ -->
-<section class="section-spacing reveal reveal--stagger">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-header__text">
-        <div class="section-header__eyebrow">{{ section.settings.grid_eyebrow | default: 'Featured' | escape }}</div>
-        <h2 class="section-header__title">{{ section.settings.grid_heading | default: 'Best-Selling Solutions' | escape }}</h2>
-        <p class="section-header__subtitle">{{ section.settings.grid_subheading | default: 'Our most popular products that solve everyday home problems.' | escape }}</p>
-      </div>
-      {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
-        <a class="btn btn--secondary" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
-      {% endif %}
-    </div>
-
-    {% if collection != blank and collection.products_count > 0 %}
-      <div class="product-grid product-grid--4">
-        {% for product in collection.products limit: product_limit %}
-          {% render 'product-card', product: product %}
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="empty-state">
-        <div class="empty-state__icon">
-          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        </div>
-        <h3 class="empty-state__title">No products yet</h3>
-        <p class="empty-state__text">Select a collection in this section's settings to show featured products.</p>
-      </div>
-    {% endif %}
   </div>
 </section>
 
@@ -906,34 +919,89 @@
     },
     {
       "type": "header",
-      "content": "Product grid"
+      "content": "Row: Trending Now"
+    },
+    {
+      "type": "paragraph",
+      "content": "Choose a collection. This row has the dark Aitch band and up to four cards per row on desktop. Clear messages appear until a collection is set."
     },
     {
       "type": "text",
-      "id": "grid_eyebrow",
-      "label": "Grid eyebrow",
-      "default": "Featured"
+      "id": "trending_eyebrow",
+      "label": "Eyebrow",
+      "default": "Just in"
     },
     {
       "type": "text",
-      "id": "grid_heading",
-      "label": "Grid heading",
-      "default": "Best-Selling Solutions"
+      "id": "trending_heading",
+      "label": "Heading",
+      "default": "Trending Now"
     },
     {
       "type": "textarea",
-      "id": "grid_subheading",
-      "label": "Grid subheading",
-      "default": "Our most popular products that solve everyday home problems."
+      "id": "trending_subheading",
+      "label": "Subheading",
+      "default": "What shoppers are adding to cart this week."
     },
     {
       "type": "collection",
-      "id": "collection",
+      "id": "trending_collection",
       "label": "Collection"
     },
     {
       "type": "range",
-      "id": "product_limit",
+      "id": "trending_product_limit",
+      "label": "Number of product cards (max 4 in one row on desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "trending_cta_label",
+      "label": "Button label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "trending_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: All products"
+    },
+    {
+      "type": "paragraph",
+      "content": "Defaults to the All products collection if you leave Collection empty."
+    },
+    {
+      "type": "text",
+      "id": "all_eyebrow",
+      "label": "Eyebrow",
+      "default": "Catalog"
+    },
+    {
+      "type": "text",
+      "id": "all_heading",
+      "label": "Heading",
+      "default": "All products"
+    },
+    {
+      "type": "textarea",
+      "id": "all_subheading",
+      "label": "Subheading",
+      "default": "Everything we carry, in one place."
+    },
+    {
+      "type": "collection",
+      "id": "all_collection",
+      "label": "Collection (optional)"
+    },
+    {
+      "type": "range",
+      "id": "all_product_limit",
       "label": "Number of products",
       "min": 4,
       "max": 12,
@@ -942,14 +1010,116 @@
     },
     {
       "type": "text",
-      "id": "grid_cta_label",
-      "label": "Grid button label",
-      "default": "View All Products"
+      "id": "all_cta_label",
+      "label": "Button label",
+      "default": "Shop all"
     },
     {
       "type": "url",
-      "id": "grid_cta_link",
-      "label": "Grid button link"
+      "id": "all_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: Indoor"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional. If no collection is selected, this row is hidden."
+    },
+    {
+      "type": "text",
+      "id": "indoor_eyebrow",
+      "label": "Eyebrow",
+      "default": "Inside the home"
+    },
+    {
+      "type": "text",
+      "id": "indoor_heading",
+      "label": "Heading",
+      "default": "Indoor"
+    },
+    {
+      "type": "textarea",
+      "id": "indoor_subheading",
+      "label": "Subheading",
+      "default": "Clean, organize, and refresh every room."
+    },
+    {
+      "type": "collection",
+      "id": "indoor_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "indoor_product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "indoor_cta_label",
+      "label": "Button label",
+      "default": "See indoor"
+    },
+    {
+      "type": "url",
+      "id": "indoor_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: Outdoor"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional. If no collection is selected, this row is hidden."
+    },
+    {
+      "type": "text",
+      "id": "outdoor_eyebrow",
+      "label": "Eyebrow",
+      "default": "Outside the home"
+    },
+    {
+      "type": "text",
+      "id": "outdoor_heading",
+      "label": "Heading",
+      "default": "Outdoor"
+    },
+    {
+      "type": "textarea",
+      "id": "outdoor_subheading",
+      "label": "Subheading",
+      "default": "Power through patios, tools, and exterior messes."
+    },
+    {
+      "type": "collection",
+      "id": "outdoor_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "outdoor_product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "outdoor_cta_label",
+      "label": "Button label",
+      "default": "See outdoor"
+    },
+    {
+      "type": "url",
+      "id": "outdoor_cta_link",
+      "label": "Button link"
     },
     {
       "type": "header",
