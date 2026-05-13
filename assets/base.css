@@ -48,7 +48,7 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
   --space-4xl: 6rem;
-  --space-section: clamp(3rem, 6vw, 5rem);
+  --space-section: clamp(5rem, 10vw, 8rem);
 
   /* Layout */
   --max-width: 1400px;
@@ -58,8 +58,8 @@
 
   /* Shape */
   --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
   --radius-pill: 999px;
 
   /* Transitions */
@@ -5441,26 +5441,51 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 
 
-/* Premium Indigo Accents */
+/* Luxury Midnight Accents (Stitch Inspired) */
 .btn--primary, 
 .cart-summary__checkout-btn {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  background: var(--color-bg-dark);
+  color: #ffffff;
   border: none;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  border-radius: 2px;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn--primary:hover,
 .cart-summary__checkout-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-  filter: brightness(1.1);
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 34, 56, 0.15);
+}
+
+.header__logo-text {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.header__nav a {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Section Titles - Editorial Style */
+.section-header__title, .hero-slider__title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .header__cart-count {
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  background: var(--color-bg-dark);
+  box-shadow: none;
 }
 
-.header__nav a::after {
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
-}
+
