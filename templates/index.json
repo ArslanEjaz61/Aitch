@@ -93,30 +93,30 @@
         "hero_slide_1": {
           "type": "hero_slide",
           "settings": {
-            "eyebrow": "",
-            "heading": "Solve everyday home problems. Effortlessly.",
-            "subheading": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.",
+            "eyebrow": "Welcome to Aitch",
+            "heading": "Discover Products You'll Actually Love.",
+            "subheading": "From trending gadgets to everyday essentials — everything you need, delivered fast.",
             "badge": "",
             "badge_subtext": "",
-            "primary_label": "Shop Best Sellers",
+            "primary_label": "Shop Now",
             "primary_link": "/collections/all",
-            "secondary_label": "Explore Collections",
-            "secondary_link": "/collections/all",
+            "secondary_label": "View Trending",
+            "secondary_link": "/collections/trending-now",
             "content_alignment": "left"
           }
         },
         "hero_slide_2": {
           "type": "hero_slide",
           "settings": {
-            "eyebrow": "Curated for your home",
-            "heading": "Tools that actually work",
-            "subheading": "From deep-clean brushes to kitchen organizers — every pick is chosen for real results.",
+            "eyebrow": "New Arrivals",
+            "heading": "Top Picks, Curated for You.",
+            "subheading": "Smart finds across every category — hand-picked for quality, value, and style.",
             "badge": "",
             "badge_subtext": "",
-            "primary_label": "Shop cleaning",
-            "primary_link": "/collections/cleaning-tools",
-            "secondary_label": "Shop kitchen",
-            "secondary_link": "/collections/kitchen-products",
+            "primary_label": "Shop All",
+            "primary_link": "/collections/all",
+            "secondary_label": "Best Sellers",
+            "secondary_link": "/collections/best-sales",
             "content_alignment": "left"
           }
         },
