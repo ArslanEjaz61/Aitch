@@ -93,7 +93,7 @@
                   <div class="cart-item__controls">
                     <div class="cart-item__qty-wrap">
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.nextElementSibling; i.value=Math.max(1,parseInt(i.value)-1); i.dispatchEvent(new Event('change'));"
+                        onclick="var i=this.nextElementSibling; i.value=Math.max(1,parseInt(i.value)-1); i.dispatchEvent(new Event('change', {bubbles:true}));"
                         aria-label="Decrease">−</button>
                       <input
                         type="number"
@@ -105,7 +105,7 @@
                         aria-label="Quantity for {{ item.product.title | escape }}"
                       >
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.previousElementSibling; i.value=parseInt(i.value)+1; i.dispatchEvent(new Event('change'));"
+                        onclick="var i=this.previousElementSibling; i.value=parseInt(i.value)+1; i.dispatchEvent(new Event('change', {bubbles:true}));"
                         aria-label="Increase">+</button>
                     </div>
 
@@ -206,45 +206,54 @@
     const cartPage = document.querySelector('.cart-page');
     if (!cartPage) return;
 
-    cartPage.classList.add('is-loading'); // Add a class for visual feedback (opacity 0.5)
+    cartPage.classList.add('is-loading');
 
+    // Use /cart/change.js to update the quantity
     fetch('/cart/change.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ line: line, quantity: quantity })
+      body: JSON.stringify({ line: line, quantity: parseInt(quantity) })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) throw new Error('Cart update failed');
+      return response.json();
+    })
     .then(cart => {
       // Use Section Rendering API to get updated cart HTML
+      // We use the section file name 'main-cart' as the key
       return fetch(window.location.pathname + '?sections=main-cart');
     })
     .then(response => response.json())
     .then(sections => {
-      const html = new DOMParser().parseFromString(sections['main-cart'], 'text/html');
+      const sectionHtml = sections['main-cart'];
+      if (!sectionHtml) throw new Error('Section main-cart not found in response');
+
+      const html = new DOMParser().parseFromString(sectionHtml, 'text/html');
       const newInner = html.querySelector('.cart-page').innerHTML;
+      
+      // Update the DOM
       cartPage.innerHTML = newInner;
       cartPage.classList.remove('is-loading');
 
       // Update header cart count
-      fetch('/cart.js')
-        .then(res => res.json())
-        .then(cart => {
-          const countEl = document.querySelector('.header__cart-count');
-          if (countEl) {
+      const newCount = document.querySelector('.cart-page__count'); // We can get it from the new HTML too
+      const headerCountEl = document.querySelector('.header__cart-count');
+      if (headerCountEl) {
+          fetch('/cart.js').then(res => res.json()).then(cart => {
             if (cart.item_count > 0) {
-              countEl.textContent = cart.item_count;
-              countEl.style.display = 'flex';
+              headerCountEl.textContent = cart.item_count;
+              headerCountEl.style.display = 'flex';
             } else {
-              countEl.style.display = 'none';
+              headerCountEl.style.display = 'none';
             }
-          } else if (cart.item_count > 0) {
-             // If count el doesn't exist yet, reload header or just ignore for now
-          }
-        });
+          });
+      }
     })
     .catch(error => {
       console.error('Error updating cart:', error);
       cartPage.classList.remove('is-loading');
+      // If AJAX fails, fallback to full page reload to ensure consistency
+      window.location.reload();
     });
   };
 
@@ -264,4 +273,5 @@
   "settings": []
 }
 {% endschema %}
+
 
