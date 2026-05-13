@@ -5431,3 +5431,10 @@ body.template-product .product-tabs.reveal-on-scroll {
   }
 }
 
+
+/* Cart AJAX Loading State */
+.cart-page.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
