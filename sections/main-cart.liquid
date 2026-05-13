@@ -29,12 +29,11 @@
     </div>
 
   {% else %}
-    <div class="cart-layout">
+      <!-- Wrap the entire layout in one form so checkout button also updates quantities -->
+      <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form" class="cart-layout">
 
-      <!-- Cart Items Column -->
-      <div class="cart-items-col">
-        <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form">
-
+        <!-- Cart Items Column -->
+        <div class="cart-items-col">
           <div class="cart-items-list">
             {% for item in cart.items %}
               <div class="cart-item">
@@ -94,7 +93,7 @@
                   <div class="cart-item__controls">
                     <div class="cart-item__qty-wrap">
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.nextElementSibling;i.value=Math.max(1,parseInt(i.value)-1);"
+                        onclick="var i=this.nextElementSibling; i.value=Math.max(1,parseInt(i.value)-1); i.dispatchEvent(new Event('change'));"
                         aria-label="Decrease">−</button>
                       <input
                         type="number"
@@ -103,9 +102,10 @@
                         min="1"
                         class="cart-item__qty-input"
                         aria-label="Quantity for {{ item.product.title | escape }}"
+                        onchange="this.form.submit();"
                       >
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.previousElementSibling;i.value=parseInt(i.value)+1;"
+                        onclick="var i=this.previousElementSibling; i.value=parseInt(i.value)+1; i.dispatchEvent(new Event('change'));"
                         aria-label="Increase">+</button>
                     </div>
 
@@ -131,77 +131,75 @@
             {% endfor %}
           </div>
 
-          <!-- Update Cart -->
-          <div class="cart-update-row">
+          <!-- Update Cart (hidden because of auto-submit, but kept for accessibility) -->
+          <div class="cart-update-row" style="display: none;">
             <button class="btn btn--secondary" type="submit" name="update">
               <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
               Update Cart
             </button>
           </div>
-        </form>
-      </div>
-
-      <!-- Order Summary Column -->
-      <aside class="cart-summary">
-        <h2 class="cart-summary__title">Order Summary</h2>
-
-        <div class="cart-summary__lines">
-          {% for item in cart.items %}
-            <div class="cart-summary__line">
-              <span class="cart-summary__line-name">
-                {{ item.product.title | truncate: 32 | escape }}
-                <span class="cart-summary__line-qty">×{{ item.quantity }}</span>
-              </span>
-              <span class="cart-summary__line-price">{{ item.final_line_price | money }}</span>
-            </div>
-          {% endfor %}
         </div>
 
-        <div class="cart-summary__divider"></div>
+        <!-- Order Summary Column -->
+        <aside class="cart-summary">
+          <h2 class="cart-summary__title">Order Summary</h2>
 
-        <div class="cart-summary__row">
-          <span>Subtotal</span>
-          <span class="cart-summary__value">{{ cart.total_price | money }}</span>
-        </div>
-        <div class="cart-summary__row cart-summary__row--secondary">
-          <span>Shipping</span>
-          <span>Calculated at checkout</span>
-        </div>
-        {% if cart.total_discounts > 0 %}
-          <div class="cart-summary__row cart-summary__row--discount">
-            <span>Discounts</span>
-            <span>−{{ cart.total_discounts | money }}</span>
+          <div class="cart-summary__lines">
+            {% for item in cart.items %}
+              <div class="cart-summary__line">
+                <span class="cart-summary__line-name">
+                  {{ item.product.title | truncate: 32 | escape }}
+                  <span class="cart-summary__line-qty">×{{ item.quantity }}</span>
+                </span>
+                <span class="cart-summary__line-price">{{ item.final_line_price | money }}</span>
+              </div>
+            {% endfor %}
           </div>
-        {% endif %}
 
-        <div class="cart-summary__total-row">
-          <span>Total</span>
-          <span class="cart-summary__total-price">{{ cart.total_price | money }}</span>
-        </div>
+          <div class="cart-summary__divider"></div>
 
-        <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
+          <div class="cart-summary__row">
+            <span>Subtotal</span>
+            <span class="cart-summary__value">{{ cart.total_price | money }}</span>
+          </div>
+          <div class="cart-summary__row cart-summary__row--secondary">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+          {% if cart.total_discounts > 0 %}
+            <div class="cart-summary__row cart-summary__row--discount">
+              <span>Discounts</span>
+              <span>−{{ cart.total_discounts | money }}</span>
+            </div>
+          {% endif %}
 
-        <!-- Checkout Button -->
-        <form action="{{ routes.cart_url }}" method="post">
+          <div class="cart-summary__total-row">
+            <span>Total</span>
+            <span class="cart-summary__total-price">{{ cart.total_price | money }}</span>
+          </div>
+
+          <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
+
+          <!-- Checkout Button -->
           <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Proceed to Checkout
           </button>
-        </form>
 
-        <!-- Trust mini badges -->
-        <div class="cart-summary__trust">
-          <div class="cart-summary__trust-item">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            SSL Secure Checkout
+          <!-- Trust mini badges -->
+          <div class="cart-summary__trust">
+            <div class="cart-summary__trust-item">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              SSL Secure Checkout
+            </div>
+            <div class="cart-summary__trust-item">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              30-Day Free Returns
+            </div>
           </div>
-          <div class="cart-summary__trust-item">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            30-Day Free Returns
-          </div>
-        </div>
-      </aside>
-    </div>
+        </aside>
+      </form>
+
   {% endif %}
 </div>
 
