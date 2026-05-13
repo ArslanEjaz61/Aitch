@@ -4965,13 +4965,173 @@ body.template-product .product-tabs.reveal-on-scroll {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Trending Row Styles */
+/* ================================
+   TRENDING NOW SECTION — Premium
+   ================================ */
+
 .home-product-row--trending {
-  background-color: var(--color-bg-dark, #1a1a1a);
-  color: #ffffff;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  background-color: #1a1a1a;
+  padding: 2.5rem 0 3rem;
 }
+
+/* Section header: heading left, button right */
+.home-product-row--trending .section-header.home-product-row__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.home-product-row--trending .section-header__eyebrow {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.home-product-row--trending .section-header__title {
+  color: #ffffff;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+  margin: 0 0 0.15rem;
+  line-height: 1.2;
+}
+
+.home-product-row--trending .section-header__subtitle {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* CTA button — outlined white */
+.home-product-row--trending .btn--trending-cta {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: var(--radius-sm, 4px);
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 1.5rem;
+}
+
+.home-product-row--trending .btn--trending-cta:hover {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-color: #ffffff;
+}
+
+/* 4-column compact grid */
+.home-product-row--trending .home-product-row__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* Product card overrides inside trending */
+.home-product-row--trending .product-card {
+  background: #ffffff;
+  border-radius: 6px;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  color: #1a1a1a;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-product-row--trending .product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* Compact image area */
+.home-product-row--trending .product-card__media {
+  aspect-ratio: 1 / 1;
+  max-height: 200px;
+}
+
+/* Info section tighter */
+.home-product-row--trending .product-card__info {
+  padding: 0.65rem 0.75rem 0.75rem;
+}
+
+.home-product-row--trending .product-card__vendor {
+  color: #888888 !important;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+
+.home-product-row--trending .product-card__title {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+}
+
+.home-product-row--trending .product-card__title a {
+  color: #1a1a1a !important;
+  text-decoration: none;
+}
+
+.home-product-row--trending .product-card__price-current,
+.home-product-row--trending .product-card__price-sale {
+  color: #1a1a1a !important;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.home-product-row--trending .product-card__price-compare {
+  color: #999999 !important;
+  font-size: 0.75rem;
+  text-decoration: line-through;
+}
+
+.home-product-row--trending .product-card__sold-out {
+  color: #c1272d !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Add to Cart button — compact */
+.home-product-row--trending .product-card__atc-btn {
+  font-size: 0.75rem;
+  padding: 7px 12px;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media screen and (max-width: 1024px) {
+  .home-product-row--trending .home-product-row__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .home-product-row--trending {
+    padding: 2rem 0 2.5rem;
+  }
+  .home-product-row--trending .home-product-row__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+  .home-product-row--trending .section-header.home-product-row__head {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .home-product-row--trending .btn--trending-cta {
+    margin-left: 0;
+  }
+}
+
 
 .home-product-row--trending .section-header__title,
 .home-product-row--trending .section-header__subtitle,
