@@ -5019,4 +5019,24 @@ body.template-product .product-tabs.reveal-on-scroll {
   }
 }
 
+/* Force product card text to be dark inside dark trending band */
+.home-product-row--trending .product-card {
+  color: var(--color-text, #1a1a1a);
+}
+
+.home-product-row--trending .product-card__title,
+.home-product-row--trending .product-card__title a,
+.home-product-row--trending .product-card__price-current,
+.home-product-row--trending .product-card__price-sale,
+.home-product-row--trending .product-card__price-compare,
+.home-product-row--trending .product-card__vendor,
+.home-product-row--trending .product-card__sold-out {
+  color: var(--color-text, #1a1a1a) !important;
+}
+
+.home-product-row--trending .product-card__price-compare {
+  color: var(--color-text-secondary, #6b6b6b) !important;
+}
+
+
 
