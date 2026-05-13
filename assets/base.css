@@ -655,7 +655,7 @@ h1, h2, h3, h4, h5, h6 {
    HERO SECTION — Full-width image slider + overlay
    ========================================================= */
 .hero {
-  background: #0a0a0a;
+  background: var(--color-bg-dark);
   position: relative;
   overflow: hidden;
 }
@@ -4973,7 +4973,7 @@ body.template-product .product-tabs.reveal-on-scroll {
    ================================ */
 
 .home-product-row--trending {
-  background-color: #1a1a1a;
+  background-color: var(--color-bg-dark);
   background-image: url('trending-bg.png');
   background-size: cover;
   background-position: center center;
@@ -5229,7 +5229,7 @@ body.template-product .product-tabs.reveal-on-scroll {
    ================================ */
 
 .footer--premium {
-  background-color: #0d0f14;
+  background-color: var(--color-bg-dark);
   background-image: url('footer-bg.png');
   background-size: cover;
   background-position: center top;
@@ -5437,4 +5437,30 @@ body.template-product .product-tabs.reveal-on-scroll {
   opacity: 0.6;
   pointer-events: none;
   transition: opacity 0.2s ease;
+}
+
+
+
+/* Premium Indigo Accents */
+.btn--primary, 
+.cart-summary__checkout-btn {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  border: none;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn--primary:hover,
+.cart-summary__checkout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+  filter: brightness(1.1);
+}
+
+.header__cart-count {
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+}
+
+.header__nav a::after {
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
 }
