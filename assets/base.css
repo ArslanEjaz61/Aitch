@@ -5490,3 +5490,49 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 
 
+
+
+/* Midnight & Sand Luxury Styling */
+.btn--primary, 
+.cart-summary__checkout-btn {
+  background: var(--color-bg-dark);
+  color: #ffffff;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1.2rem 2rem;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid transparent;
+}
+
+.btn--primary:hover,
+.cart-summary__checkout-btn:hover {
+  background: #ffffff;
+  color: var(--color-bg-dark);
+  border-color: var(--color-bg-dark);
+  transform: translateY(-2px);
+}
+
+.header {
+  border-bottom: 1px solid rgba(140, 130, 121, 0.15);
+}
+
+.header__nav a {
+  font-family: var(--font-body);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.section-header__title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.footer {
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+}
