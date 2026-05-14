@@ -1560,7 +1560,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
   margin-top: var(--space-xs);
 }
 
-.product-card__price-current { font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: #000000 !important; }
+.product-card__price-current { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; color: #000000 !important; letter-spacing: -0.01em; }
 
 .product-card__price-compare {
   color: var(--color-text-tertiary);
@@ -2570,7 +2570,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
   border-bottom: 1px solid var(--color-border);
 }
 
-.product-page__price-current { font-family: var(--font-body); font-size: 1.5rem; font-weight: 700; color: #000000 !important; }
+.product-page__price-current { font-family: var(--font-heading); font-size: 2.25rem; font-weight: 500; color: #000000 !important; letter-spacing: -0.02em; }
 
 .product-page__price-current--sale {
   color: var(--color-sale);
@@ -3242,7 +3242,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   flex-shrink: 0;
 }
 
-.cart-item__price-current, .cart-item__price-sale { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 400; } .cart-item__price-current,
+.cart-item__price-current, .cart-item__price-sale { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; color: #000000 !important; } .cart-item__price-current,
 .cart-item__price-sale {
   font-weight: 700;
   font-size: var(--font-size-md);
@@ -3445,7 +3445,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   margin-top: var(--space-sm);
 }
 
-.cart-summary__total-price { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 400; }
+.cart-summary__total-price { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 600; color: #000000 !important; }
 
 .cart-summary__note {
   font-size: var(--font-size-xs);
@@ -5494,6 +5494,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   background-color: var(--color-bg-alt);
   color: var(--color-text);
 }
+
 
 
 
