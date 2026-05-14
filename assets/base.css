@@ -5505,3 +5505,14 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 
 
+
+/* Final Fix for Trending Prices */
+.home-product-row--trending .product-card__price-current,
+.home-product-row--trending .product-card__price-sale {
+    font-family: var(--font-heading) !important;
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    display: block !important;
+    margin-top: 4px !important;
+}
