@@ -26,8 +26,8 @@
   --color-overlay: rgba(0, 0, 0, 0.5);
 
   /* Typography */
-  --font-body: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Libre Caslon Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-xs: 0.6875rem;     /* 11px */
   --font-size-sm: 0.75rem;       /* 12px */
   --font-size-base: 16px;    /* 14px */
@@ -88,16 +88,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  color: var(--color-text);
-  background: var(--color-bg);
-  line-height: 1.6;
-  overflow-x: hidden;
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-}
+body { font-family: var(--font-body); font-size: var(--font-size-base); line-height: 1.6; color: var(--color-text); background-color: var(--color-bg); margin: 0; }
 
 img {
   max-width: 100%;
@@ -121,7 +112,7 @@ ul, ol {
   list-style: none;
 }
 
-h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
 
 /* — Accessibility — */
 .sr-only {
@@ -5503,6 +5494,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   background-color: var(--color-bg-alt);
   color: var(--color-text);
 }
+
 
 
 
