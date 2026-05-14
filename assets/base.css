@@ -338,7 +338,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 400; lin
   flex-shrink: 0;
 }
 
-.header__nav a {
+.header__nav a { color: #000000 !important;
   padding: 10px 12px;
   font-size: var(--font-size-base);
   font-weight: 500;
@@ -5442,7 +5442,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   text-transform: lowercase;
 }
 
-.header__nav a {
+.header__nav a { color: #000000 !important;
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.1em;
@@ -5492,7 +5492,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   border-bottom: 1px solid rgba(140, 130, 121, 0.15);
 }
 
-.header__nav a {
+.header__nav a { color: #000000 !important;
   font-family: var(--font-body);
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -5509,6 +5509,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   background-color: var(--color-bg-alt);
   color: var(--color-text);
 }
+
 
 
 
