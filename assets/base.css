@@ -166,9 +166,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
     padding-top: clamp(2rem, 6vw, 3rem);
     padding-bottom: clamp(2rem, 6vw, 3rem);
   }
-  .section-header__title {
-    font-size: clamp(1.25rem, 5vw, 1.75rem);
-  }
+  .section-header__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 700; color: #000000 !important; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }
 }
 
 /* =========================================================
@@ -1295,12 +1293,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
   margin-bottom: var(--space-sm);
 }
 
-.section-header__title {
-  font-size: var(--font-size-2xl);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xs);
-}
+.section-header__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 700; color: #000000 !important; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }
 
 .section-header__subtitle {
   font-size: var(--font-size-base);
@@ -1560,7 +1553,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
   margin-top: var(--space-xs);
 }
 
-.product-card__price-current { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; color: #000000 !important; letter-spacing: -0.01em; }
+.product-card__price-current { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: #000000 !important; letter-spacing: -0.01em; }
 
 .product-card__price-compare {
   color: var(--color-text-tertiary);
@@ -4976,13 +4969,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   margin-bottom: 0.2rem;
 }
 
-.home-product-row--trending .section-header__title {
-  color: #ffffff;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  font-weight: 700;
-  margin: 0 0 0.15rem;
-  line-height: 1.2;
-}
+.home-product-row--trending .section-header__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 700; color: #000000 !important; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }
 
 .home-product-row--trending .section-header__subtitle {
   color: rgba(255,255,255,0.55);
@@ -5484,11 +5471,7 @@ body.template-product .product-tabs.reveal-on-scroll {
   font-size: 13px;
 }
 
-.section-header__title {
-  font-family: var(--font-heading);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
+.section-header__title { font-family: var(--font-heading); font-size: var(--font-size-2xl); font-weight: 700; color: #000000 !important; letter-spacing: -0.02em; margin-bottom: var(--space-xs); }
 
 .footer {
   background-color: var(--color-bg-alt);
@@ -5516,3 +5499,4 @@ body.template-product .product-tabs.reveal-on-scroll {
     display: block !important;
     margin-top: 4px !important;
 }
+
