@@ -35,18 +35,18 @@
     </div>
 
     {% if product.images.size > 1 %}
-      <div class="product-page__thumbnails">
-        {% for image in product.images limit: 6 %}
-          <div class="product-page__thumbnail {% if forloop.first %}active{% endif %}"
+      <div class="product-page__thumbs-strip">
+        {% for image in product.images %}
+          <button type="button" class="product-page__thumb {% if forloop.first %}active{% endif %}"
                onclick="
                  var mainImg = document.getElementById('product-main-img');
                  if (mainImg) {
                    mainImg.removeAttribute('srcset');
                    mainImg.src='{{ image | image_url: width: 1200 }}';
                  }
-                 document.querySelectorAll('.product-page__thumbnail').forEach(function(t){ t.classList.remove('active'); });
+                 document.querySelectorAll('.product-page__thumb').forEach(function(t){ t.classList.remove('active'); });
                  this.classList.add('active');
-               ">
+               }">
             <img
               src="{{ image | image_url: width: 120 }}"
               alt="{{ image.alt | default: product.title | escape }}"
@@ -277,9 +277,16 @@
       </div>
 
       <div id="tab-desc" class="product-tabs__panel active">
-        <div class="product-page__description rte" data-pdp-description>
-          {{ product.description }}
+        <div class="pdp-description-wrapper collapsed">
+          <div class="product-page__description rte" data-pdp-description>
+            {{ product.description }}
+          </div>
+          <div class="pdp-description-fade"></div>
         </div>
+        <button type="button" class="pdp-description-toggle-btn btn btn--secondary">
+          <span>Show More</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" style="margin-left: 6px; transition: transform var(--transition-base);"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
       </div>
 
       <div id="tab-details" class="product-tabs__panel">
@@ -445,6 +452,23 @@
     btn.classList.add('active');
     document.getElementById(panelId).classList.add('active');
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var toggleBtn = document.querySelector('.pdp-description-toggle-btn');
+    var wrapper = document.querySelector('.pdp-description-wrapper');
+    if (toggleBtn && wrapper) {
+      toggleBtn.addEventListener('click', function() {
+        if (wrapper.classList.contains('collapsed')) {
+          wrapper.classList.remove('collapsed');
+          toggleBtn.querySelector('span').textContent = 'Show Less';
+        } else {
+          wrapper.classList.add('collapsed');
+          toggleBtn.querySelector('span').textContent = 'Show More';
+          wrapper.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  });
 </script>
 
 {% schema %}
