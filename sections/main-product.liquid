@@ -39,7 +39,8 @@
         {% for image in product.images %}
           <button type="button" 
                   class="product-page__thumb {% if forloop.first %}active{% endif %}"
-                  data-big-img="{{ image | image_url: width: 1200 }}">
+                  data-big-img="{{ image | image_url: width: 1200 }}"
+                  data-srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w">
             <img
               src="{{ image | image_url: width: 120 }}"
               alt="{{ image.alt | default: product.title | escape }}"
@@ -65,7 +66,7 @@
         <a href="{{ related_collection.url }}">{{ related_collection.title | escape }}</a>
         <span aria-hidden="true">›</span>
       {% endif %}
-      <span>{{ product.title | truncate: 40 | escape }}</span>
+      <span>{{ product.title | escape }}</span>
     </nav>
 
     {% if product.vendor != blank %}
@@ -487,8 +488,14 @@
         if (mainImg) {
           var bigUrl = thumb.getAttribute('data-big-img');
           if (bigUrl) {
-            mainImg.removeAttribute('srcset');
             mainImg.src = bigUrl;
+            var srcset = thumb.getAttribute('data-srcset');
+            if (srcset) {
+              mainImg.setAttribute('srcset', srcset);
+            } else {
+              mainImg.removeAttribute('srcset');
+            }
+            mainImg.style.transform = 'none';
           }
         }
         document.querySelectorAll('.product-page__thumb').forEach(function(t) {
