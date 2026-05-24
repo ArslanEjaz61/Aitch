@@ -27,9 +27,9 @@
     <div class="footer__brand">
       <div class="footer__logo">
         {% if settings.logo != blank %}
-          <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="120" style="max-width:120px;width:100%;height:auto;">
+          <img src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" class="footer__logo-img" loading="lazy" width="120">
         {% else %}
-          <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="120" style="max-width:120px;width:100%;height:auto;">
+          <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" class="footer__logo-img" loading="lazy" width="120">
         {% endif %}
       </div>
       <p class="footer__brand-text">{{ section.settings.tagline | default: 'Premium products for every need — from trending gadgets to everyday essentials, delivered fast.' | escape }}</p>
