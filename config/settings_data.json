@@ -28,6 +28,8 @@
     "product_card_ratio": "square",
     "animations_reveal": true,
     "show_payment_icons": true,
+    "social_facebook": "https://www.facebook.com/profile.php?id=61589395702816",
+    "social_instagram": "https://www.instagram.com/aitch.global?igsh=M2J2djJjNzhtamkx",
     "bg_color": "#ffffff",
     "logo_width": 180,
     "text_color": "#1a1a1a"
