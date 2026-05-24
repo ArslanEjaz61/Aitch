@@ -3,9 +3,15 @@
   if social_facebook == blank
     assign social_facebook = section.settings.social_facebook
   endif
+  if social_facebook == blank
+    assign social_facebook = 'https://www.facebook.com/profile.php?id=61589395702816'
+  endif
   assign social_instagram = settings.social_instagram
   if social_instagram == blank
     assign social_instagram = section.settings.social_instagram
+  endif
+  if social_instagram == blank
+    assign social_instagram = 'https://www.instagram.com/aitch.global?igsh=M2J2djJjNzhtamkx'
   endif
   assign social_tiktok = settings.social_tiktok
   if social_tiktok == blank
@@ -32,10 +38,11 @@
           <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" class="footer__logo-img" loading="lazy" width="120">
         {% endif %}
       </div>
-      <p class="footer__brand-text">{{ section.settings.tagline | default: 'Premium products for every need — from trending gadgets to everyday essentials, delivered fast.' | escape }}</p>
+      <p class="footer__brand-text">{{ section.settings.tagline | default: 'Simple solutions for everyday home problems. Curated cleaning tools, kitchen essentials, and home convenience products — shipped fast across North America.' | escape }}</p>
+      <hr class="footer__brand-divider" aria-hidden="true">
       <div class="footer__social">
-        {% if social_facebook != blank %}<a href="{{ social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>{% endif %}
-        {% if social_instagram != blank %}<a href="{{ social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>{% endif %}
+        <a href="{{ social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="{{ social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
         {% if social_tiktok != blank %}<a href="{{ social_tiktok }}" aria-label="TikTok" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></a>{% endif %}
         {% if social_twitter != blank %}<a href="{{ social_twitter }}" aria-label="X/Twitter" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l11.733 16h4.267l-11.733-16z"/><path d="M4 20l6.768-6.768M20 4l-6.768 6.768"/></svg></a>{% endif %}
         {% if social_youtube != blank %}<a href="{{ social_youtube }}" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31.7 31.7 0 000 12a31.7 31.7 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1 31.7 31.7 0 00.5-5.8 31.7 31.7 0 00-.5-5.8zM9.7 15.5V8.4l6.2 3.6-6.2 3.5z"/></svg></a>{% endif %}
@@ -124,12 +131,14 @@
     {
       "type": "url",
       "id": "social_facebook",
-      "label": "Facebook (fallback)"
+      "label": "Facebook (fallback)",
+      "default": "https://www.facebook.com/profile.php?id=61589395702816"
     },
     {
       "type": "url",
       "id": "social_instagram",
-      "label": "Instagram (fallback)"
+      "label": "Instagram (fallback)",
+      "default": "https://www.instagram.com/aitch.global?igsh=M2J2djJjNzhtamkx"
     },
     {
       "type": "url",
