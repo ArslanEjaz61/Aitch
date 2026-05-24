@@ -30,10 +30,10 @@
 
   {% else %}
     <div class="cart-layout">
+      <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form" style="display: contents;">
 
-      <!-- Cart Items Column -->
-      <div class="cart-items-col">
-        <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form">
+        <!-- Cart Items Column -->
+        <div class="cart-items-col">
 
           <div class="cart-items-list">
             {% for item in cart.items %}
@@ -130,8 +130,7 @@
               Update Cart
             </button>
           </div>
-        </form>
-      </div>
+        </div>
 
       <!-- Order Summary Column -->
       <aside class="cart-summary">
@@ -174,12 +173,10 @@
         <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
 
         <!-- Checkout Button -->
-        <form action="{{ routes.cart_url }}" method="post">
-          <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Proceed to Checkout
-          </button>
-        </form>
+        <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Proceed to Checkout
+        </button>
 
         <!-- Trust mini badges -->
         <div class="cart-summary__trust">
@@ -193,6 +190,7 @@
           </div>
         </div>
       </aside>
+      </form>
     </div>
   {% endif %}
 </div>

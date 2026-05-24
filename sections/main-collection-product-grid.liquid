@@ -28,19 +28,19 @@
       <a class="btn btn--primary" href="{{ routes.root_url }}">Back to Home</a>
     </div>
   {% else %}
-    <div class="product-grid product-grid--4">
-      {% for product in products limit: product_limit %}
-        {% render 'product-card', product: product %}
-      {% endfor %}
-    </div>
-
-    {% if collection.products_count > product_limit %}
-      <div style="text-align:center;margin-top:var(--space-2xl);">
-        {% paginate collection.products by product_limit %}
-          {{ paginate | default_pagination }}
-        {% endpaginate %}
+    {% paginate collection.products by product_limit %}
+      <div class="product-grid product-grid--4">
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
       </div>
-    {% endif %}
+
+      {% if paginate.pages > 1 %}
+        <div style="text-align:center;margin-top:var(--space-2xl);">
+          {{ paginate | default_pagination }}
+        </div>
+      {% endif %}
+    {% endpaginate %}
   {% endif %}
 </div>
 

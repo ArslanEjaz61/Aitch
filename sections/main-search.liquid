@@ -28,50 +28,28 @@
         <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Browse All Products</a>
       </div>
     {% else %}
-      <div class="product-grid product-grid--4">
-        {% for item in search.results %}
-          {% if item.object_type == 'product' %}
-            <article class="product-card">
-              {% if item.compare_at_price_max > item.price %}
-                <span class="product-card__badge product-card__badge--sale">Sale</span>
-              {% endif %}
-
-              <a class="product-card__media" href="{{ item.url }}">
-                {% if item.featured_image %}
-                  <img
-                    src="{{ item.featured_image | image_url: width: 600 }}"
-                    alt="{{ item.featured_image.alt | escape }}"
-                    loading="lazy"
-                    width="{{ item.featured_image.width }}"
-                    height="{{ item.featured_image.height }}"
-                  >
-                {% endif %}
-              </a>
-
-              <div class="product-card__info">
+      {% paginate search.results by 16 %}
+        <div class="product-grid product-grid--4">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% render 'product-card', product: item %}
+            {% else %}
+              <article class="product-card" style="padding:var(--space-lg);">
                 <h2 class="product-card__title">
                   <a href="{{ item.url }}">{{ item.title | escape }}</a>
                 </h2>
-                <div class="product-card__price">
-                  {% if item.compare_at_price_max > item.price %}
-                    <span class="product-card__price-sale">{{ item.price | money }}</span>
-                    <span class="product-card__price-compare">{{ item.compare_at_price_max | money }}</span>
-                  {% else %}
-                    <span class="product-card__price-current">{{ item.price | money }}</span>
-                  {% endif %}
-                </div>
-              </div>
-            </article>
-          {% else %}
-            <article class="product-card" style="padding:var(--space-lg);">
-              <h2 class="product-card__title">
-                <a href="{{ item.url }}">{{ item.title | escape }}</a>
-              </h2>
-              <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-top:var(--space-xs);">{{ item.content | strip_html | truncate: 120 }}</p>
-            </article>
-          {% endif %}
-        {% endfor %}
-      </div>
+                <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-top:var(--space-xs);">{{ item.content | strip_html | truncate: 120 }}</p>
+              </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div style="text-align:center;margin-top:var(--space-2xl);">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
     {% endif %}
   {% endif %}
 </div>
