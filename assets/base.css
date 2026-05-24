@@ -3768,9 +3768,13 @@ body.template-product .product-tabs.reveal-on-scroll {
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Mobile responsive override: force instant visibility of all product grids, cards, and sections on mobile screens */
+/* Mobile responsive override: force instant visibility of all product grids, cards, sections, and scroll reveals on mobile screens */
 @media (max-width: 768px) {
-  .reveal {
+  .reveal,
+  .reveal-on-scroll,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

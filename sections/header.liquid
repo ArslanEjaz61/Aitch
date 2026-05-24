@@ -112,7 +112,7 @@
             <svg class="mobile-menu__arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="mobile-menu__dropdown">
-            <a href="{% render 'nav-resolved-url', nav_link: link %}" class="mobile-menu__sublink mobile-menu__sublink--view-all">View All</a>
+            <a href="{% render 'nav-resolved-url', nav_link: link %}" class="mobile-menu__sublink mobile-menu__sublink--view-all">All Products</a>
             {% for child_link in link.links %}
               <a href="{% render 'nav-resolved-url', nav_link: child_link %}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
             {% endfor %}
