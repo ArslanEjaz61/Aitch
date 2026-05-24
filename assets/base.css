@@ -3702,6 +3702,26 @@ body.template-product .product-tabs.reveal-on-scroll {
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Mobile responsive override: force instant visibility of all product grids, cards, and sections on mobile screens */
+@media (max-width: 768px) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .reveal--stagger:not(.visible) .trust-bar__item,
+  .reveal--stagger:not(.visible) .product-grid .product-card,
+  .reveal--stagger:not(.visible) .collection-banner__content > *,
+  .reveal--stagger:not(.visible) .testimonials-grid .testimonial-card,
+  .reveal--stagger:not(.visible) .categories-grid .category-card,
+  .reveal--stagger:not(.visible) .section-header > *,
+  .reveal--stagger:not(.visible) .newsletter__inner > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 .reveal--stagger.visible .trust-bar__item:nth-child(1) { transition-delay: 0.04s; }
 .reveal--stagger.visible .trust-bar__item:nth-child(2) { transition-delay: 0.1s; }
 .reveal--stagger.visible .trust-bar__item:nth-child(3) { transition-delay: 0.16s; }
