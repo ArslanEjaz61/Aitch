@@ -201,17 +201,67 @@
         }
 
         /* ============================
-           CART WIGGLE — Add to cart feedback
+           ADD TO CART — AJAX (stay on page, no cart redirect)
            ============================ */
+        function updateHeaderCartCount(count) {
+          var cartLink = document.querySelector('.header__action-btn[aria-label="Cart"]');
+          if (!cartLink) return;
+          var badge = cartLink.querySelector('.header__cart-count');
+          if (count > 0) {
+            if (!badge) {
+              badge = document.createElement('span');
+              badge.className = 'header__cart-count';
+              cartLink.appendChild(badge);
+            }
+            badge.textContent = count;
+            badge.style.display = 'flex';
+          } else if (badge) {
+            badge.style.display = 'none';
+          }
+          cartLink.classList.add('cart-wiggle');
+          setTimeout(function() { cartLink.classList.remove('cart-wiggle'); }, 700);
+        }
+
         document.addEventListener('submit', function(e) {
           var form = e.target;
-          if (form.action && form.action.indexOf('/cart/add') > -1) {
-            var cartBtn = document.querySelector('.header__action-btn[aria-label="Cart"]');
-            if (cartBtn) {
-              cartBtn.classList.add('cart-wiggle');
-              setTimeout(function() { cartBtn.classList.remove('cart-wiggle'); }, 700);
-            }
+          if (!form || !form.action || form.action.indexOf('/cart/add') === -1) return;
+
+          var returnTo = form.querySelector('input[name="return_to"]');
+          if (returnTo && returnTo.value.indexOf('checkout') > -1) return;
+
+          e.preventDefault();
+
+          var submitBtn = form.querySelector('[type="submit"]');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.setAttribute('aria-busy', 'true');
           }
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            body: new FormData(form)
+          })
+          .then(function(response) {
+            if (!response.ok) return response.json().then(function(err) { throw err; });
+            return response.json();
+          })
+          .then(function() {
+            return fetch('/cart.js');
+          })
+          .then(function(response) { return response.json(); })
+          .then(function(cart) {
+            updateHeaderCartCount(cart.item_count);
+          })
+          .catch(function(err) {
+            console.error('Add to cart failed:', err);
+            form.submit();
+          })
+          .finally(function() {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.removeAttribute('aria-busy');
+            }
+          });
         });
 
         /* ============================

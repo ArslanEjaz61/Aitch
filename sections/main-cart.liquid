@@ -30,10 +30,7 @@
 
   {% else %}
     <div class="cart-layout">
-      <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form" style="display: contents;">
-
-        <!-- Cart Items Column -->
-        <div class="cart-items-col">
+      <form action="{{ routes.cart_url }}" method="post" novalidate id="cart-form" class="cart-layout__form">
 
         <!-- Cart Items Column -->
         <div class="cart-items-col">
@@ -181,23 +178,11 @@
 
           <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
 
-<<<<<<< HEAD
-        <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
-
-        <!-- Checkout Button -->
-        <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Proceed to Checkout
-        </button>
-=======
-          <!-- Checkout Button -->
           <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Proceed to Checkout
           </button>
->>>>>>> 1bb1fdb7e86b2fbcb66352dd022f50d5d2487415
 
-          <!-- Trust mini badges -->
           <div class="cart-summary__trust">
             <div class="cart-summary__trust-item">
               <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -208,20 +193,9 @@
               30-Day Free Returns
             </div>
           </div>
-<<<<<<< HEAD
-          <div class="cart-summary__trust-item">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            30-Day Free Returns
-          </div>
-        </div>
-      </aside>
-      </form>
-    </div>
-=======
         </aside>
       </form>
-
->>>>>>> 1bb1fdb7e86b2fbcb66352dd022f50d5d2487415
+    </div>
   {% endif %}
 </div>
 

@@ -156,7 +156,6 @@
         </div>
         <form action="{{ routes.cart_add_url }}" method="post" style="flex:1;">
           <input type="hidden" name="id" id="atc-variant-id" value="{{ current_variant.id }}">
-          <input type="hidden" name="return_to" value="/cart">
           <input type="hidden" name="quantity" id="atc-qty" value="1">
           <button class="btn btn--primary btn--full product-page__atc-btn" type="submit"
                   onclick="document.getElementById('atc-qty').value=document.getElementById('pdp-qty').value;">
