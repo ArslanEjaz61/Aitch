@@ -84,10 +84,6 @@
       {% endif %}
     </div>
 
-    {% unless product.available %}
-      <div class="product-card__sold-out">Sold Out</div>
-    {% endunless %}
-
     {% if product.available %}
       <form action="{{ routes.cart_add_url }}" method="post" class="product-card__atc-form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
@@ -98,6 +94,12 @@
           Add to Cart
         </button>
       </form>
+    {% else %}
+      <div class="product-card__atc-form">
+        <button type="button" class="product-card__atc-btn product-card__atc-btn--soldout" disabled>
+          Sold Out
+        </button>
+      </div>
     {% endif %}
   </div>
 </article>
