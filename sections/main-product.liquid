@@ -37,16 +37,9 @@
     {% if product.images.size > 1 %}
       <div class="product-page__thumbs-strip">
         {% for image in product.images %}
-          <button type="button" class="product-page__thumb {% if forloop.first %}active{% endif %}"
-               onclick="
-                 var mainImg = document.getElementById('product-main-img');
-                 if (mainImg) {
-                   mainImg.removeAttribute('srcset');
-                   mainImg.src='{{ image | image_url: width: 1200 }}';
-                 }
-                 document.querySelectorAll('.product-page__thumb').forEach(function(t){ t.classList.remove('active'); });
-                 this.classList.add('active');
-               }">
+          <button type="button" 
+                  class="product-page__thumb {% if forloop.first %}active{% endif %}"
+                  data-big-img="{{ image | image_url: width: 1200 }}">
             <img
               src="{{ image | image_url: width: 120 }}"
               alt="{{ image.alt | default: product.title | escape }}"
@@ -468,6 +461,26 @@
         }
       });
     }
+
+    // Dynamic gallery thumbnail switching delegation
+    document.addEventListener('click', function(e) {
+      var thumb = e.target.closest('.product-page__thumb');
+      if (thumb) {
+        e.preventDefault();
+        var mainImg = document.getElementById('product-main-img');
+        if (mainImg) {
+          var bigUrl = thumb.getAttribute('data-big-img');
+          if (bigUrl) {
+            mainImg.removeAttribute('srcset');
+            mainImg.src = bigUrl;
+          }
+        }
+        document.querySelectorAll('.product-page__thumb').forEach(function(t) {
+          t.classList.remove('active');
+        });
+        thumb.classList.add('active');
+      }
+    });
   });
 </script>
 
