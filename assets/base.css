@@ -296,9 +296,10 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
 }
 
 .header__logo-img {
-  height: var(--header-logo-height, 48px);
+  height: var(--header-logo-height, 56px);
+  max-height: var(--header-logo-height, 56px);
   width: auto;
-  max-width: var(--header-logo-max-width, 220px);
+  max-width: var(--header-logo-max-width, 260px);
   object-fit: contain;
 }
 
@@ -682,9 +683,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
     display: flex;
   }
   .header__logo-img {
-    height: var(--header-logo-height-md, 40px);
-    max-height: var(--header-logo-height-md, 40px);
-    max-width: min(var(--header-logo-max-width-md, 200px), 42vw);
+    height: var(--header-logo-height-md, 46px);
+    max-height: var(--header-logo-height-md, 46px);
+    max-width: min(var(--header-logo-max-width-md, 220px), 48vw);
   }
   .header__logo:has(.header__logo-img) .header__logo-text {
     display: none;
@@ -693,9 +694,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; lin
 
 @media (max-width: 480px) {
   .header__logo-img {
-    height: var(--header-logo-height-sm, 32px);
-    max-height: var(--header-logo-height-sm, 32px);
-    max-width: min(var(--header-logo-max-width-sm, 160px), 48vw);
+    height: var(--header-logo-height-sm, 38px);
+    max-height: var(--header-logo-height-sm, 38px);
+    max-width: min(var(--header-logo-max-width-sm, 180px), 52vw);
   }
   .header__action-btn {
     width: 44px;

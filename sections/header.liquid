@@ -29,8 +29,7 @@
           src="{{ settings.logo | image_url: width: 400 }}"
           alt="{{ shop.name | escape }}"
           loading="eager"
-          width="120"
-          style="max-width: 120px; width: 100%; height: auto;"
+          width="160"
         >
       {% else %}
         <img
@@ -38,8 +37,7 @@
           src="{{ 'logo.png' | asset_url }}"
           alt="{{ shop.name | escape }}"
           loading="eager"
-          width="120"
-          style="max-width: 120px; width: 100%; height: auto;"
+          width="160"
         >
       {% endif %}
     </a>
@@ -94,9 +92,9 @@
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="140">
       {% else %}
-        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="140">
       {% endif %}
     </a>
     <button class="mobile-menu__close" aria-label="Close menu">
