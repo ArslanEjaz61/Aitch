@@ -105,11 +105,21 @@
   </div>
   <nav class="mobile-menu__nav">
     {% for link in main_menu.links %}
-      <a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a>
       {% if link.links.size > 0 %}
-        {% for child_link in link.links %}
-          <a href="{% render 'nav-resolved-url', nav_link: child_link %}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
-        {% endfor %}
+        <div class="mobile-menu__link-group">
+          <button type="button" class="mobile-menu__trigger" onclick="toggleMobileDropdown(this)">
+            <span>{{ link.title | escape }}</span>
+            <svg class="mobile-menu__arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="mobile-menu__dropdown">
+            <a href="{% render 'nav-resolved-url', nav_link: link %}" class="mobile-menu__sublink mobile-menu__sublink--view-all">View All</a>
+            {% for child_link in link.links %}
+              <a href="{% render 'nav-resolved-url', nav_link: child_link %}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a>
       {% endif %}
     {% endfor %}
     <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
@@ -172,6 +182,13 @@
 
 <!-- Search Modal Logic Script -->
 <script>
+  function toggleMobileDropdown(btn) {
+    var group = btn.closest('.mobile-menu__link-group');
+    if (group) {
+      group.classList.toggle('active');
+    }
+  }
+
   function openSearchModal(e) {
     if (e) e.preventDefault();
     var modal = document.getElementById('search-modal');
