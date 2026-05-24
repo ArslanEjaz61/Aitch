@@ -35,6 +35,8 @@
         <!-- Cart Items Column -->
         <div class="cart-items-col">
 
+        <!-- Cart Items Column -->
+        <div class="cart-items-col">
           <div class="cart-items-list">
             {% for item in cart.items %}
               <div class="cart-item">
@@ -44,7 +46,15 @@
                   {% if item.image %}
                     <img
                       src="{{ item.image | image_url: width: 240 }}"
-                      alt="{{ item.image.alt | escape }}"
+                      alt="{{ item.image.alt | default: item.product.title | escape }}"
+                      loading="lazy"
+                      width="120"
+                      height="120"
+                    >
+                  {% elsif item.product.featured_image %}
+                    <img
+                      src="{{ item.product.featured_image | image_url: width: 240 }}"
+                      alt="{{ item.product.title | escape }}"
                       loading="lazy"
                       width="120"
                       height="120"
@@ -86,23 +96,25 @@
                   <div class="cart-item__controls">
                     <div class="cart-item__qty-wrap">
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.nextElementSibling;i.value=Math.max(1,parseInt(i.value)-1);"
+                        onclick="var i=this.nextElementSibling; i.value=Math.max(1,parseInt(i.value)-1); i.dispatchEvent(new Event('change', {bubbles:true}));"
                         aria-label="Decrease">−</button>
                       <input
                         type="number"
                         name="updates[]"
                         value="{{ item.quantity }}"
                         min="1"
+                        data-line="{{ forloop.index }}"
                         class="cart-item__qty-input"
                         aria-label="Quantity for {{ item.product.title | escape }}"
                       >
                       <button type="button" class="cart-item__qty-btn"
-                        onclick="var i=this.previousElementSibling;i.value=parseInt(i.value)+1;"
+                        onclick="var i=this.previousElementSibling; i.value=parseInt(i.value)+1; i.dispatchEvent(new Event('change', {bubbles:true}));"
                         aria-label="Increase">+</button>
                     </div>
 
                     <a class="cart-item__remove-btn"
                        href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+                       onclick="event.preventDefault(); window.updateCartQuantity({{ forloop.index }}, 0);"
                        aria-label="Remove {{ item.product.title | escape }}">
                       <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
                       Remove
@@ -123,53 +135,53 @@
             {% endfor %}
           </div>
 
-          <!-- Update Cart -->
-          <div class="cart-update-row">
-            <button class="btn btn--secondary" type="submit" name="update">
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-              Update Cart
-            </button>
+          <!-- Update Cart (Hidden, kept for fallback) -->
+          <div class="cart-update-row" style="display: none;">
+            <button class="btn btn--secondary" type="submit" name="update">Update Cart</button>
           </div>
         </div>
 
-      <!-- Order Summary Column -->
-      <aside class="cart-summary">
-        <h2 class="cart-summary__title">Order Summary</h2>
+        <!-- Order Summary Column -->
+        <aside class="cart-summary">
+          <h2 class="cart-summary__title">Order Summary</h2>
 
-        <div class="cart-summary__lines">
-          {% for item in cart.items %}
-            <div class="cart-summary__line">
-              <span class="cart-summary__line-name">
-                {{ item.product.title | truncate: 32 | escape }}
-                <span class="cart-summary__line-qty">×{{ item.quantity }}</span>
-              </span>
-              <span class="cart-summary__line-price">{{ item.final_line_price | money }}</span>
+          <div class="cart-summary__lines">
+            {% for item in cart.items %}
+              <div class="cart-summary__line">
+                <span class="cart-summary__line-name">
+                  {{ item.product.title | truncate: 32 | escape }}
+                  <span class="cart-summary__line-qty">×{{ item.quantity }}</span>
+                </span>
+                <span class="cart-summary__line-price">{{ item.final_line_price | money }}</span>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="cart-summary__divider"></div>
+
+          <div class="cart-summary__row">
+            <span>Subtotal</span>
+            <span class="cart-summary__value">{{ cart.total_price | money }}</span>
+          </div>
+          <div class="cart-summary__row cart-summary__row--secondary">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+          {% if cart.total_discounts > 0 %}
+            <div class="cart-summary__row cart-summary__row--discount">
+              <span>Discounts</span>
+              <span>−{{ cart.total_discounts | money }}</span>
             </div>
-          {% endfor %}
-        </div>
+          {% endif %}
 
-        <div class="cart-summary__divider"></div>
-
-        <div class="cart-summary__row">
-          <span>Subtotal</span>
-          <span class="cart-summary__value">{{ cart.total_price | money }}</span>
-        </div>
-        <div class="cart-summary__row cart-summary__row--secondary">
-          <span>Shipping</span>
-          <span>Calculated at checkout</span>
-        </div>
-        {% if cart.total_discounts > 0 %}
-          <div class="cart-summary__row cart-summary__row--discount">
-            <span>Discounts</span>
-            <span>−{{ cart.total_discounts | money }}</span>
+          <div class="cart-summary__total-row">
+            <span>Total</span>
+            <span class="cart-summary__total-price">{{ cart.total_price | money }}</span>
           </div>
-        {% endif %}
 
-        <div class="cart-summary__total-row">
-          <span>Total</span>
-          <span class="cart-summary__total-price">{{ cart.total_price | money }}</span>
-        </div>
+          <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
 
+<<<<<<< HEAD
         <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
 
         <!-- Checkout Button -->
@@ -177,13 +189,26 @@
           <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Proceed to Checkout
         </button>
+=======
+          <!-- Checkout Button -->
+          <button class="btn btn--primary btn--full cart-summary__checkout-btn" type="submit" name="checkout">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Proceed to Checkout
+          </button>
+>>>>>>> 1bb1fdb7e86b2fbcb66352dd022f50d5d2487415
 
-        <!-- Trust mini badges -->
-        <div class="cart-summary__trust">
-          <div class="cart-summary__trust-item">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            SSL Secure Checkout
+          <!-- Trust mini badges -->
+          <div class="cart-summary__trust">
+            <div class="cart-summary__trust-item">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              SSL Secure Checkout
+            </div>
+            <div class="cart-summary__trust-item">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              30-Day Free Returns
+            </div>
           </div>
+<<<<<<< HEAD
           <div class="cart-summary__trust-item">
             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
             30-Day Free Returns
@@ -192,8 +217,79 @@
       </aside>
       </form>
     </div>
+=======
+        </aside>
+      </form>
+
+>>>>>>> 1bb1fdb7e86b2fbcb66352dd022f50d5d2487415
   {% endif %}
 </div>
+
+<script>
+  window.updateCartQuantity = function(line, quantity) {
+    const cartPage = document.querySelector('.cart-page');
+    if (!cartPage) return;
+
+    cartPage.classList.add('is-loading');
+
+    // Use /cart/change.js to update the quantity
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ line: line, quantity: parseInt(quantity) })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Cart update failed');
+      return response.json();
+    })
+    .then(cart => {
+      // Use Section Rendering API to get updated cart HTML
+      // We use the section file name 'main-cart' as the key
+      return fetch(window.location.pathname + '?sections=main-cart');
+    })
+    .then(response => response.json())
+    .then(sections => {
+      const sectionHtml = sections['main-cart'];
+      if (!sectionHtml) throw new Error('Section main-cart not found in response');
+
+      const html = new DOMParser().parseFromString(sectionHtml, 'text/html');
+      const newInner = html.querySelector('.cart-page').innerHTML;
+      
+      // Update the DOM
+      cartPage.innerHTML = newInner;
+      cartPage.classList.remove('is-loading');
+
+      // Update header cart count
+      const newCount = document.querySelector('.cart-page__count'); // We can get it from the new HTML too
+      const headerCountEl = document.querySelector('.header__cart-count');
+      if (headerCountEl) {
+          fetch('/cart.js').then(res => res.json()).then(cart => {
+            if (cart.item_count > 0) {
+              headerCountEl.textContent = cart.item_count;
+              headerCountEl.style.display = 'flex';
+            } else {
+              headerCountEl.style.display = 'none';
+            }
+          });
+      }
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+      cartPage.classList.remove('is-loading');
+      // If AJAX fails, fallback to full page reload to ensure consistency
+      window.location.reload();
+    });
+  };
+
+  // Delegate change event for quantity inputs
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('cart-item__qty-input')) {
+      const line = e.target.getAttribute('data-line');
+      const quantity = e.target.value;
+      window.updateCartQuantity(line, quantity);
+    }
+  });
+</script>
 
 {% schema %}
 {
@@ -201,3 +297,5 @@
   "settings": []
 }
 {% endschema %}
+
+

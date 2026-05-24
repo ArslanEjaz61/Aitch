@@ -9,10 +9,14 @@
     show_vendor - Boolean to show/hide vendor name (default: true)
 {% endcomment %}
 
-<article class="product-card">
+<article class="product-card product-card--ratio-{{ settings.product_card_ratio | default: 'square' }}">
   <div class="product-card__badges">
+    {% if product.tags contains 'best-seller' or product.tags contains 'Best Seller' %}
+      <span class="product-card__badge product-card__badge--best">Best Seller</span>
+    {% endif %}
     {% if product.compare_at_price_max > product.price %}
-      <span class="product-card__badge product-card__badge--sale">Sale</span>
+      {% assign card_savings = product.compare_at_price_max | minus: product.price | times: 100 | divided_by: product.compare_at_price_max %}
+      <span class="product-card__badge product-card__badge--sale">{{ card_savings }}% Off</span>
     {% endif %}
     {% if product.tags contains 'new' or product.tags contains 'New' %}
       <span class="product-card__badge product-card__badge--new">New</span>
@@ -50,27 +54,26 @@
       </div>
     {% endif %}
 
-    <div class="product-card__overlay-btn">
-      <span>
-        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        Quick View
-      </span>
-    </div>
+    {% if settings.show_quick_view != false %}
+      <div class="product-card__overlay-btn">
+        <span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Quick View
+        </span>
+      </div>
+    {% endif %}
   </a>
 
   <div class="product-card__info">
-    {% if show_vendor != false and product.vendor != blank %}
-      <div class="product-card__vendor">{{ product.vendor | escape }}</div>
-    {% endif %}
+    {% unless show_vendor == false or settings.show_product_vendor == false %}
+      {% if product.vendor != blank %}
+        <div class="product-card__vendor">{{ product.vendor | escape }}</div>
+      {% endif %}
+    {% endunless %}
 
     <h3 class="product-card__title">
       <a href="{{ product.url }}">{{ product.title | escape }}</a>
     </h3>
-
-    <div class="product-card__rating">
-      <span class="star-rating__stars" aria-hidden="true">★★★★★</span>
-      <span class="star-rating__count">4.8 (120)</span>
-    </div>
 
     <div class="product-card__price">
       {% if product.compare_at_price_max > product.price %}
@@ -81,17 +84,20 @@
       {% endif %}
     </div>
 
-    <div class="product-card__actions">
-      <a href="{{ product.url }}" class="btn btn--secondary product-card__shop-btn">Shop Now</a>
-      <form action="/cart/add" method="post" class="product-card__atc-form">
+    {% unless product.available %}
+      <div class="product-card__sold-out">Sold Out</div>
+    {% endunless %}
+
+    {% if product.available %}
+      <form action="{{ routes.cart_add_url }}" method="post" class="product-card__atc-form">
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/cart">
-        <button type="submit" class="btn btn--primary btn--full">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6"/></svg>
+        <button type="submit" class="product-card__atc-btn">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.61L23 6H6"/></svg>
           Add to Cart
         </button>
       </form>
-    </div>
+    {% endif %}
   </div>
 </article>

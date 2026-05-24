@@ -2,15 +2,18 @@
 <div class="announcement-bar">
   <div class="announcement-bar__inner">
     <div class="announcement-bar__item">
-      <span>{{ section.settings.announcement_1 | default: 'Free shipping on orders over $50' | escape }}</span>
+      <svg class="announcement-bar__icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span>{{ section.settings.announcement_1 | default: 'FREE SHIPPING ON ORDERS OVER $50' | escape }}</span>
     </div>
     <div class="announcement-bar__divider"></div>
     <div class="announcement-bar__item">
-      <span>{{ section.settings.announcement_2 | default: '30-day hassle-free returns' | escape }}</span>
+      <svg class="announcement-bar__icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+      <span>{{ section.settings.announcement_2 | default: '30-DAY HASSLE-FREE RETURNS' | escape }}</span>
     </div>
     <div class="announcement-bar__divider"></div>
     <div class="announcement-bar__item">
-      <span>{{ section.settings.announcement_3 | default: 'Ships to USA & Canada' | escape }}</span>
+      <svg class="announcement-bar__icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      <span>{{ section.settings.announcement_3 | default: 'SHIPS TO USA & CANADA' | escape }}</span>
     </div>
   </div>
 </div>
@@ -18,42 +21,52 @@
 <!-- Header -->
 <header class="header" role="banner">
   <div class="header__inner">
-    <div class="header__left">
-      <!-- Logo -->
-      <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        {% if settings.logo != blank %}
-          <img
-            class="header__logo-img"
-            src="{{ settings.logo | image_url: width: 400 }}"
-            alt="{{ shop.name | escape }}"
-            loading="eager"
-            width="{{ settings.logo_width | default: 200 }}"
-            height="auto"
-          >
+    <!-- Logo (column 1) -->
+    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if settings.logo != blank %}
+        <img
+          class="header__logo-img"
+          src="{{ settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          loading="eager"
+          width="120"
+          style="max-width: 120px; width: 100%; height: auto;"
+        >
+      {% else %}
+        <img
+          class="header__logo-img"
+          src="{{ 'logo.png' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          loading="eager"
+          width="120"
+          style="max-width: 120px; width: 100%; height: auto;"
+        >
+      {% endif %}
+    </a>
+
+    <!-- Desktop nav — centered (column 2) -->
+    <nav class="header__nav" aria-label="Main navigation">
+      {% assign main_menu = linklists[section.settings.menu] %}
+      {% for link in main_menu.links %}
+        {% if link.links.size > 0 %}
+          <div class="header__dropdown">
+            <a href="{% render 'nav-resolved-url', nav_link: link %}" class="header__dropdown-trigger">
+              {{ link.title | escape }}
+              <svg class="header__dropdown-arrow" viewBox="0 0 24 24" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="header__dropdown-menu">
+              {% for child_link in link.links %}
+                <a href="{% render 'nav-resolved-url', nav_link: child_link %}">{{ child_link.title | escape }}</a>
+              {% endfor %}
+            </div>
+          </div>
         {% else %}
-          <img
-            class="header__logo-img"
-            src="{{ 'logo.png' | asset_url }}"
-            alt="{{ shop.name | escape }}"
-            loading="eager"
-            width="200"
-            height="auto"
-          >
+          <a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a>
         {% endif %}
-        <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
-      </a>
+      {% endfor %}
+    </nav>
 
-      <!-- Desktop Navigation -->
-      <nav class="header__nav" aria-label="Main navigation">
-        <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop</a>
-        <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
-        <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen</a>
-        <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home</a>
-        <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
-      </nav>
-    </div>
-
-    <!-- Header Right -->
+    <!-- Utilities (column 3) -->
     <div class="header__actions">
       <a class="header__action-btn" href="{{ routes.search_url }}" aria-label="Search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -76,27 +89,29 @@
   </div>
 </header>
 
-<!-- Mobile Menu -->
+<!-- Mobile Menu — also uses Shopify Menu -->
 <div class="mobile-menu">
   <div class="mobile-menu__header">
     <a class="header__logo" href="{{ routes.root_url }}">
       {% if settings.logo != blank %}
-        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="200" height="auto">
+        <img class="header__logo-img" src="{{ settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
       {% else %}
-        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="200" height="auto">
+        <img class="header__logo-img" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" loading="lazy" width="100" style="max-width: 100px; width: 100%; height: auto;">
       {% endif %}
-      <span class="header__logo-text">{{ section.settings.brand_text | default: shop.name | escape }}</span>
     </a>
     <button class="mobile-menu__close" aria-label="Close menu">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
   <nav class="mobile-menu__nav">
-    <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop All</a>
-    <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning</a>
-    <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen Tools</a>
-    <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home Convenience</a>
-    <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+    {% for link in main_menu.links %}
+      <a href="{% render 'nav-resolved-url', nav_link: link %}">{{ link.title | escape }}</a>
+      {% if link.links.size > 0 %}
+        {% for child_link in link.links %}
+          <a href="{% render 'nav-resolved-url', nav_link: child_link %}" class="mobile-menu__sublink">{{ child_link.title | escape }}</a>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
     <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
     <a href="{{ routes.account_url }}">Account</a>
   </nav>
@@ -113,6 +128,13 @@
       "default": "Aitch Home Care"
     },
     {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Links come from Admin → Navigation. The theme auto-fixes: “Shop” → all products; “Best Sellers” / “Best Sallers” if wrongly set to Contact → page handle best-sellers; “Home convenience” → collection home-convenience-items when it exists."
+    },
+    {
       "type": "header",
       "content": "Announcement bar"
     },
@@ -120,48 +142,19 @@
       "type": "text",
       "id": "announcement_1",
       "label": "Announcement 1",
-      "default": "Free shipping on orders over $50"
+      "default": "FREE SHIPPING ON ORDERS OVER $50"
     },
     {
       "type": "text",
       "id": "announcement_2",
       "label": "Announcement 2",
-      "default": "30-day hassle-free returns"
+      "default": "30-DAY HASSLE-FREE RETURNS"
     },
     {
       "type": "text",
       "id": "announcement_3",
       "label": "Announcement 3",
-      "default": "Ships to USA & Canada"
-    },
-    {
-      "type": "header",
-      "content": "Navigation links"
-    },
-    {
-      "type": "url",
-      "id": "shop_link",
-      "label": "Shop all link"
-    },
-    {
-      "type": "url",
-      "id": "cleaning_link",
-      "label": "Cleaning link"
-    },
-    {
-      "type": "url",
-      "id": "kitchen_link",
-      "label": "Kitchen link"
-    },
-    {
-      "type": "url",
-      "id": "home_link",
-      "label": "Home link"
-    },
-    {
-      "type": "url",
-      "id": "best_sellers_link",
-      "label": "Best sellers link"
+      "default": "SHIPS TO USA & CANADA"
     }
   ]
 }

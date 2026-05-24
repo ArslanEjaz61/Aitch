@@ -1,0 +1,39 @@
+{% comment %}
+  Resolve nav links that point to wrong collections.
+  Pass: nav_link — a Shopify link object.
+{% endcomment %}
+{% liquid
+  assign nav_resolved_href = nav_link.url
+  assign lt = nav_link.title | downcase | strip
+
+  if lt contains 'home convenience'
+    if collections['home-convenience-items'] != blank
+      assign nav_resolved_href = collections['home-convenience-items'].url
+    endif
+  endif
+
+  if lt == 'shop' or lt == 'shop all' or lt == 'all products'
+    unless nav_resolved_href == '/collections/all'
+      assign nav_resolved_href = '/collections/all'
+    endunless
+  endif
+
+  # Best Sellers / Best Sallers → route to the best-sales collection (not a page).
+  assign fix_best_sellers = false
+  if lt == 'best sellers' or lt == 'best sallers' or lt == 'best seller' or lt == 'bestsellers' or lt == 'best sales'
+    assign fix_best_sellers = true
+  endif
+  if lt contains 'best sell' or lt contains 'best sall'
+    assign fix_best_sellers = true
+  endif
+  if fix_best_sellers
+    if collections['best-sales'] != blank
+      assign nav_resolved_href = collections['best-sales'].url
+    elsif collections['best-sellers'] != blank
+      assign nav_resolved_href = collections['best-sellers'].url
+    else
+      assign nav_resolved_href = '/collections/all'
+    endif
+  endif
+%}
+{{- nav_resolved_href -}}

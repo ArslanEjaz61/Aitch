@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "settings": {
+        "heading": "We're Here to Help",
+        "subheading": "Have a question about a product, your order, or anything else? We'd love to hear from you. Our team typically responds within 24 hours.",
+        "email": "support@aitchhomecare.com",
+        "hours": "Mon–Fri: 9AM – 5PM EST"
+      }
+    }
+  },
+  "order": ["main"]
+}

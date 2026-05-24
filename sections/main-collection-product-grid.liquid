@@ -1,23 +1,79 @@
 {% liquid
-  assign products = collection.products
-  assign product_limit = section.settings.products_per_page | default: 16
+  assign products_per_page = section.settings.products_per_page | default: 16
+  assign is_best_sellers = false
+  assign ch = collection.handle
+  if ch == 'best-sales' or ch == 'best-sellers' or ch == 'bestsellers'
+    assign is_best_sellers = true
+  endif
 %}
 
-<div class="container section-spacing">
-  <!-- Collection Header -->
-  <div class="section-header">
-    <div class="section-header__text">
-      <div class="section-header__eyebrow">Collection</div>
-      <h1 class="section-header__title">{{ collection.title | escape }}</h1>
-      {% if collection.description != blank %}
-        <p class="section-header__subtitle">{{ collection.description | strip_html | escape }}</p>
-      {% endif %}
-    </div>
-    <div style="font-size:var(--font-size-sm);color:var(--color-text-secondary);">
-      {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+{% paginate collection.products by products_per_page %}
+
+<!-- Collection Hero Banner -->
+<div class="collection-hero{% if is_best_sellers %} collection-hero--featured{% endif %}">
+  {% if collection.image %}
+    <img
+      class="collection-hero__bg"
+      src="{{ collection.image | image_url: width: 1600 }}"
+      alt="{{ collection.title | escape }}"
+      loading="eager"
+      width="{{ collection.image.width }}"
+      height="{{ collection.image.height }}"
+    >
+  {% endif %}
+  <div class="collection-hero__overlay"></div>
+  <div class="collection-hero__content">
+    <nav class="collection-hero__breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      <span>{{ collection.title | escape }}</span>
+    </nav>
+    {% if is_best_sellers %}
+      <div class="collection-hero__eyebrow">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Most Popular
+      </div>
+    {% endif %}
+    <h1 class="collection-hero__title">{% if is_best_sellers %}Best Sellers{% else %}{{ collection.title | escape }}{% endif %}</h1>
+    {% if collection.description != blank %}
+      <p class="collection-hero__desc">{{ collection.description | strip_html | truncate: 180 | escape }}</p>
+    {% elsif is_best_sellers %}
+      <p class="collection-hero__desc">Our top-rated products that customers come back for again and again. Trusted by thousands across USA & Canada.</p>
+    {% endif %}
+    <div class="collection-hero__count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</div>
+  </div>
+</div>
+
+<!-- Toolbar: Sort + Filter -->
+<div class="collection-toolbar">
+  <div class="container">
+    <div class="collection-toolbar__inner">
+      <div class="collection-toolbar__left">
+        <span class="collection-toolbar__results">
+          Showing {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: collection.products_count }} of {{ collection.products_count }}
+        </span>
+      </div>
+      <div class="collection-toolbar__right">
+        <div class="collection-toolbar__sort">
+          <label for="sort-by" class="collection-toolbar__label">Sort by</label>
+          <select id="sort-by" class="collection-toolbar__select" onchange="window.location.href=this.value;">
+            {% assign sort_options = 'manual|best-selling|title-ascending|title-descending|price-ascending|price-descending|created-ascending|created-descending' | split: '|' %}
+            {% assign sort_labels = 'Featured|Best Selling|A – Z|Z – A|Price: Low → High|Price: High → Low|Oldest|Newest' | split: '|' %}
+            {% for option in sort_options %}
+              <option
+                value="{{ collection.url }}?sort_by={{ option }}"
+                {% if collection.sort_by == option or collection.default_sort_by == option and collection.sort_by == blank %}selected{% endif %}
+              >{{ sort_labels[forloop.index0] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
+<!-- Product Grid -->
+<div class="container section-spacing">
   {% if collection.products_count == 0 %}
     <div class="empty-state">
       <div class="empty-state__icon">
@@ -44,6 +100,32 @@
   {% endif %}
 </div>
 
+<!-- Collection Trust Strip -->
+<div class="collection-trust">
+  <div class="container">
+    <div class="collection-trust__inner">
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <span>Free Shipping $50+</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        <span>30-Day Returns</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Secure Checkout</span>
+      </div>
+      <div class="collection-trust__item">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Quality Guaranteed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endpaginate %}
+
 {% schema %}
 {
   "name": "Collection grid",
@@ -51,7 +133,7 @@
     {
       "type": "range",
       "id": "products_per_page",
-      "label": "Products to show",
+      "label": "Products per page",
       "min": 8,
       "max": 36,
       "step": 4,

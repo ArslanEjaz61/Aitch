@@ -1,0 +1,60 @@
+{%- comment -%}
+  Home product row. Pass: collection, product_limit, eyebrow, heading, subheading, cta_*
+  Optional: row_variant 'trending' — dark Aitch band, light header text, 4-up grid
+{%- endcomment -%}
+{%- assign is_trending = false -%}
+{%- if row_variant == 'trending' -%}
+  {%- assign is_trending = true -%}
+{%- endif -%}
+
+<section
+  class="section-spacing reveal reveal--stagger home-product-row{% if is_trending %} home-product-row--trending{% endif %}"
+  data-home-product-row
+  {% if is_trending %}data-trending-row="true"{% endif %}
+>
+  <div class="container">
+    <div class="section-header home-product-row__head">
+      <div class="section-header__text">
+        {%- if eyebrow != blank -%}
+          <div class="section-header__eyebrow">{{ eyebrow | escape }}</div>
+        {%- endif -%}
+        {%- if heading != blank -%}
+          <h2 class="section-header__title">{{ heading | escape }}</h2>
+        {%- endif -%}
+        {%- if subheading != blank -%}
+          <p class="section-header__subtitle">{{ subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if cta_label != blank and cta_link != blank -%}
+        <a
+          class="btn{% if is_trending %} btn--trending-cta{% else %} btn--secondary{% endif %}"
+          href="{{ cta_link }}"
+        >{{ cta_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if collection == blank -%}
+      <div class="empty-state home-product-row__empty">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 class="empty-state__title">Collection not set</h3>
+        <p class="empty-state__text">In the theme editor, open the Premium homepage section and choose a collection for Trending Now, then save.</p>
+      </div>
+    {%- elsif collection.products_count > 0 -%}
+      <div class="product-grid product-grid--4 home-product-row__grid{% if is_trending %} home-product-row__grid--trending{% endif %}">
+        {%- for product in collection.products limit: product_limit -%}
+          {%- render 'product-card', product: product -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="empty-state home-product-row__empty">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 class="empty-state__title">No products yet</h3>
+        <p class="empty-state__text">This collection has no products, or the handle is wrong. Pick another collection in the theme editor.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>

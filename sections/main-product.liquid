@@ -1,11 +1,18 @@
 {% liquid
   assign featured = product.featured_image
+  if featured == blank and product.images.size > 0
+    assign featured = product.images.first
+  endif
   assign related_collection = product.collections.first
+  assign current_variant = product.selected_or_first_available_variant
 %}
 
 <div class="product-page">
-  <!-- Gallery -->
+  <!-- ==========================================
+       GALLERY — Thumbnails left, Main image right
+       ========================================== -->
   <div class="product-page__gallery">
+    <!-- Main Image (first — thumbnails sit below for a compact layout) -->
     <div class="product-page__main-image">
       {% if featured %}
         <img
@@ -17,11 +24,13 @@
           "
           sizes="(max-width: 900px) 100vw, 50vw"
           src="{{ featured | image_url: width: 1200 }}"
-          alt="{{ featured.alt | escape }}"
+          alt="{{ featured.alt | default: product.title | escape }}"
           loading="eager"
           width="{{ featured.width }}"
           height="{{ featured.height }}"
         >
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {% endif %}
     </div>
 
@@ -39,34 +48,52 @@
                  this.classList.add('active');
                ">
             <img
-              src="{{ image | image_url: width: 200 }}"
-              alt="{{ image.alt | escape }}"
+              src="{{ image | image_url: width: 120 }}"
+              alt="{{ image.alt | default: product.title | escape }}"
               loading="lazy"
-              width="{{ image.width }}"
-              height="{{ image.height }}"
+              width="80"
+              height="80"
             >
-          </div>
+          </button>
         {% endfor %}
       </div>
     {% endif %}
   </div>
 
-  <!-- Product Info -->
+  <!-- ==========================================
+       PRODUCT INFO — Sticky sidebar
+       ========================================== -->
   <div class="product-page__info">
+    <!-- Breadcrumb -->
+    <nav class="product-page__breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      {% if related_collection %}
+        <a href="{{ related_collection.url }}">{{ related_collection.title | escape }}</a>
+        <span aria-hidden="true">›</span>
+      {% endif %}
+      <span>{{ product.title | truncate: 40 | escape }}</span>
+    </nav>
+
     {% if product.vendor != blank %}
       <div class="product-page__vendor">{{ product.vendor | escape }}</div>
     {% endif %}
 
     <h1 class="product-page__title">{{ product.title | escape }}</h1>
 
-    <!-- Star Rating -->
-    <div class="product-page__rating">
-      <div class="product-page__stars" aria-hidden="true">★★★★★</div>
-      <span class="product-page__rating-score">4.8</span>
-      <span class="product-page__rating-divider">·</span>
-      <a href="#product-reviews" class="product-page__rating-count">120 reviews</a>
-    </div>
+    <p class="product-page__promise-row">
+      {% if current_variant.available %}
+        <span id="pdp-stock-promise" class="product-page__promise product-page__promise--ok">In stock</span>
+      {% else %}
+        <span id="pdp-stock-promise" class="product-page__promise product-page__promise--muted">Currently unavailable</span>
+      {% endif %}
+      <span class="product-page__promise-sep" aria-hidden="true">·</span>
+      <span>Ships USA &amp; Canada</span>
+      <span class="product-page__promise-sep" aria-hidden="true">·</span>
+      <span>30-day returns</span>
+    </p>
 
+    <!-- Price -->
     <div class="product-page__price">
       {% liquid
         assign current_variant = product.selected_or_first_available_variant
@@ -92,15 +119,21 @@
       </span>
     </div>
 
-    <div class="product-page__add-to-cart">
-      {% liquid
-        assign current_variant = product.selected_or_first_available_variant
-      %}
+    <!-- Short Description -->
+    {% if product.description != blank %}
+      <div class="product-page__short-desc">
+        {{ product.description | strip_html | truncate: 200 }}
+      </div>
+    {% endif %}
 
+    <hr class="product-page__divider">
+
+    <!-- Variant Selector -->
+    <div class="product-page__add-to-cart">
       {% if product.variants.size > 1 %}
         <div class="product-page__variant-wrap">
           <label for="variant-select" class="product-page__field-label">Option</label>
-          <select id="variant-select" class="product-page__select" onchange="syncVariant(this.value)">
+          <select id="variant-select" class="product-page__select" onchange="syncVariantSelect(this)">
             {% for variant in product.variants %}
               {% liquid
                 assign var_savings = 0
@@ -120,13 +153,14 @@
         </div>
       {% endif %}
 
+      <!-- Quantity + Add to Cart -->
       <div class="product-page__qty-row">
         <div class="product-page__qty-control">
           <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('pdp-qty');q.value=Math.max(1,parseInt(q.value)-1);" aria-label="Decrease quantity">−</button>
           <input type="number" id="pdp-qty" value="1" min="1" class="product-page__qty-input" aria-label="Quantity">
           <button type="button" class="product-page__qty-btn" onclick="var q=document.getElementById('pdp-qty');q.value=parseInt(q.value)+1;" aria-label="Increase quantity">+</button>
         </div>
-        <form action="/cart/add" method="post" style="flex:1;">
+        <form action="{{ routes.cart_add_url }}" method="post" style="flex:1;">
           <input type="hidden" name="id" id="atc-variant-id" value="{{ current_variant.id }}">
           <input type="hidden" name="return_to" value="/cart">
           <input type="hidden" name="quantity" id="atc-qty" value="1">
@@ -138,19 +172,21 @@
         </form>
       </div>
 
-      <form action="/cart/add" method="post" class="product-page__buy-now-form">
+      <!-- Buy Now -->
+      <form action="{{ routes.cart_add_url }}" method="post" class="product-page__buy-now-form">
         <input type="hidden" name="id" id="buy-now-variant-id" value="{{ current_variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/checkout">
-        <button type="submit" class="btn btn--secondary btn--full product-page__buy-now-btn">
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
-          Buy Now
+        <button type="submit" id="pdp-buy-now-btn" class="btn btn--secondary btn--full product-page__buy-now-btn">
+          Buy Now — {{ current_variant.price | money }}
         </button>
       </form>
     </div>
 
     <script>
-      function syncVariant(variantId) {
+      function syncVariantSelect(sel) {
+        var opt = sel.options[sel.selectedIndex];
+        var variantId = sel.value;
         var atcId = document.getElementById('atc-variant-id');
         var buyId = document.getElementById('buy-now-variant-id');
         if (atcId) atcId.value = variantId;
@@ -206,29 +242,31 @@
       <div class="product-page__trust-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         <div>
-          <strong>Free Shipping</strong>
-          <span>Orders $50+</span>
+          <strong>Free Shipping $50+</strong>
+          <span>Fast delivery to USA & Canada</span>
         </div>
       </div>
       <div class="product-page__trust-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         <div>
           <strong>Secure Checkout</strong>
-          <span>SSL Encrypted</span>
+          <span>256-bit SSL Encrypted</span>
         </div>
       </div>
       <div class="product-page__trust-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
         <div>
           <strong>30-Day Returns</strong>
-          <span>Money back</span>
+          <span>Hassle-free money back</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Description + Details Tabs -->
+<!-- ==========================================
+     DESCRIPTION TABS
+     ========================================== -->
 {% if product.description != blank %}
   <div class="product-tabs">
     <div class="container">
@@ -239,7 +277,7 @@
       </div>
 
       <div id="tab-desc" class="product-tabs__panel active">
-        <div class="product-page__description">
+        <div class="product-page__description rte" data-pdp-description>
           {{ product.description }}
         </div>
       </div>
@@ -258,12 +296,12 @@
               <span class="product-tabs__detail-value">{{ product.type | escape }}</span>
             </div>
           {% endif %}
-          {% for tag in product.tags %}
-            <div class="product-tabs__detail-row">
-              <span class="product-tabs__detail-label">Tag</span>
-              <span class="product-tabs__detail-value">{{ tag | escape }}</span>
+          {% if product.tags.size > 0 %}
+            <div class="product-tabs__detail-row product-tabs__detail-row--tags">
+              <span class="product-tabs__detail-label">Highlights</span>
+              <span class="product-tabs__detail-value">{{ product.tags | join: ', ' | escape }}</span>
             </div>
-          {% endfor %}
+          {% endif %}
         </div>
       </div>
 
@@ -287,9 +325,87 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      function enhancePdpDescription() {
+      var root = document.querySelector('[data-pdp-description]');
+      if (!root || root.getAttribute('data-pdp-enhanced') === '1') return;
+      root.setAttribute('data-pdp-enhanced', '1');
+
+      function isImgOnlyP(el) {
+        if (!el || el.tagName !== 'P') return false;
+        var imgs = el.querySelectorAll('img');
+        if (imgs.length !== 1) return false;
+        var tmp = el.cloneNode(true);
+        tmp.querySelectorAll('img').forEach(function (img) {
+          img.remove();
+        });
+        return tmp.textContent.replace(/\s/g, '') === '';
+      }
+
+      function wrapDescImages(container) {
+        var node = container.firstElementChild;
+        while (node) {
+          if (!isImgOnlyP(node)) {
+            node = node.nextElementSibling;
+            continue;
+          }
+          var anchor = node;
+          var scan = node;
+          while (isImgOnlyP(scan)) {
+            scan = scan.nextElementSibling;
+          }
+          var wrap = document.createElement('div');
+          wrap.className = 'product-page__desc-gallery';
+          var count = 0;
+          container.insertBefore(wrap, anchor);
+          while (anchor !== scan) {
+            var next = anchor.nextElementSibling;
+            wrap.appendChild(anchor);
+            anchor = next;
+            count++;
+          }
+          if (count === 1) wrap.classList.add('product-page__desc-gallery--single');
+          node = scan;
+        }
+      }
+
+      function boldLeadLabels(container) {
+        container.querySelectorAll('p, li').forEach(function (el) {
+          if (el.closest('.product-page__desc-gallery')) return;
+          if (el.querySelector('.pdp-desc-lead')) return;
+          var first = el.firstChild;
+          if (!first || first.nodeType !== 3) return;
+          var t = first.textContent;
+          var m = t.match(/^(\s*)([^:]+:)(\s*)([\s\S]*)$/);
+          if (!m || m[2].length < 3 || m[2].length > 95) return;
+          if (/^https?:\/\//i.test(t.trim())) return;
+          var strong = document.createElement('strong');
+          strong.className = 'pdp-desc-lead';
+          strong.textContent = m[2];
+          el.insertBefore(strong, first);
+          first.textContent = m[3] + m[4];
+          if (!first.textContent) el.removeChild(first);
+        });
+      }
+
+      wrapDescImages(root);
+      boldLeadLabels(root);
+      }
+
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(enhancePdpDescription, { timeout: 150 });
+      } else {
+        window.setTimeout(enhancePdpDescription, 0);
+      }
+    })();
+  </script>
 {% endif %}
 
-<!-- Related Products -->
+<!-- ==========================================
+     RELATED PRODUCTS
+     ========================================== -->
 {% if related_collection != blank and related_collection.products_count > 1 %}
   <div class="related-products">
     <div class="container">

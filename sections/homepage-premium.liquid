@@ -1,91 +1,274 @@
 {% liquid
-  assign hero_image = section.settings.hero_image
-  assign collection = section.settings.collection
-  assign product_limit = section.settings.product_limit | default: 8
+  assign hero_slides = section.blocks | where: 'type', 'hero_slide'
 %}
 
 <!-- ============================
-     HERO SECTION — Atlas Split
+     HERO SECTION — Full-width slider
      ============================ -->
-<section class="hero">
-  <div class="hero__inner">
-    <div class="hero__content">
-      <div class="hero__eyebrow fade-in">
-        <span class="hero__eyebrow-dot"></span>
-        <span>{{ section.settings.kicker | default: 'Smart home solutions — delivered' | escape }}</span>
-      </div>
-
-      <h1 class="hero__heading fade-in fade-in-delay-1">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
-
-      <p class="hero__description fade-in fade-in-delay-2">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
-
-      <div class="hero__actions fade-in fade-in-delay-3">
-        {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
-          <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
-            <span>{{ section.settings.primary_label | escape }}</span>
-            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-          </a>
-        {% endif %}
-
-        {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
-          <a class="btn btn--secondary" href="{{ section.settings.secondary_link }}">
-            <span>{{ section.settings.secondary_label | escape }}</span>
-          </a>
+<section
+  class="hero hero--slider"
+  data-hero-slider
+  data-autoplay="{% if section.settings.hero_autoplay %}true{% else %}false{% endif %}"
+  data-interval="{{ section.settings.hero_autoplay_seconds | default: 4 | times: 1000 }}"
+>
+  <div
+    class="hero-slider"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="{{ section.settings.hero_slider_a11y_label | default: 'Featured' | escape }}"
+  >
+    <div class="hero-slider__viewport">
+      <div id="hero-track-{{ section.id }}" class="hero-slider__track" data-hero-track>
+        {% if hero_slides.size > 0 %}
+          {% for block in hero_slides %}
+            {% liquid
+              assign slide_img = block.settings.image
+              assign align_class = 'hero-slider__inner--left'
+              if block.settings.content_alignment == 'center'
+                assign align_class = 'hero-slider__inner--center'
+              endif
+              assign promo_class = ''
+              if block.settings.badge != blank
+                assign promo_class = ' hero-slider__slide--promo'
+              endif
+            %}
+            <article
+              class="hero-slider__slide{{ promo_class }}{% if forloop.first %} is-active{% endif %}"
+              data-hero-slide
+              aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="hero-slider__media">
+                {% if slide_img != blank %}
+                  <img
+                    srcset="
+                      {{ slide_img | image_url: width: 800 }} 800w,
+                      {{ slide_img | image_url: width: 1200 }} 1200w,
+                      {{ slide_img | image_url: width: 1600 }} 1600w,
+                      {{ slide_img | image_url: width: 2000 }} 2000w
+                    "
+                    sizes="100vw"
+                    src="{{ slide_img | image_url: width: 1600 }}"
+                    alt="{{ slide_img.alt | default: block.settings.heading | default: 'Aitch Home Care' | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="{{ slide_img.width }}"
+                    height="{{ slide_img.height }}"
+                    {% if forloop.first %}fetchpriority="high"{% endif %}
+                  >
+                {% else %}
+                  {% liquid
+                    assign fallback_asset = 'hero.png'
+                    if forloop.index == 2
+                      assign fallback_asset = 'banner-cleaning.png'
+                    elsif forloop.index == 3
+                      assign fallback_asset = 'banner-kitchen.png'
+                    endif
+                  %}
+                  <img
+                    src="{{ fallback_asset | asset_url }}"
+                    alt="{{ block.settings.heading | default: 'Aitch Home Care' | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="1600"
+                    height="900"
+                    {% if forloop.first %}fetchpriority="high"{% endif %}
+                  >
+                {% endif %}
+              </div>
+              <div class="hero-slider__scrim" aria-hidden="true"></div>
+              <div class="hero-slider__inner container {{ align_class }}">
+                <div class="hero-slider__content">
+                  {% if block.settings.badge != blank %}
+                    <p class="hero-slider__badge" aria-hidden="false">
+                      <span class="hero-slider__badge-main">{{ block.settings.badge | escape }}</span>
+                      {% if block.settings.badge_subtext != blank %}
+                        <span class="hero-slider__badge-sub">{{ block.settings.badge_subtext | escape }}</span>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+                  {% if block.settings.eyebrow != blank %}
+                    <p class="hero-slider__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                  {% endif %}
+                  {% if forloop.first %}
+                    <h1 class="hero-slider__heading">{{ block.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
+                  {% else %}
+                    <h2 class="hero-slider__heading">{{ block.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h2>
+                  {% endif %}
+                  {% if block.settings.subheading != blank %}
+                    <p class="hero-slider__description">{{ block.settings.subheading | escape }}</p>
+                  {% endif %}
+                  <div class="hero-slider__actions">
+                    {% if block.settings.primary_label != blank and block.settings.primary_link != blank %}
+                      <a class="btn btn--primary btn--icon-right" href="{{ block.settings.primary_link }}">
+                        <span>{{ block.settings.primary_label | escape }}</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                      </a>
+                    {% endif %}
+                    {% if block.settings.secondary_label != blank and block.settings.secondary_link != blank %}
+                      <a class="btn btn--secondary" href="{{ block.settings.secondary_link }}">
+                        <span>{{ block.settings.secondary_label | escape }}</span>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        {% else %}
+          {% comment %} Legacy: no slide blocks — use section hero settings {% endcomment %}
+          <article class="hero-slider__slide is-active" data-hero-slide aria-hidden="false">
+            <div class="hero-slider__media">
+              {% if section.settings.hero_image != blank %}
+                {% assign hero_image = section.settings.hero_image %}
+                <img
+                  srcset="
+                    {{ hero_image | image_url: width: 800 }} 800w,
+                    {{ hero_image | image_url: width: 1200 }} 1200w,
+                    {{ hero_image | image_url: width: 1600 }} 1600w
+                  "
+                  sizes="100vw"
+                  src="{{ hero_image | image_url: width: 1600 }}"
+                  alt="{{ hero_image.alt | default: 'Aitch Home Care — Home Solutions' | escape }}"
+                  loading="eager"
+                  width="{{ hero_image.width }}"
+                  height="{{ hero_image.height }}"
+                  fetchpriority="high"
+                >
+              {% else %}
+                <img
+                  src="{{ 'hero.png' | asset_url }}"
+                  alt="Aitch Home Care — Premium Home Solutions"
+                  loading="eager"
+                  width="1200"
+                  height="auto"
+                  fetchpriority="high"
+                >
+              {% endif %}
+            </div>
+            <div class="hero-slider__scrim" aria-hidden="true"></div>
+            <div class="hero-slider__inner container hero-slider__inner--left">
+              <div class="hero-slider__content">
+                <h1 class="hero-slider__heading">{{ section.settings.heading | default: 'Solve everyday home problems. Effortlessly.' | escape }}</h1>
+                <p class="hero-slider__description">{{ section.settings.subheading | default: 'Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.' | escape }}</p>
+                <div class="hero-slider__actions">
+                  {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
+                    <a class="btn btn--primary btn--icon-right" href="{{ section.settings.primary_link }}">
+                      <span>{{ section.settings.primary_label | escape }}</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    </a>
+                  {% endif %}
+                  {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
+                    <a class="btn btn--secondary" href="{{ section.settings.secondary_link }}">
+                      <span>{{ section.settings.secondary_label | escape }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </article>
         {% endif %}
       </div>
     </div>
 
-    <div class="hero__media">
-      {% if hero_image != blank %}
-        <img
-          srcset="
-            {{ hero_image | image_url: width: 800 }} 800w,
-            {{ hero_image | image_url: width: 1200 }} 1200w,
-            {{ hero_image | image_url: width: 1600 }} 1600w
-          "
-          sizes="(max-width: 900px) 100vw, 50vw"
-          src="{{ hero_image | image_url: width: 1200 }}"
-          alt="{{ hero_image.alt | default: 'Aitch Home Care — Home Solutions' | escape }}"
-          loading="eager"
-          width="{{ hero_image.width }}"
-          height="{{ hero_image.height }}"
-          fetchpriority="high"
+    {% if hero_slides.size > 1 %}
+      <div class="hero-slider__controls">
+        <button
+          type="button"
+          class="hero-slider__btn hero-slider__btn--prev"
+          data-hero-prev
+          aria-controls="hero-track-{{ section.id }}"
+          aria-label="Previous slide"
         >
-      {% else %}
-        <img
-          src="{{ 'hero.png' | asset_url }}"
-          alt="Aitch Home Care — Premium Home Solutions"
-          loading="eager"
-          width="1200"
-          height="auto"
-          fetchpriority="high"
-          style="object-fit: cover; width: 100%; height: 100%;"
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button
+          type="button"
+          class="hero-slider__btn hero-slider__btn--next"
+          data-hero-next
+          aria-controls="hero-track-{{ section.id }}"
+          aria-label="Next slide"
         >
-      {% endif %}
-    </div>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="hero-slider__dots-wrap">
+        <div class="hero-slider__dots" data-hero-dots role="tablist" aria-label="{{ section.settings.hero_slider_a11y_label | default: 'Slides' | escape }}"></div>
+      </div>
+      <div class="hero-slider__progress" data-hero-progress aria-hidden="true">
+        <span class="hero-slider__progress-bar" data-hero-progress-bar></span>
+      </div>
+    {% endif %}
   </div>
 
   <!-- Stats Bar -->
   <div class="hero__stats">
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_1_value | default: '20+' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_1_value | default: '20+' | escape }}">{{ section.settings.stat_1_value | default: '20+' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_1_label | default: 'Curated Products' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}">{{ section.settings.stat_2_value | default: '2-5 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_2_label | default: 'Fast Shipping' | escape }}</div>
     </div>
     <div class="hero__stat">
-      <div class="hero__stat-value">{{ section.settings.stat_3_value | default: '30 Day' | escape }}</div>
+      <div class="hero__stat-value hero-count" data-raw="{{ section.settings.stat_3_value | default: '30 Day' | escape }}">{{ section.settings.stat_3_value | default: '30 Day' | escape }}</div>
       <div class="hero__stat-label">{{ section.settings.stat_3_label | default: 'Easy Returns' | escape }}</div>
     </div>
   </div>
 </section>
 
+{% liquid
+  assign t_limit = section.settings.trending_product_limit | default: 4
+  assign a_limit = section.settings.all_product_limit | default: 8
+  
+  assign c_all = section.settings.all_collection
+  if c_all == blank
+    assign c_all = collections.all
+  endif
+
+  # Trending resolution
+  assign c_trending = section.settings.trending_collection
+  if c_trending != blank and c_trending.handle == blank
+    assign c_trending = collections[c_trending]
+  endif
+  if c_trending == blank
+    assign c_trending = section.settings.collection
+    if c_trending != blank and c_trending.handle == blank
+      assign c_trending = collections[c_trending]
+    endif
+  endif
+  if c_trending == blank
+    assign c_trending = collections['trending-now']
+  endif
+  if c_trending == blank
+    assign c_trending = collections['best-sales']
+  endif
+%}
+
+{% render 'homepage-product-row',
+  collection: c_trending,
+  row_variant: 'trending',
+  eyebrow: section.settings.trending_eyebrow,
+  heading: section.settings.trending_heading,
+  subheading: section.settings.trending_subheading,
+  product_limit: t_limit,
+  cta_label: section.settings.trending_cta_label,
+  cta_link: section.settings.trending_cta_link
+%}
+
+{% render 'homepage-product-row',
+  collection: c_all,
+  eyebrow: section.settings.all_eyebrow,
+  heading: section.settings.all_heading,
+  subheading: section.settings.all_subheading,
+  product_limit: a_limit,
+  cta_label: section.settings.all_cta_label,
+  cta_link: section.settings.all_cta_link
+%}
+
 <!-- ============================
      TRUST BAR
      ============================ -->
-<section class="trust-bar reveal">
+<section class="trust-bar reveal reveal--stagger">
   <div class="trust-bar__inner">
     <div class="trust-bar__item">
       <div class="trust-bar__icon">
@@ -102,7 +285,7 @@
       </div>
       <div class="trust-bar__text">
         <strong>{{ section.settings.trust_2_title | default: 'Quality Guaranteed' | escape }}</strong>
-        <span>{{ section.settings.trust_2_text | default: 'Tested and trusted by thousands' | escape }}</span>
+        <span>{{ section.settings.trust_2_text | default: 'Curated picks we stand behind' | escape }}</span>
       </div>
     </div>
     <div class="trust-bar__item">
@@ -127,43 +310,9 @@
 </section>
 
 <!-- ============================
-     FEATURED PRODUCTS GRID
-     ============================ -->
-<section class="section-spacing reveal">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-header__text">
-        <div class="section-header__eyebrow">{{ section.settings.grid_eyebrow | default: 'Featured' | escape }}</div>
-        <h2 class="section-header__title">{{ section.settings.grid_heading | default: 'Best-Selling Solutions' | escape }}</h2>
-        <p class="section-header__subtitle">{{ section.settings.grid_subheading | default: 'Our most popular products that solve everyday home problems.' | escape }}</p>
-      </div>
-      {% if section.settings.grid_cta_label != blank and section.settings.grid_cta_link != blank %}
-        <a class="btn btn--secondary" href="{{ section.settings.grid_cta_link }}">{{ section.settings.grid_cta_label | escape }}</a>
-      {% endif %}
-    </div>
-
-    {% if collection != blank and collection.products_count > 0 %}
-      <div class="product-grid product-grid--4">
-        {% for product in collection.products limit: product_limit %}
-          {% render 'product-card', product: product %}
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="empty-state">
-        <div class="empty-state__icon">
-          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        </div>
-        <h3 class="empty-state__title">No products yet</h3>
-        <p class="empty-state__text">Select a collection in this section's settings to show featured products.</p>
-      </div>
-    {% endif %}
-  </div>
-</section>
-
-<!-- ============================
      COLLECTION BANNER — Cleaning
      ============================ -->
-<section class="collection-banner reveal">
+<section class="collection-banner reveal reveal--stagger">
   <div class="collection-banner__content">
     <div class="collection-banner__eyebrow">{{ section.settings.banner_1_eyebrow | default: 'Top Category' | escape }}</div>
     <h2 class="collection-banner__heading">{{ section.settings.banner_1_heading | default: 'Cleaning Tools' | escape }}</h2>
@@ -199,7 +348,7 @@
 <!-- ============================
      COLLECTION BANNER — Kitchen (Reversed)
      ============================ -->
-<section class="collection-banner collection-banner--reverse reveal">
+<section class="collection-banner collection-banner--reverse reveal reveal--stagger">
   <div class="collection-banner__content">
     <div class="collection-banner__eyebrow">{{ section.settings.banner_2_eyebrow | default: 'Kitchen Essentials' | escape }}</div>
     <h2 class="collection-banner__heading">{{ section.settings.banner_2_heading | default: 'Kitchen Problem Solvers' | escape }}</h2>
@@ -235,7 +384,7 @@
 <!-- ============================
      CATEGORIES GRID
      ============================ -->
-<section class="section-spacing reveal">
+<section class="section-spacing reveal reveal--stagger">
   <div class="container">
     <div class="section-header">
       <div class="section-header__text">
@@ -249,37 +398,122 @@
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'category' %}
-            <a class="category-card" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
-              {% if block.settings.image != blank %}
+            {% liquid
+              assign cat = block.settings.collection
+              assign cat_url = block.settings.link
+              if cat != blank
+                assign cat_url = cat.url
+              endif
+              if cat_url == blank
+                assign cat_url = routes.all_products_collection_url
+              endif
+              assign link_for_check = block.settings.link | default: ''
+              if cat == blank and link_for_check contains '/collections/'
+                assign lh = link_for_check | split: '/collections/' | last | split: '/' | first | split: '?' | first
+                if lh != blank and collections[lh] == blank
+                  if lh == 'home-convenience' and collections['home-convenience-items'] != blank
+                    assign cat_url = collections['home-convenience-items'].url
+                  endif
+                endif
+              endif
+              assign cat_title = block.settings.title
+              if cat_title == blank and cat != blank
+                assign cat_title = cat.title
+              endif
+              if cat_title == blank
+                assign cat_title = 'Category'
+              endif
+              assign cat_title_lower = cat_title | downcase
+              assign cat_fallback = 'category-cleaning.jpg'
+              assign force_theme_asset = false
+              if cat != blank
+                if cat.handle == 'kitchen-products'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif cat.handle == 'home-convenience' or cat.handle == 'home-convenience-items'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif cat.handle == 'cleaning-tools'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
+              endif
+              if force_theme_asset == false
+                if link_for_check contains 'kitchen-products'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif link_for_check contains 'home-convenience'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif link_for_check contains 'cleaning-tools'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
+              endif
+              if force_theme_asset == false
+                if cat_title_lower contains 'kitchen'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-kitchen.jpg'
+                elsif cat_title_lower contains 'home'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-home.jpg'
+                elsif cat_title_lower contains 'cleaning'
+                  assign force_theme_asset = true
+                  assign cat_fallback = 'category-cleaning.jpg'
+                endif
+              endif
+            %}
+            <a
+              class="category-card"
+              href="{{ cat_url }}"
+              aria-label="{{ cat_title | escape }} — view products in this category"
+              {{ block.shopify_attributes }}
+            >
+              {% if force_theme_asset %}
+                <img
+                  src="{{ cat_fallback | asset_url }}"
+                  alt="{{ cat_title | escape }}"
+                  loading="lazy"
+                  width="800"
+                  height="600"
+                  style="object-fit: cover; width: 100%; height: 100%;"
+                >
+              {% elsif block.settings.image != blank %}
                 <img
                   src="{{ block.settings.image | image_url: width: 800 }}"
-                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                  alt="{{ block.settings.image.alt | default: cat_title | escape }}"
                   loading="lazy"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                 >
-              {% else %}
-                {% liquid
-                  assign fallback_img = 'category-cleaning.jpg'
-                  if block.settings.title contains 'Kitchen'
-                    assign fallback_img = 'category-kitchen.jpg'
-                  elsif block.settings.title contains 'Home'
-                    assign fallback_img = 'category-home.jpg'
-                  endif
-                %}
+              {% elsif cat != blank and cat.featured_image != blank %}
                 <img
-                  src="{{ fallback_img | asset_url }}"
-                  alt="{{ block.settings.title | escape }}"
+                  src="{{ cat.featured_image | image_url: width: 800 }}"
+                  alt="{{ cat.featured_image.alt | default: cat_title | escape }}"
+                  loading="lazy"
+                  width="{{ cat.featured_image.width }}"
+                  height="{{ cat.featured_image.height }}"
+                >
+              {% else %}
+                <img
+                  src="{{ cat_fallback | asset_url }}"
+                  alt="{{ cat_title | escape }}"
                   loading="lazy"
                   width="800"
-                  height="auto"
+                  height="600"
                   style="object-fit: cover; width: 100%; height: 100%;"
                 >
               {% endif %}
               <div class="category-card__overlay"></div>
               <div class="category-card__content">
-                <h3 class="category-card__title">{{ block.settings.title | escape }}</h3>
-                <div class="category-card__count">{{ block.settings.subtitle | default: 'Shop now →' | escape }}</div>
+                <h3 class="category-card__title">{{ cat_title | escape }}</h3>
+                <div class="category-card__meta">
+                  {%- if cat != blank and cat.products_count > 0 -%}
+                    <span class="category-card__badge">{{ cat.products_count }} {{ cat.products_count | pluralize: 'product', 'products' }}</span>
+                    <span class="category-card__sep" aria-hidden="true">·</span>
+                  {%- endif -%}
+                  <span class="category-card__cta">{{ block.settings.subtitle | default: 'Shop collection' | escape }}</span>
+                </div>
               </div>
             </a>
         {% endcase %}
@@ -291,7 +525,7 @@
 <!-- ============================
      TESTIMONIALS
      ============================ -->
-<section class="testimonials section-spacing reveal">
+<section class="testimonials section-spacing reveal reveal--stagger">
   <div class="container">
     <div class="section-header">
       <div class="section-header__text">
@@ -302,18 +536,19 @@
     </div>
 
     <div class="testimonials-grid">
+      {% assign star_svg = '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' %}
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_1_text | default: 'The Electric Spin Brush is a game changer! My bathroom has never been this clean. Saves so much time and effort.' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-1.jpg' | asset_url }}" alt="Sarah M." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-1.jpg' | asset_url }}" alt="Sarah M." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_1_name | default: 'Sarah M.' | escape }}</div>
@@ -323,17 +558,17 @@
       </div>
 
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_2_text | default: 'The steam cleaner works amazingly on kitchen grease. I use it on everything — countertops, stovetop, even the oven.' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-2.jpg' | asset_url }}" alt="James R." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-2.jpg' | asset_url }}" alt="James R." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_2_name | default: 'James R.' | escape }}</div>
@@ -343,17 +578,17 @@
       </div>
 
       <div class="testimonial-card">
-        <div class="testimonial-card__stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__stars">{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}{{ star_svg }}</div>
+          <span class="testimonial-card__verified">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Verified
+          </span>
         </div>
         <p class="testimonial-card__text">"{{ section.settings.review_3_text | default: 'Love the under-sink organizer and foldable storage boxes. My kitchen is finally organized. Will buy more!' | escape }}"</p>
         <div class="testimonial-card__author">
           <div class="testimonial-card__avatar">
-            <img src="{{ 'user-3.jpg' | asset_url }}" alt="Maria L." loading="lazy" width="40" height="40" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <img src="{{ 'user-3.jpg' | asset_url }}" alt="Maria L." loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
           </div>
           <div>
             <div class="testimonial-card__name">{{ section.settings.review_3_name | default: 'Maria L.' | escape }}</div>
@@ -368,32 +603,148 @@
 <!-- ============================
      NEWSLETTER
      ============================ -->
-<section class="newsletter reveal">
+<section class="newsletter reveal reveal--stagger">
   <div class="newsletter__inner">
     <div>
+      <div class="newsletter__badge">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Newsletter
+      </div>
       <h2 class="newsletter__heading">{{ section.settings.newsletter_heading | default: 'Join the Aitch Home Care family' | escape }}</h2>
       <p class="newsletter__text">{{ section.settings.newsletter_text | default: 'Subscribe for exclusive deals, new product drops, and home tips delivered to your inbox.' | escape }}</p>
     </div>
     <div>
       {% form 'customer' %}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="newsletter__form">
-          <input
-            class="newsletter__input"
-            type="email"
-            name="contact[email]"
-            placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address' | escape }}"
-            autocomplete="email"
-            required
-          >
-          <button class="btn btn--primary" type="submit">
-            {{ section.settings.newsletter_btn | default: 'Subscribe' | escape }}
-          </button>
-        </div>
+        {% if form.posted_successfully? %}
+          <div class="newsletter__success">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <p>Thanks for subscribing! Check your inbox.</p>
+          </div>
+        {% else %}
+          <div class="newsletter__form">
+            <input
+              class="newsletter__input"
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address' | escape }}"
+              autocomplete="email"
+              required
+            >
+            <button class="btn btn--primary newsletter__btn" type="submit">
+              {{ section.settings.newsletter_btn | default: 'Subscribe' | escape }}
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        {% endif %}
       {% endform %}
+      <p class="newsletter__privacy">No spam, ever. Unsubscribe anytime.</p>
     </div>
   </div>
 </section>
+
+{% if hero_slides.size > 1 %}
+  <script>
+    (function () {
+      var root = document.querySelector('[data-hero-slider]');
+      if (!root) return;
+      var track = root.querySelector('[data-hero-track]');
+      var slides = root.querySelectorAll('[data-hero-slide]');
+      var dotsWrap = root.querySelector('[data-hero-dots]');
+      var prev = root.querySelector('[data-hero-prev]');
+      var next = root.querySelector('[data-hero-next]');
+      var progressBar = root.querySelector('[data-hero-progress-bar]');
+      if (!track || slides.length < 2) return;
+
+      var autoplay = root.getAttribute('data-autoplay') === 'true';
+      var interval = parseInt(root.getAttribute('data-interval'), 10) || 4000;
+      var i = 0;
+      var timer;
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function restartProgress() {
+        if (!progressBar || !autoplay || reduceMotion) return;
+        progressBar.classList.remove('hero-slider__progress-bar--run');
+        progressBar.style.animationDuration = interval / 1000 + 's';
+        void progressBar.offsetWidth;
+        progressBar.classList.add('hero-slider__progress-bar--run');
+      }
+
+      function go(n) {
+        i = (n + slides.length) % slides.length;
+        track.style.transform = 'translateX(-' + i * 100 + '%)';
+        slides.forEach(function (s, j) {
+          s.classList.toggle('is-active', j === i);
+          s.setAttribute('aria-hidden', j === i ? 'false' : 'true');
+        });
+        if (dotsWrap) {
+          var btns = dotsWrap.querySelectorAll('button');
+          btns.forEach(function (b, j) {
+            b.setAttribute('aria-selected', j === i ? 'true' : 'false');
+            b.tabIndex = j === i ? 0 : -1;
+          });
+        }
+      }
+
+      function startAutoplay() {
+        if (timer) clearInterval(timer);
+        timer = null;
+        if (!autoplay || reduceMotion || slides.length < 2) {
+          if (progressBar) progressBar.classList.remove('hero-slider__progress-bar--run');
+          return;
+        }
+        restartProgress();
+        timer = setInterval(function () {
+          go(i + 1);
+          restartProgress();
+        }, interval);
+      }
+
+      function dotButtons() {
+        if (!dotsWrap) return;
+        dotsWrap.innerHTML = '';
+        slides.forEach(function (_, j) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'hero-slider__dot';
+          b.setAttribute('role', 'tab');
+          b.setAttribute('aria-label', 'Go to slide ' + (j + 1));
+          b.addEventListener('click', function () {
+            go(j);
+            startAutoplay();
+          });
+          dotsWrap.appendChild(b);
+        });
+      }
+
+      dotButtons();
+      go(0);
+
+      if (prev)
+        prev.addEventListener('click', function () {
+          go(i - 1);
+          startAutoplay();
+        });
+      if (next)
+        next.addEventListener('click', function () {
+          go(i + 1);
+          startAutoplay();
+        });
+
+      root.addEventListener('mouseenter', function () {
+        if (timer) clearInterval(timer);
+        timer = null;
+        root.classList.add('hero-slider--paused');
+      });
+      root.addEventListener('mouseleave', function () {
+        root.classList.remove('hero-slider--paused');
+        startAutoplay();
+      });
+
+      startAutoplay();
+    })();
+  </script>
+{% endif %}
 
 {% schema %}
 {
@@ -403,30 +754,54 @@
   "settings": [
     {
       "type": "header",
-      "content": "Hero section"
+      "content": "Hero slider"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add Hero slide blocks below (up to 3+). If there are no slide blocks, the legacy single-slide fields at the bottom of this section are used."
+    },
+    {
+      "type": "checkbox",
+      "id": "hero_autoplay",
+      "label": "Autoplay slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hero_autoplay_seconds",
+      "label": "Autoplay interval (seconds)",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "unit": "s"
     },
     {
       "type": "text",
-      "id": "kicker",
-      "label": "Kicker / Eyebrow",
-      "default": "Smart home solutions — delivered"
+      "id": "hero_slider_a11y_label",
+      "label": "Carousel label (screen readers)",
+      "default": "Featured promotions"
+    },
+    {
+      "type": "header",
+      "content": "Hero — legacy (no slide blocks)"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Hero heading",
+      "label": "Heading",
       "default": "Solve everyday home problems. Effortlessly."
     },
     {
       "type": "textarea",
       "id": "subheading",
-      "label": "Hero subheading",
+      "label": "Subheading",
       "default": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins."
     },
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero image"
+      "label": "Image"
     },
     {
       "type": "text",
@@ -516,7 +891,7 @@
       "type": "text",
       "id": "trust_2_text",
       "label": "Trust 2 text",
-      "default": "Tested and trusted by thousands"
+      "default": "Curated picks we stand behind"
     },
     {
       "type": "text",
@@ -544,34 +919,89 @@
     },
     {
       "type": "header",
-      "content": "Product grid"
+      "content": "Row: Trending Now"
+    },
+    {
+      "type": "paragraph",
+      "content": "Choose a collection. This row has the dark Aitch band and up to four cards per row on desktop. Clear messages appear until a collection is set."
     },
     {
       "type": "text",
-      "id": "grid_eyebrow",
-      "label": "Grid eyebrow",
-      "default": "Featured"
+      "id": "trending_eyebrow",
+      "label": "Eyebrow",
+      "default": "Just in"
     },
     {
       "type": "text",
-      "id": "grid_heading",
-      "label": "Grid heading",
-      "default": "Best-Selling Solutions"
+      "id": "trending_heading",
+      "label": "Heading",
+      "default": "Trending Now"
     },
     {
       "type": "textarea",
-      "id": "grid_subheading",
-      "label": "Grid subheading",
-      "default": "Our most popular products that solve everyday home problems."
+      "id": "trending_subheading",
+      "label": "Subheading",
+      "default": "What shoppers are adding to cart this week."
     },
     {
       "type": "collection",
-      "id": "collection",
+      "id": "trending_collection",
       "label": "Collection"
     },
     {
       "type": "range",
-      "id": "product_limit",
+      "id": "trending_product_limit",
+      "label": "Number of product cards (max 4 in one row on desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "trending_cta_label",
+      "label": "Button label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "trending_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: All products"
+    },
+    {
+      "type": "paragraph",
+      "content": "Defaults to the All products collection if you leave Collection empty."
+    },
+    {
+      "type": "text",
+      "id": "all_eyebrow",
+      "label": "Eyebrow",
+      "default": "Catalog"
+    },
+    {
+      "type": "text",
+      "id": "all_heading",
+      "label": "Heading",
+      "default": "All products"
+    },
+    {
+      "type": "textarea",
+      "id": "all_subheading",
+      "label": "Subheading",
+      "default": "Everything we carry, in one place."
+    },
+    {
+      "type": "collection",
+      "id": "all_collection",
+      "label": "Collection (optional)"
+    },
+    {
+      "type": "range",
+      "id": "all_product_limit",
       "label": "Number of products",
       "min": 4,
       "max": 12,
@@ -580,14 +1010,116 @@
     },
     {
       "type": "text",
-      "id": "grid_cta_label",
-      "label": "Grid button label",
-      "default": "View All Products"
+      "id": "all_cta_label",
+      "label": "Button label",
+      "default": "Shop all"
     },
     {
       "type": "url",
-      "id": "grid_cta_link",
-      "label": "Grid button link"
+      "id": "all_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: Indoor"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional. If no collection is selected, this row is hidden."
+    },
+    {
+      "type": "text",
+      "id": "indoor_eyebrow",
+      "label": "Eyebrow",
+      "default": "Inside the home"
+    },
+    {
+      "type": "text",
+      "id": "indoor_heading",
+      "label": "Heading",
+      "default": "Indoor"
+    },
+    {
+      "type": "textarea",
+      "id": "indoor_subheading",
+      "label": "Subheading",
+      "default": "Clean, organize, and refresh every room."
+    },
+    {
+      "type": "collection",
+      "id": "indoor_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "indoor_product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "indoor_cta_label",
+      "label": "Button label",
+      "default": "See indoor"
+    },
+    {
+      "type": "url",
+      "id": "indoor_cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Row: Outdoor"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional. If no collection is selected, this row is hidden."
+    },
+    {
+      "type": "text",
+      "id": "outdoor_eyebrow",
+      "label": "Eyebrow",
+      "default": "Outside the home"
+    },
+    {
+      "type": "text",
+      "id": "outdoor_heading",
+      "label": "Heading",
+      "default": "Outdoor"
+    },
+    {
+      "type": "textarea",
+      "id": "outdoor_subheading",
+      "label": "Subheading",
+      "default": "Power through patios, tools, and exterior messes."
+    },
+    {
+      "type": "collection",
+      "id": "outdoor_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "outdoor_product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "outdoor_cta_label",
+      "label": "Button label",
+      "default": "See outdoor"
+    },
+    {
+      "type": "url",
+      "id": "outdoor_cta_link",
+      "label": "Button link"
     },
     {
       "type": "header",
@@ -812,24 +1344,182 @@
   ],
   "blocks": [
     {
+      "type": "hero_slide",
+      "name": "Hero slide",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image",
+          "info": "Full-width; tall lifestyle shots work best. If empty, a theme placeholder image is used."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow (optional)",
+          "info": "Small line above the heading."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Solve everyday home problems. Effortlessly."
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins."
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Promo badge (optional)",
+          "info": "e.g. 50% OFF — shows a bold promotional treatment above the heading."
+        },
+        {
+          "type": "text",
+          "id": "badge_subtext",
+          "label": "Badge subline (optional)",
+          "default": "On select best sellers"
+        },
+        {
+          "type": "text",
+          "id": "primary_label",
+          "label": "Primary button label",
+          "default": "Shop Best Sellers"
+        },
+        {
+          "type": "url",
+          "id": "primary_link",
+          "label": "Primary button link"
+        },
+        {
+          "type": "text",
+          "id": "secondary_label",
+          "label": "Secondary button label",
+          "default": "Explore Collections"
+        },
+        {
+          "type": "url",
+          "id": "secondary_link",
+          "label": "Secondary button link"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Text alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ],
+          "default": "left"
+        }
+      ]
+    },
+    {
       "type": "category",
       "name": "Category",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Cleaning" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "8 products" },
-        { "type": "url", "id": "link", "label": "Link" }
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Links this card to the collection page. Default handle for Home convenience is home-convenience-items (must match Admin → Collections)."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category",
+          "info": "Shown on the card. If empty, the collection title is used."
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Tagline",
+          "default": "Shop collection",
+          "info": "Short line under the title (e.g. scrub, organize, cook)."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link",
+          "info": "Optional. Used only when no collection is selected."
+        }
       ]
     }
   ],
-  "max_blocks": 6,
+  "max_blocks": 20,
   "presets": [
     {
       "name": "Premium homepage",
       "blocks": [
-        { "type": "category", "settings": { "title": "Cleaning Tools", "subtitle": "8 products" } },
-        { "type": "category", "settings": { "title": "Kitchen Essentials", "subtitle": "6 products" } },
-        { "type": "category", "settings": { "title": "Home Convenience", "subtitle": "6 products" } }
+        {
+          "type": "hero_slide",
+          "settings": {
+            "heading": "Solve everyday home problems. Effortlessly.",
+            "subheading": "Premium cleaning tools, kitchen essentials, and home convenience products — curated for everyday wins.",
+            "primary_label": "Shop Best Sellers",
+            "primary_link": "/collections/all",
+            "secondary_label": "Explore Collections",
+            "secondary_link": "/collections/all",
+            "content_alignment": "left"
+          }
+        },
+        {
+          "type": "hero_slide",
+          "settings": {
+            "eyebrow": "Curated for your home",
+            "heading": "Tools that actually work",
+            "subheading": "From deep-clean brushes to kitchen organizers — every pick is chosen for real results.",
+            "primary_label": "Shop cleaning",
+            "primary_link": "/collections/cleaning-tools",
+            "secondary_label": "Shop kitchen",
+            "secondary_link": "/collections/kitchen-products",
+            "content_alignment": "left"
+          }
+        },
+        {
+          "type": "hero_slide",
+          "settings": {
+            "badge": "50% OFF",
+            "badge_subtext": "Limited time — select best sellers",
+            "heading": "Your spring refresh starts here",
+            "subheading": "Stock up on customer favourites before they are gone.",
+            "primary_label": "Shop the sale",
+            "primary_link": "/collections/best-sales",
+            "secondary_label": "View all",
+            "secondary_link": "/collections/all",
+            "content_alignment": "center"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Cleaning Tools",
+            "subtitle": "Scrub, steam & shine",
+            "link": "/collections/cleaning-tools"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Home convenience items",
+            "subtitle": "Organize & simplify",
+            "link": "/collections/home-convenience-items"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Kitchen products",
+            "subtitle": "Cook, prep & store",
+            "link": "/collections/kitchen-products"
+          }
+        }
       ]
     }
   ]

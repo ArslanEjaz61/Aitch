@@ -1,26 +1,14 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
-      "type": "featured-collection-grid",
+      "type": "main-best-sellers",
       "settings": {
-        "heading": "Most Popular",
-        "subheading": "Our top-rated products that customers come back for again and again.",
-        "product_limit": 12,
-        "cta_label": "Shop All",
-        "cta_link": "/collections/all"
+        "eyebrow": "Most Popular",
+        "heading": "Best Sellers",
+        "subheading": "Our top-rated products that customers come back for again and again. Trusted by thousands across North America.",
+        "products_per_category": 4
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

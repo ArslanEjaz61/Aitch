@@ -1,0 +1,260 @@
+{% liquid
+  assign bs_collection = section.settings.main_collection
+  assign cat_1 = section.settings.category_1
+  assign cat_2 = section.settings.category_2
+  assign cat_3 = section.settings.category_3
+  assign product_limit = section.settings.products_per_category | default: 4
+%}
+
+<!-- Best Sellers Hero -->
+<div class="bs-hero">
+  <div class="container">
+    <div class="bs-hero__inner">
+      <div class="section-header__eyebrow">{{ section.settings.eyebrow | default: 'Most Popular' | escape }}</div>
+      <h1 class="bs-hero__title">{{ section.settings.heading | default: 'Best Sellers' | escape }}</h1>
+      <p class="bs-hero__desc">{{ section.settings.subheading | default: "Our top-rated products that customers come back for again and again. Trusted by thousands across North America." | escape }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Category Tabs -->
+<div class="bs-tabs">
+  <div class="container">
+    <div class="bs-tabs__nav" role="tablist">
+      <button class="bs-tabs__tab active" onclick="switchBsTab(this, 'bs-all')" role="tab" aria-selected="true">All Best Sellers</button>
+      {% if cat_1 != blank %}
+        <button class="bs-tabs__tab" onclick="switchBsTab(this, 'bs-cat1')" role="tab" aria-selected="false">{{ cat_1.title | escape }}</button>
+      {% endif %}
+      {% if cat_2 != blank %}
+        <button class="bs-tabs__tab" onclick="switchBsTab(this, 'bs-cat2')" role="tab" aria-selected="false">{{ cat_2.title | escape }}</button>
+      {% endif %}
+      {% if cat_3 != blank %}
+        <button class="bs-tabs__tab" onclick="switchBsTab(this, 'bs-cat3')" role="tab" aria-selected="false">{{ cat_3.title | escape }}</button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="container section-spacing">
+  <!-- All Best Sellers -->
+  <div id="bs-all" class="bs-panel active">
+    {% if bs_collection != blank and bs_collection.products_count > 0 %}
+      <div class="product-grid product-grid--4">
+        {% for product in bs_collection.products limit: 12 %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+      {% if bs_collection.products_count > 12 %}
+        <div class="bs-panel__cta">
+          <a href="{{ bs_collection.url }}" class="btn btn--secondary btn--icon-right">
+            View All {{ bs_collection.products_count }} Products
+            <svg viewBox="0 0 24 24" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 class="empty-state__title">No products yet</h3>
+        <p class="empty-state__text">Select a "Best Sellers" collection in this section's settings.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Category 1 -->
+  {% if cat_1 != blank %}
+    <div id="bs-cat1" class="bs-panel">
+      <div class="bs-panel__header">
+        <h2 class="bs-panel__title">{{ cat_1.title | escape }}</h2>
+        {% if cat_1.description != blank %}
+          <p class="bs-panel__desc">{{ cat_1.description | strip_html | truncate: 120 | escape }}</p>
+        {% endif %}
+      </div>
+      {% if cat_1.products_count > 0 %}
+        <div class="product-grid product-grid--4">
+          {% for product in cat_1.products limit: product_limit %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+        {% if cat_1.products_count > product_limit %}
+          <div class="bs-panel__cta">
+            <a href="{{ cat_1.url }}" class="btn btn--secondary btn--icon-right">
+              View All {{ cat_1.title | escape }}
+              <svg viewBox="0 0 24 24" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="bs-panel__empty">No products in this category yet.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Category 2 -->
+  {% if cat_2 != blank %}
+    <div id="bs-cat2" class="bs-panel">
+      <div class="bs-panel__header">
+        <h2 class="bs-panel__title">{{ cat_2.title | escape }}</h2>
+        {% if cat_2.description != blank %}
+          <p class="bs-panel__desc">{{ cat_2.description | strip_html | truncate: 120 | escape }}</p>
+        {% endif %}
+      </div>
+      {% if cat_2.products_count > 0 %}
+        <div class="product-grid product-grid--4">
+          {% for product in cat_2.products limit: product_limit %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+        {% if cat_2.products_count > product_limit %}
+          <div class="bs-panel__cta">
+            <a href="{{ cat_2.url }}" class="btn btn--secondary btn--icon-right">
+              View All {{ cat_2.title | escape }}
+              <svg viewBox="0 0 24 24" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="bs-panel__empty">No products in this category yet.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Category 3 -->
+  {% if cat_3 != blank %}
+    <div id="bs-cat3" class="bs-panel">
+      <div class="bs-panel__header">
+        <h2 class="bs-panel__title">{{ cat_3.title | escape }}</h2>
+        {% if cat_3.description != blank %}
+          <p class="bs-panel__desc">{{ cat_3.description | strip_html | truncate: 120 | escape }}</p>
+        {% endif %}
+      </div>
+      {% if cat_3.products_count > 0 %}
+        <div class="product-grid product-grid--4">
+          {% for product in cat_3.products limit: product_limit %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+        {% if cat_3.products_count > product_limit %}
+          <div class="bs-panel__cta">
+            <a href="{{ cat_3.url }}" class="btn btn--secondary btn--icon-right">
+              View All {{ cat_3.title | escape }}
+              <svg viewBox="0 0 24 24" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="bs-panel__empty">No products in this category yet.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+<!-- Why Shop With Us -->
+<div class="bs-why">
+  <div class="container">
+    <h2 class="bs-why__title">Why Shop With Us</h2>
+    <div class="bs-why__grid">
+      <div class="bs-why__item">
+        <div class="bs-why__icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <strong>Curated Selection</strong>
+        <span>Every product is handpicked and tested to solve real home problems.</span>
+      </div>
+      <div class="bs-why__item">
+        <div class="bs-why__icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <strong>Fast Shipping</strong>
+        <span>2–5 day delivery across USA & Canada. Free on orders $50+.</span>
+      </div>
+      <div class="bs-why__item">
+        <div class="bs-why__icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        </div>
+        <strong>Easy Returns</strong>
+        <span>30-day hassle-free returns. Not happy? Full refund — no questions asked.</span>
+      </div>
+      <div class="bs-why__item">
+        <div class="bs-why__icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <strong>Secure Checkout</strong>
+        <span>256-bit SSL encryption. Your data is always safe with us.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchBsTab(btn, panelId) {
+    var tabs = btn.closest('.bs-tabs__nav').querySelectorAll('.bs-tabs__tab');
+    var panels = document.querySelectorAll('.bs-panel');
+    tabs.forEach(function(t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    panels.forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(panelId).classList.add('active');
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Best sellers page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Most Popular"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our top-rated products that customers come back for again and again. Trusted by thousands across North America."
+    },
+    {
+      "type": "collection",
+      "id": "main_collection",
+      "label": "Main best sellers collection"
+    },
+    {
+      "type": "header",
+      "content": "Category tabs"
+    },
+    {
+      "type": "collection",
+      "id": "category_1",
+      "label": "Category 1 (e.g. Cleaning Tools)"
+    },
+    {
+      "type": "collection",
+      "id": "category_2",
+      "label": "Category 2 (e.g. Home Convenience)"
+    },
+    {
+      "type": "collection",
+      "id": "category_3",
+      "label": "Category 3 (e.g. Kitchen Products)"
+    },
+    {
+      "type": "range",
+      "id": "products_per_category",
+      "label": "Products per category",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

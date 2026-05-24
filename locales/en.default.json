@@ -49,20 +49,6 @@
       "sign_out": "Sign Out"
     }
   },
-  "general": {
-    "accessibility": {
-      "skip_to_content": "Skip to content"
-    }
-  },
-  "products": {
-    "product": {
-      "add_to_cart": "Add to Cart",
-      "sold_out": "Sold Out",
-      "sale": "Sale",
-      "quick_view": "Quick View",
-      "quantity": "Quantity"
-    }
-  },
   "gempages": {
     "Carousel": {
       "no_slider": "No Slider"
@@ -107,6 +93,20 @@
     },
     "Breadcrumb": {
       "home": "Home"
+    }
+  },
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "sale": "Sale",
+      "quick_view": "Quick View",
+      "quantity": "Quantity"
     }
   }
 }

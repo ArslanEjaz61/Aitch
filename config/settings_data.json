@@ -9,17 +9,28 @@
  */
 {
   "current": {
-    "logo_width": 140,
-    "brand_color": "#1a1a1a",
+    "colors_background": "#ffffff",
+    "colors_background_alt": "#f8f8f6",
+    "colors_text": "#1a1a1a",
+    "colors_text_secondary": "#6b6b6b",
+    "colors_text_tertiary": "#999999",
+    "colors_border": "#e5e5e5",
+    "colors_accent": "#1a1a1a",
+    "colors_accent_hover": "#333333",
+    "colors_sale": "#c1272d",
+    "colors_success": "#2d8a4e",
+    "colors_footer_background": "#1a1a1a",
+    "page_width": 1400,
+    "buttons_radius": 4,
+    "type_body_size": 14,
+    "show_product_vendor": true,
+    "show_quick_view": true,
+    "product_card_ratio": "square",
+    "animations_reveal": true,
+    "show_payment_icons": true,
     "bg_color": "#ffffff",
-    "text_color": "#1a1a1a",
-    "blocks": {
-      "614082290850464558": {
-        "type": "shopify://apps//blocks/embed-gp-script-head/20b379d4-1b20-474c-a6ca-665c331919f3",
-        "disabled": false,
-        "settings": {}
-      }
-    }
+    "logo_width": 180,
+    "text_color": "#1a1a1a"
   },
   "presets": null
 }
