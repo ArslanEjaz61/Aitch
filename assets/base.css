@@ -3534,9 +3534,6 @@ body.template-product .product-tabs.reveal-on-scroll {
   margin-bottom: var(--space-xl);
 }
 
-/* =========================================================
-   SEARCH PAGE
-   ========================================================= */
 .search-page {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -3545,22 +3542,56 @@ body.template-product .product-tabs.reveal-on-scroll {
 
 .search-form {
   display: flex;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-2xl);
+  gap: 0;
+  margin: 0 auto var(--space-3xl);
+  max-width: 580px;
+  width: 100%;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  transition: all var(--transition-base);
+}
+
+.search-form:focus-within {
+  border-color: var(--color-text);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .search-form input[type="text"] {
   flex: 1;
-  padding: 14px 18px;
-  border: 1px solid var(--color-border);
+  padding: 14px 24px;
+  border: none !important;
+  background: transparent !important;
   font-family: var(--font-body);
-  font-size: var(--font-size-md);
-  outline: none;
-  transition: border-color var(--transition-fast);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  outline: none !important;
+  color: var(--color-text);
+  box-shadow: none !important;
 }
 
-.search-form input[type="text"]:focus {
-  border-color: var(--color-accent);
+.search-form .btn {
+  border: none !important;
+  background: var(--color-text) !important;
+  color: var(--color-bg) !important;
+  padding: 14px 28px;
+  font-weight: 600;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  transition: opacity var(--transition-fast) !important;
+}
+
+.search-form .btn:hover {
+  opacity: 0.9 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+  .search-form {
+    border-radius: var(--radius-md);
+  }
 }
 
 /* =========================================================
