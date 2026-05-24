@@ -447,22 +447,38 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Keep switchTab defined
+  });
+
+  function initProductPage() {
     var toggleBtn = document.querySelector('.pdp-description-toggle-btn');
     var wrapper = document.querySelector('.pdp-description-wrapper');
     if (toggleBtn && wrapper) {
-      toggleBtn.addEventListener('click', function() {
-        if (wrapper.classList.contains('collapsed')) {
-          wrapper.classList.remove('collapsed');
-          toggleBtn.querySelector('span').textContent = 'Show Less';
-        } else {
-          wrapper.classList.add('collapsed');
-          toggleBtn.querySelector('span').textContent = 'Show More';
-          wrapper.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
+      if (!toggleBtn.hasAttribute('data-bound')) {
+        toggleBtn.setAttribute('data-bound', '1');
+        toggleBtn.addEventListener('click', function() {
+          if (wrapper.classList.contains('collapsed')) {
+            wrapper.classList.remove('collapsed');
+            toggleBtn.querySelector('span').textContent = 'Show Less';
+          } else {
+            wrapper.classList.add('collapsed');
+            toggleBtn.querySelector('span').textContent = 'Show More';
+            wrapper.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
     }
+  }
 
-    // Dynamic gallery thumbnail switching delegation
+  // Execute immediately
+  initProductPage();
+
+  // DOMContentLoaded Fallback
+  document.addEventListener('DOMContentLoaded', initProductPage);
+
+  // Global gallery click delegation (unaffected by loading order)
+  if (!window.productGalleryBound) {
+    window.productGalleryBound = true;
     document.addEventListener('click', function(e) {
       var thumb = e.target.closest('.product-page__thumb');
       if (thumb) {
@@ -481,7 +497,7 @@
         thumb.classList.add('active');
       }
     });
-  });
+  }
 </script>
 
 {% schema %}

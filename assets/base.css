@@ -3950,12 +3950,10 @@ body.template-product .product-tabs.reveal-on-scroll {
   letter-spacing: 0.06em;
 }
 
-/* Toolbar */
 .collection-toolbar {
   border-bottom: 1px solid var(--color-border);
   background: var(--color-bg);
-  position: sticky;
-  top: 68px;
+  position: relative;
   z-index: 20;
 }
 
