@@ -23,9 +23,9 @@
         <div class="empty-state__icon">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         </div>
-        <h3 class="empty-state__title">No results found</h3>
-        <p class="empty-state__text">Try a different search term or browse our collections.</p>
-        <a class="btn btn--primary" href="{{ routes.all_products_collection_url }}">Browse All Products</a>
+        <h3 class="empty-state__title">Not found</h3>
+        <p class="empty-state__text">We couldn't find any products matching your search.</p>
+        <a class="btn btn--primary" href="/collections/all">Go to Shop</a>
       </div>
     {% else %}
       {% paginate search.results by 16 %}

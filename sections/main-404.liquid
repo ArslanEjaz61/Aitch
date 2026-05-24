@@ -2,8 +2,17 @@
   <div style="font-size:96px;font-weight:800;letter-spacing:-0.04em;color:var(--color-border);margin-bottom:var(--space-md);line-height:1;">404</div>
   <h1 class="empty-state__title">Page not found</h1>
   <p class="empty-state__text">Sorry, we couldn't find the page you were looking for. It may have been moved or doesn't exist.</p>
-  <a class="btn btn--primary" href="{{ routes.root_url }}">Back to Home</a>
+  <div style="display:flex;gap:var(--space-sm);margin-top:var(--space-md);">
+    <a class="btn btn--primary" href="/collections/all">Go to Shop</a>
+    <a class="btn btn--secondary" href="{{ routes.root_url }}">Back to Home</a>
+  </div>
 </div>
+
+<script>
+  if (window.location.pathname.indexOf('/collections/') !== -1 && window.location.pathname !== '/collections/all') {
+    window.location.replace('/collections/all');
+  }
+</script>
 
 {% schema %}
 {

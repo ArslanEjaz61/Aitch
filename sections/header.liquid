@@ -142,16 +142,28 @@
       </button>
     </form>
 
+    {%- capture suggested_links_html -%}
+      {%- liquid
+        assign suggested_handles = 'cleaning,kitchen-tools,kitchen,home-convenience,home-convenience-items,best-sellers,best-sales' | split: ','
+      -%}
+      <a href="/collections/all">Shop All</a>
+      {%- for handle in suggested_handles -%}
+        {%- assign coll = collections[handle] -%}
+        {%- if coll != blank and coll.title != blank -%}
+          <a href="{{ coll.url }}">{{ coll.title | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if pages['best-sellers'] != blank -%}
+        <a href="/pages/best-sellers">Best Sellers</a>
+      {%- endif -%}
+    {%- endcapture -%}
+
     <div class="search-modal__results" id="search-modal-results">
       <!-- Default suggestions when input is empty -->
       <div class="search-modal__suggestions">
         <h3 class="search-modal__subtitle">Popular Suggestions</h3>
         <div class="search-modal__suggested-links">
-          <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop All</a>
-          <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning Tools</a>
-          <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen Tools</a>
-          <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home Convenience</a>
-          <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+          {{ suggested_links_html }}
         </div>
       </div>
     </div>
@@ -203,11 +215,7 @@
             <div class="search-modal__suggestions">
               <h3 class="search-modal__subtitle">Popular Suggestions</h3>
               <div class="search-modal__suggested-links">
-                <a href="{{ section.settings.shop_link | default: '/collections/all' }}">Shop All</a>
-                <a href="{{ section.settings.cleaning_link | default: '/collections/cleaning' }}">Cleaning Tools</a>
-                <a href="{{ section.settings.kitchen_link | default: '/collections/kitchen-tools' }}">Kitchen Tools</a>
-                <a href="{{ section.settings.home_link | default: '/collections/home-convenience' }}">Home Convenience</a>
-                <a href="{{ section.settings.best_sellers_link | default: '/pages/best-sellers' }}">Best Sellers</a>
+                {{ suggested_links_html | strip | strip_newlines }}
               </div>
             </div>
           `;
@@ -237,9 +245,10 @@
                 searchResults.innerHTML = html;
               } else {
                 searchResults.innerHTML = `
-                  <div class="search-modal__suggestions">
-                    <h3 class="search-modal__subtitle">No results found</h3>
-                    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: 4px;">Try searching for something else, like "scrubber" or "organizer".</p>
+                  <div class="search-modal__suggestions" style="text-align: center; padding: var(--space-lg) 0;">
+                    <h3 class="search-modal__subtitle" style="margin-bottom: var(--space-xs);">Not found</h3>
+                    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-md);">We couldn't find any matching products.</p>
+                    <a href="/collections/all" class="btn btn--primary btn--sm" style="display: inline-block; text-decoration: none; padding: 8px 16px; font-size: var(--font-size-xs); line-height: 1;">Go to Shop</a>
                   </div>
                 `;
               }
